@@ -11,5 +11,7 @@ public interface ProfileRepository extends JpaRepository<ProfileResponse,String>
 
 	@Query(value="Select userid,username from profile where userid = :userid and password = :password",nativeQuery = true)
 	ProfileResponse findUserProfile(@Param("userid")String userid,@Param("password")String password);
-	
+
+	@Query(value="Select userid,username from profile where userid = :userid",nativeQuery = true)
+	ProfileResponse findByUserid(@Param("userid")String userid);
 }

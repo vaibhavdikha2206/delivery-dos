@@ -1,26 +1,21 @@
 package io.delivery.dos.controllers;
 
+import org.omg.CORBA.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.delivery.dos.models.user.Profile;
-import io.delivery.dos.models.user.response.LoginResponseObject;
-import io.delivery.dos.models.user.response.ProfileResponse;
-import io.delivery.dos.models.vendor.Vendors;
-import io.delivery.dos.repositories.user.CustomUserRepository;
+import io.delivery.dos.models.user.request.SignUpObject;
 import io.delivery.dos.repositories.user.ProfileRepository;
-import io.delivery.dos.repositories.vendors.VendorsRepository;
+import io.delivery.dos.repositories.user.SignUpRepository;
 import io.delivery.dos.security.models.AuthenticationRequest;
 import io.delivery.dos.security.models.AuthenticationResponse;
 import io.delivery.dos.security.services.MyUserDetails;
@@ -39,6 +34,14 @@ public class LoginController {
 	@Autowired
 	private MyUserDetailsService userDetailsService;
 
+	@Autowired
+	private SignUpRepository signUpRepository;
+	
+	@Autowired
+	private ProfileRepository profileRepository;
+	
+	private static final String keySign = "abcxyz";
+	
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
 		try {
@@ -46,26 +49,32 @@ public class LoginController {
 			authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
 			);
-			System.out.println("VIOLA "+authenticationRequest.getUsername()+","+authenticationRequest.getPassword());
-			
 		}
 		catch (BadCredentialsException e) {
-			System.out.println("error");
+			System.out.println("error in /Authenticate"+e);
 			throw new Exception("Incorrect username or password", e);
 		}
-
-		System.out.println("1");
 		
-		final MyUserDetails userDetails = (MyUserDetails) userDetailsService
-				.loadUserByUsername(authenticationRequest.getUsername());
-
-		
-		System.out.println("2"+userDetails.getName());
-		final String jwt = jwtTokenUtil.generateToken(userDetails);
-
-		System.out.println("3");
-		
+		final MyUserDetails userDetails = (MyUserDetails) userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+		final String jwt = jwtTokenUtil.generateToken(userDetails);		
 		return ResponseEntity.ok(new AuthenticationResponse(jwt));
 	}
-	
+
+	@RequestMapping(value = "/signup", method = RequestMethod.POST)
+	public Profile signUp(@RequestBody SignUpObject signUpObject) throws JpaSystemException , Exception {
+		
+		if(signUpObject.getSignkey().equals(keySign)) {	
+		System.out.println("Signup "+signUpObject.getName()+","+signUpObject.getUserid()+","+signUpObject.getPassword());
+		}
+		else {
+			throw new Exception("Sorry,cant Sign Up , Please Try Again");
+		}
+
+		if(profileRepository.findByUserid(signUpObject.getUserid())!=null) {
+			throw new Exception("Username Already Exists");
+		}
+		Profile profile = new Profile(signUpObject.getUserid(),signUpObject.getName(),signUpObject.getPassword());
+		return signUpRepository.save(profile);
+		
+	}
 }
