@@ -31,26 +31,12 @@ public class MenuController {
 	@Autowired
 	ProfileRepository profileRepository;
 	
-	@RequestMapping(method=RequestMethod.POST,value="/menu/{vendorid}")
-	public MenuResponseObject getMenu(@RequestBody Profile profileObj,@PathVariable("vendorid") int vendorid) {
-		System.out.println(profileObj.getPassword());
-		if(getCustom(profileObj)==true) {
+	@RequestMapping(method=RequestMethod.GET,value="/menu/{vendorid}")
+	public MenuResponseObject getMenu(@PathVariable("vendorid") int vendorid) {
 		List<Menu> menu = menuRepository.findByVendorid(vendorid);
 		List<ItemCategories> itemCategories = itemCategoryRepository.findDistinctItemcategoryByVendorid(vendorid);
 		MenuResponseObject responseMenu = new MenuResponseObject(menu,itemCategories,"1");
 		return responseMenu;
-		}
-		else return new MenuResponseObject(null,null,"0");
 	}
 	
-
-	public Boolean getCustom(Profile profileObj) {
-		ProfileResponse responseProfile = profileRepository.findUserProfile(profileObj.getUserid(),profileObj.getPassword());
-		if(responseProfile==null) {
-			return false;
-		}
-		else {
-			return true;
-		}
-	}
 }

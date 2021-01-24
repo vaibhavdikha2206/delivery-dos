@@ -12,4 +12,5 @@ import io.delivery.dos.models.menu.Menu;
 public interface AddressRepository extends JpaRepository<Address, Integer> {
 	
 	List<Address> findByUserid(String userid);
+	Address findOneByUseridAndAddressid(String userid,int addressid);
 }

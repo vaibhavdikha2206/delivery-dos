@@ -22,6 +22,7 @@ public class MyUserDetailsService implements UserDetailsService{
 	@Override
 	public UserDetails loadUserByUsername(String userid) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
+		System.out.println("authentication for "+userid);
 		Optional<ProfileUser> user = userRepository.findByUserid(userid);
 		user.orElseThrow(() -> new UsernameNotFoundException("Not Found " + userid));
 		return user.map(MyUserDetails::new).get();

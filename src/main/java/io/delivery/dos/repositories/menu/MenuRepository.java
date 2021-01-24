@@ -10,4 +10,6 @@ import io.delivery.dos.models.menu.Menu;
 public interface MenuRepository extends JpaRepository<Menu, Integer> {
 	
 	List<Menu> findByVendorid(int vendorid);
+	Menu findByVendoridAndItemid(int vendorid,int itemid);
+	
 }

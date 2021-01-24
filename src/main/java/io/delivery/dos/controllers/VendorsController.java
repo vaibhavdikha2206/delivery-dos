@@ -36,25 +36,10 @@ public class VendorsController {
 	
 	@RequestMapping(method=RequestMethod.POST,value="/vendors/{category}/{page}")
 	public Page<Vendors> getVendors(@RequestBody Profile profileObj,@PathVariable("category") String category,@PathVariable("page") Integer page) {
-		System.out.println(profileObj.getPassword());
-		if(getCustom(profileObj)==true) {
-		Pageable pageable = new PageRequest(page, 2);
+		Pageable pageable = new PageRequest(page, 10);
 		Page<Vendors> responseVendors = vendorsRepository.findByCategory(category,pageable);
 		return responseVendors;
-		}
-		else return null;
 	}
-	
-	public Boolean getCustom(Profile profileObj) {
-		ProfileResponse responseProfile = profileRepository.findUserProfile(profileObj.getUserid(),profileObj.getPassword());
-		if(responseProfile==null) {
-			return false;
-		}
-		else {
-			return true;
-		}
-	}
-	
 	
 	@RequestMapping(method=RequestMethod.GET,value="/categories")
 	public CategoryResponse getCategories() {

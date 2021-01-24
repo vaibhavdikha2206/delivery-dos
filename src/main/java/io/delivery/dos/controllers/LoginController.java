@@ -27,16 +27,8 @@ import io.delivery.dos.security.services.MyUserDetails;
 import io.delivery.dos.security.services.MyUserDetailsService;
 import io.delivery.dos.security.util.JwtUtil;
 
-
-
-
-
-
 @RestController
 public class LoginController {
-
-	@Autowired
-	ProfileRepository profileRepository;
 	
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -47,22 +39,6 @@ public class LoginController {
 	@Autowired
 	private MyUserDetailsService userDetailsService;
 
-	
-	@RequestMapping(method=RequestMethod.POST,value="/login")
-	public LoginResponseObject getCustom(@RequestBody Profile profileObj) {
-		String status = "0";
-		ProfileResponse responseProfile = profileRepository.findUserProfile(profileObj.getUserid(),profileObj.getPassword());
-		if(responseProfile==null) {
-			status ="-1";
-		}
-		else {
-			status ="1";
-		}
-		
-		LoginResponseObject response = new LoginResponseObject(responseProfile,status);
-		return response;
-	}
-	
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
 		try {

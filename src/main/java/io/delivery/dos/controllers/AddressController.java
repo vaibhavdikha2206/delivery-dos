@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import io.delivery.dos.models.user.Profile;
 import io.delivery.dos.models.user.response.ProfileResponse;
 import io.delivery.dos.repositories.address.AddressRepository;
 import io.delivery.dos.repositories.user.ProfileRepository;
+import io.delivery.dos.security.util.JwtUtil;
 
 
 @RestController
@@ -24,38 +26,26 @@ public class AddressController {
 	AddressRepository addressRepository;
 	
 	@Autowired
-	ProfileRepository profileRepository;
-	
-	@RequestMapping(method=RequestMethod.POST,value="/getAddress")
-	public AddressResponseObject getAddress(@RequestBody Profile profileObj) {
-		if(getCustom(profileObj)==true) {
-		List<Address> address = addressRepository.findByUserid(profileObj.getUserid());
+    private JwtUtil jwtUtil;
+	 
+	@RequestMapping(method=RequestMethod.GET,value="/getAddress")
+	public AddressResponseObject getAddress(@RequestHeader (name="Authorization") String authorizationHeader) {
+		String jwt = authorizationHeader.substring(7);
+        String username = jwtUtil.extractUsername(jwt);
+		List<Address> address = addressRepository.findByUserid(jwtUtil.extractUsername(jwt));
 		AddressResponseObject responseAddress = new AddressResponseObject(address,"1");
 		return responseAddress;
-		}
 		
-		return new AddressResponseObject(null,"0");
 	}
 	
 
 	@RequestMapping(method=RequestMethod.POST,value="/addAddress")
-	public Address addAddress(@RequestBody AddressRequestObject addressRequestObject) {
-		if(getCustom(addressRequestObject.getProfileObject())==true) {
-			Address x = new Address(null,addressRequestObject.getUserid(),addressRequestObject.getAddress(),addressRequestObject.getDefaultbit());
-			return addressRepository.save(x);
-		}
-		
-		return null;
+	public Address addAddress(@RequestBody AddressRequestObject addressRequestObject,@RequestHeader (name="Authorization") String authorizationHeader) {
+		String jwt = authorizationHeader.substring(7);
+        String userid = jwtUtil.extractUsername(jwt);
+		Address x = new Address(null,userid,addressRequestObject.getAddress(),addressRequestObject.getDefaultbit());
+		return addressRepository.save(x);
 	}
 	
 
-	public Boolean getCustom(Profile profileObj) {
-		ProfileResponse responseProfile = profileRepository.findUserProfile(profileObj.getUserid(),profileObj.getPassword());
-		if(responseProfile==null) {
-			return false;
-		}
-		else {
-			return true;
-		}
-	}
 }
