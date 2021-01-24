@@ -35,7 +35,7 @@ public class VendorsController {
 	CategoriesRepository categoriesRepository;
 	
 	@RequestMapping(method=RequestMethod.POST,value="/vendors/{category}/{page}")
-	public Page<Vendors> getVendors(@RequestBody Profile profileObj,@PathVariable("category") String category,@PathVariable("page") Integer page) {
+	public Page<Vendors> getVendors(@PathVariable("category") String category,@PathVariable("page") Integer page) {
 		Pageable pageable = new PageRequest(page, 10);
 		Page<Vendors> responseVendors = vendorsRepository.findByCategory(category,pageable);
 		return responseVendors;
