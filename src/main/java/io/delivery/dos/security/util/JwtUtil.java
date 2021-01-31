@@ -40,6 +40,7 @@ import org.springframework.stereotype.Service;
      public String generateToken(MyUserDetails userDetails) {
          Map<String, Object> claims = new HashMap<>();
          claims.put("name", userDetails.getName());
+         claims.put("role", userDetails.getRole());
          return createToken(claims, userDetails.getUsername());
      }
 

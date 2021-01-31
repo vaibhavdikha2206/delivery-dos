@@ -15,57 +15,153 @@ public class Address  {
 	
 	@Column(name = "userid")
 	private String userid;
-
-	@Column(name = "address")
-	private String address;
 	
 	@Column(name = "defaultbit")
 	private int defaultbit;
 
+	@Column(name = "housenumber")
+	private String housenumber;
+	
+	@Column(name = "floor")
+	private String floor;
+	
+	@Column(name = "block")
+	private String block;
+	
+	@Column(name = "latitude")
+	private Double latitude;
+	
+	@Column(name = "longitude")
+	private Double longitude;
+	
+	@Column(name = "locality")
+	private String locality;
+	
+	@Column(name = "city")
+	private String city;
+	
 	
 	public Address() {
 	
 	}
-	
-	public Address(Integer addressid, String userid, String address, int defaultbit) {
-		super();
-		this.addressid = addressid;
-		this.userid = userid;
-		this.address = address;
-		this.defaultbit = defaultbit;
-	}
+
 
 	public Integer getAddressid() {
 		return addressid;
 	}
 
+
 	public void setAddressid(Integer addressid) {
 		this.addressid = addressid;
 	}
+
 
 	public String getUserid() {
 		return userid;
 	}
 
+
 	public void setUserid(String userid) {
 		this.userid = userid;
 	}
 
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
 
 	public int getDefaultbit() {
 		return defaultbit;
 	}
 
+
 	public void setDefaultbit(int defaultbit) {
 		this.defaultbit = defaultbit;
 	}
+
+
+	public String getHousenumber() {
+		return housenumber;
+	}
+
+
+	public void setHousenumber(String housenumber) {
+		this.housenumber = housenumber;
+	}
+
+
+	public String getFloor() {
+		return floor;
+	}
+
+
+	public void setFloor(String floor) {
+		this.floor = floor;
+	}
+
+
+	public String getBlock() {
+		return block;
+	}
+
+
+	public void setBlock(String block) {
+		this.block = block;
+	}
+
+
+	public Double getLatitude() {
+		return latitude;
+	}
+
+
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
+	}
+
+
+	public Double getLongitude() {
+		return longitude;
+	}
+
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
+
+
+	public String getLocality() {
+		return locality;
+	}
+
+
+	public void setLocality(String locality) {
+		this.locality = locality;
+	}
+
+
+	public String getCity() {
+		return city;
+	}
+
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+
+	public Address(Integer addressid, String userid, int defaultbit, String housenumber, String floor, String block,
+			Double latitude, Double longitude, String locality, String city) {
+		super();
+		this.addressid = addressid;
+		this.userid = userid;
+		this.defaultbit = defaultbit;
+		this.housenumber = housenumber;
+		this.floor = floor;
+		this.block = block;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.locality = locality;
+		this.city = city;
+	}
+	
+	
 	
 	
 }

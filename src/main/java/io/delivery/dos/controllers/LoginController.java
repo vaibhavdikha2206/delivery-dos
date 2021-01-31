@@ -6,15 +6,20 @@ import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.delivery.dos.models.user.Profile;
+import io.delivery.dos.models.user.request.RefreshTokenObject;
 import io.delivery.dos.models.user.request.SignUpObject;
+import io.delivery.dos.models.user.response.TokenUpdatedResponseObject;
 import io.delivery.dos.repositories.user.ProfileRepository;
 import io.delivery.dos.repositories.user.SignUpRepository;
+import io.delivery.dos.repositories.user.UpdateTokenRepository;
 import io.delivery.dos.security.models.AuthenticationRequest;
 import io.delivery.dos.security.models.AuthenticationResponse;
 import io.delivery.dos.security.services.MyUserDetails;
@@ -38,6 +43,12 @@ public class LoginController {
 	
 	@Autowired
 	private ProfileRepository profileRepository;
+	
+	@Autowired
+	private UpdateTokenRepository updateTokenRepository;
+	
+	@Autowired
+    private JwtUtil jwtUtil;
 	
 	private static final String keySign = "abcxyz";
 	
@@ -72,8 +83,19 @@ public class LoginController {
 		if(profileRepository.findByUserid(signUpObject.getUserid())!=null) {
 			throw new Exception("Username Already Exists");
 		}
-		Profile profile = new Profile(signUpObject.getUserid(),signUpObject.getName(),signUpObject.getPassword());
-		return signUpRepository.save(profile);
-		
+		Profile profile = new Profile(signUpObject.getUserid(),signUpObject.getName(),signUpObject.getPassword(),signUpObject.getRole());
+		return signUpRepository.save(profile);	
+	}
+	
+	@Transactional
+	@RequestMapping(value = "/updateToken", method = RequestMethod.POST)
+	public TokenUpdatedResponseObject  updateToken(@RequestBody RefreshTokenObject refreshTokenObject,@RequestHeader (name="Authorization") String authorizationHeader) throws JpaSystemException , Exception {
+		String jwt = authorizationHeader.substring(7);
+		String userid = jwtUtil.extractUsername(jwt);
+		System.out.println("token is "+refreshTokenObject.getToken()+","+userid);
+		if(updateTokenRepository.updateToken(userid,refreshTokenObject.getToken())==1) {
+		return new TokenUpdatedResponseObject(updateTokenRepository.updateToken(userid,refreshTokenObject.getToken()),"Updated");
+		}
+		return new TokenUpdatedResponseObject(0,"Error"); 
 	}
 }

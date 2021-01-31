@@ -17,7 +17,7 @@ public class MyUserDetails implements UserDetails{
 	private String userid;
 	private String name;
 	private String password;
-	
+	private String role;
 	
 	public MyUserDetails(ProfileUser user) {
 		super();
@@ -25,6 +25,7 @@ public class MyUserDetails implements UserDetails{
 		this.userid = user.getUserid();
 		this.name = user.getUsername();
 		this.password = user.getPassword();
+		this.role = user.getRole();
 	}
 
 
@@ -84,6 +85,15 @@ public class MyUserDetails implements UserDetails{
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getRole() {
+		return role;
+	}
+
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 	
 	

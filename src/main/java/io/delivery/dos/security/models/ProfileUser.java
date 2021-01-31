@@ -15,16 +15,18 @@ public class ProfileUser {
 	private String userid;
 	private String username;
 	private String password;
+	private String role;
 	
 	public ProfileUser() {
 		
 	}
 	
-	public ProfileUser(String userid,String password,String username) {
+	public ProfileUser(String userid,String password,String username,String role) {
 		super();
 		this.userid = userid;
 		this.username = username;
 		this.password = password;
+		this.role=role;
 	}
 	
 	public String getUsername() {
@@ -48,5 +50,11 @@ public class ProfileUser {
 		this.password = password;
 	}
 	
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
+	}
 	
 }

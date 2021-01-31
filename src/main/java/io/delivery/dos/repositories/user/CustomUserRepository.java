@@ -10,4 +10,6 @@ public interface CustomUserRepository extends JpaRepository<CustomUserdata, Inte
 	
 	@Query(value="Select surname from Userdata where name = :firstName",nativeQuery = true)
 	String findNameTest(@Param("firstName")String firstName);
+	
+
 }

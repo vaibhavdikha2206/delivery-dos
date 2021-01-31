@@ -5,6 +5,7 @@ public class SignUpObject {
 	private String userid;
 	private String name;
 	private String password;
+	private String role;
 	private String signkey;
 	
 	
@@ -12,12 +13,13 @@ public class SignUpObject {
 
 	}
 
-	public SignUpObject(String userid, String name, String password,String signkey) {
+	public SignUpObject(String userid, String name, String password,String signkey,String role) {
 		super();
 		this.userid = userid;
 		this.name = name;
 		this.password = password;
 		this.signkey=signkey;
+		this.role=role;
 	}
 
 	public String getSignkey() {
@@ -53,4 +55,11 @@ public class SignUpObject {
 		this.password = password;
 	}
 	
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public String getRole() {
+		return role;
+	}
 }

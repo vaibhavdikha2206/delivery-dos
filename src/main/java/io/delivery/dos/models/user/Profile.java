@@ -19,15 +19,19 @@ public class Profile {
 	@Column(name = "password")
 	private String password;
 
+	@Column(name = "role")
+	private String role;
+	
 	public Profile() {
 
 	}
 
-	public Profile(String userid, String username, String password) {
+	public Profile(String userid, String username, String password,String role) {
 		super();
 		this.userid = userid;
 		this.username = username;
 		this.password = password;
+		this.role=role;
 	}
 
 	
@@ -53,6 +57,14 @@ public class Profile {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 	
 }
