@@ -46,9 +46,6 @@ public class DeliveryController {
 		Integer busyDrivers = deliveriesRepository.getNumberOfBusyRiders(lowerDateTime.toString(), upperDateTime.toString());
 		System.out.println("busy drivers are "+busyDrivers+" out of "+riderRepository.count());
 		
-		Maps mapval=caclulateDistance(28.527852857838003,77.25589338862532,28.5293044818391,77.2514945658729);
-		System.out.println("lets see "+mapval.getRows().get(0).getElements().get(0).getDistance().getText());
-		
 		if(riderRepository.count()>deliveriesRepository.getNumberOfBusyRiders(lowerDateTime.toString(), upperDateTime.toString()))
 			return new AvailabilityResponse(true) ;
 		else 
