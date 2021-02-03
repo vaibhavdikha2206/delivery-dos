@@ -40,11 +40,23 @@ public class Address  {
 	@Column(name = "city")
 	private String city;
 	
+	@Column(name = "placeid")
+	private String placeid;
 	
-	public Address() {
 	
+	public String getPlaceid() {
+		return placeid;
 	}
 
+
+	public void setPlaceid(String placeid) {
+		this.placeid = placeid;
+	}
+
+
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
+	}
 
 	public Integer getAddressid() {
 		return addressid;
@@ -147,7 +159,7 @@ public class Address  {
 
 
 	public Address(Integer addressid, String userid, int defaultbit, String housenumber, String floor, String block,
-			Double latitude, Double longitude, String locality, String city) {
+			Double latitude, Double longitude, String locality, String city,String placeid) {
 		super();
 		this.addressid = addressid;
 		this.userid = userid;
@@ -159,9 +171,12 @@ public class Address  {
 		this.longitude = longitude;
 		this.locality = locality;
 		this.city = city;
+		this.placeid=placeid;
 	}
 	
-	
+	public Address() {
+		
+	}
 	
 	
 }

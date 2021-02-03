@@ -41,14 +41,14 @@ public class AddressController {
 
 	@RequestMapping(method=RequestMethod.POST,value="/addAddress")
 	public Address addAddress(@RequestBody Address addressRequestObject,@RequestHeader (name="Authorization") String authorizationHeader) {
-		System.out.println("here 1");
 		String jwt = authorizationHeader.substring(7);
         String userid = jwtUtil.extractUsername(jwt);
 		Address x = new Address(null,userid,
 				addressRequestObject.getDefaultbit(),addressRequestObject.getHousenumber(),
 				addressRequestObject.getFloor(),addressRequestObject.getBlock(),
 				addressRequestObject.getLatitude(),addressRequestObject.getLongitude(),
-				addressRequestObject.getLocality(),addressRequestObject.getCity());
+				addressRequestObject.getLocality(),addressRequestObject.getCity(),
+				addressRequestObject.getPlaceid());
 		
 		return addressRepository.save(x);
 	}
