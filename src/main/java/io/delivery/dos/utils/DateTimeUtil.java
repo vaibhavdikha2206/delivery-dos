@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DateTimeUtil {
+	
 	  public static Timestamp convertStringToTimestamp(String strDate) {
 	    try {
 	      DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -20,4 +21,5 @@ public class DateTimeUtil {
 	      return null;
 	    }
 	  }
-	}
+	  
+}

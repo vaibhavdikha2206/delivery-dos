@@ -1,6 +1,7 @@
 package io.delivery.dos.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -49,6 +50,9 @@ public class LoginController {
 	
 	@Autowired
     private JwtUtil jwtUtil;
+	
+	@Autowired
+	private Environment env;
 	
 	private static final String keySign = "abcxyz";
 	

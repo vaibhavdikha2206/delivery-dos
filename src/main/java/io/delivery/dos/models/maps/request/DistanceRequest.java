@@ -2,35 +2,17 @@ package io.delivery.dos.models.maps.request;
 
 public class DistanceRequest {
 
-	private double originLat;
-	private double originLong;
 	private double destinationLat;
 	private double destinationLong;
+	private int addressid;
 	
 	public DistanceRequest() {}
 
-	public DistanceRequest(double originLat, double originLong, double destinationLat, double destinationLong) {
+	public DistanceRequest(double destinationLat, double destinationLong,int addressid) {
 		super();
-		this.originLat = originLat;
-		this.originLong = originLong;
 		this.destinationLat = destinationLat;
 		this.destinationLong = destinationLong;
-	}
-
-	public double getOriginLat() {
-		return originLat;
-	}
-
-	public void setOriginLat(double originLat) {
-		this.originLat = originLat;
-	}
-
-	public double getOriginLong() {
-		return originLong;
-	}
-
-	public void setOriginLong(double originLong) {
-		this.originLong = originLong;
+		this.addressid = addressid;
 	}
 
 	public double getDestinationLat() {
@@ -48,5 +30,14 @@ public class DistanceRequest {
 	public void setDestinationLong(double destinationLong) {
 		this.destinationLong = destinationLong;
 	}
+
+	public int getAddressid() {
+		return addressid;
+	}
+
+	public void setAddressid(int addressid) {
+		this.addressid = addressid;
+	}
+	
 	
 }

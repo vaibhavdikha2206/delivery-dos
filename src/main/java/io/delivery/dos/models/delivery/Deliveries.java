@@ -11,7 +11,7 @@ public class Deliveries {
 	@Id
 	@GeneratedValue
 	@Column(name = "deliveryid")
-	private int deliveryid;
+	private Integer deliveryid;
 	
 	@Column(name = "userid")
 	private String userid;
@@ -35,12 +35,15 @@ public class Deliveries {
 	private String status;
 	
 	@Column(name = "riderid")
-	private int riderid;
+	private Integer riderid;
+
+	@Column(name = "orderid")
+	private String orderid;
 
 	public Deliveries() {}
 	
-	public Deliveries(int deliveryid, String userid, String pickuptime, int addressid, String dropaddress,
-			Double droplatitude, Double droplongitude, String status, int riderid) {
+	public Deliveries(Integer deliveryid, String userid, String pickuptime, int addressid, String dropaddress,
+			Double droplatitude, Double droplongitude, String status, Integer riderid,String orderid) {
 		super();
 		this.deliveryid = deliveryid;
 		this.userid = userid;
@@ -51,13 +54,22 @@ public class Deliveries {
 		this.droplongitude = droplongitude;
 		this.status = status;
 		this.riderid = riderid;
+		this.orderid = orderid;
 	}
 
-	public int getDeliveryid() {
+	public String getOrderid() {
+		return orderid;
+	}
+
+	public void setOrderid(String orderid) {
+		this.orderid = orderid;
+	}
+	
+	public Integer getDeliveryid() {
 		return deliveryid;
 	}
 
-	public void setDeliveryid(int deliveryid) {
+	public void setDeliveryid(Integer deliveryid) {
 		this.deliveryid = deliveryid;
 	}
 
@@ -117,11 +129,11 @@ public class Deliveries {
 		this.status = status;
 	}
 
-	public int getRiderid() {
+	public Integer getRiderid() {
 		return riderid;
 	}
 
-	public void setRiderid(int riderid) {
+	public void setRiderid(Integer riderid) {
 		this.riderid = riderid;
 	}
 	

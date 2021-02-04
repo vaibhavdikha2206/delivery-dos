@@ -13,14 +13,18 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import io.delivery.dos.models.address.Address;
 import io.delivery.dos.models.delivery.availability.AvailabilityRequest;
 import io.delivery.dos.models.delivery.availability.AvailabilityResponse;
 import io.delivery.dos.models.maps.Maps;
 import io.delivery.dos.models.maps.request.DistanceRequest;
 import io.delivery.dos.models.maps.response.DistanceResponseWithAmount;
+import io.delivery.dos.repositories.address.AddressRepository;
 import io.delivery.dos.repositories.delivery.DeliveriesRepository;
 import io.delivery.dos.repositories.rider.RiderRepository;
+import io.delivery.dos.security.util.JwtUtil;
 import io.delivery.dos.utils.DateTimeUtil;
+import io.delivery.dos.utils.MapsUtil;
 import io.delivery.dos.constants.Constants;
 
 @RestController
@@ -34,6 +38,15 @@ public class DeliveryController {
 	
 	@Autowired
 	private RestTemplate restTemplate;
+	
+	@Autowired
+	private MapsUtil mapsUtil;
+
+	@Autowired
+	AddressRepository addressRepository;
+
+	@Autowired
+    private JwtUtil jwtUtil;
 	
 	@RequestMapping(method=RequestMethod.POST,value="/checkAvailable")
 	public AvailabilityResponse checkAvailability(@RequestBody AvailabilityRequest availabilityRequestObject,@RequestHeader (name="Authorization") String authorizationHeader) { 
@@ -55,10 +68,12 @@ public class DeliveryController {
 	@RequestMapping(method=RequestMethod.POST,value="/getAmount")
 	public DistanceResponseWithAmount checkDistance(@RequestBody DistanceRequest distanceRequest,@RequestHeader (name="Authorization") String authorizationHeader) { 
 		// get drivers engaged during requested time
-		Maps mapval=caclulateDistance(distanceRequest.getOriginLat(),distanceRequest.getOriginLong(),distanceRequest.getDestinationLat(),distanceRequest.getDestinationLong());
+		String jwt = authorizationHeader.substring(7);
+        String userid = jwtUtil.extractUsername(jwt);
+		Address originAddress = addressRepository.findOneByUseridAndAddressid(userid, distanceRequest.getAddressid());
+		Maps mapval=mapsUtil.caclulateDistance(originAddress.getLatitude(),originAddress.getLongitude(),distanceRequest.getDestinationLat(),distanceRequest.getDestinationLong());
 		return new DistanceResponseWithAmount(calculateAmount(getValueInMetres(mapval)));
 	}
-	
 	
 	private double getValueInMetres(Maps mapObject) {
 		return mapObject.getRows().get(0).getElements().get(0).getDistance().getValue();	
@@ -68,22 +83,4 @@ public class DeliveryController {
 		return (distanceInMetres/1000)*5;
 	}
 	
-	private Maps caclulateDistance(Double originLat,Double originLong,Double destinationLat,Double destinationLong) {
-		String url = "https://maps.googleapis.com/maps/api/distancematrix/json";
-		
-		String.format("%s;, %s;", originLat, originLong);
-		
-		// Query parameters
-		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(url)
-		        // Add query parameter
-		        .queryParam("units", Constants.keyMetric)
-		        .queryParam("origins", String.format("%f, %f", originLat, originLong))
-		        .queryParam("destinations", String.format("%f, %f", destinationLat, destinationLong))
-		        .queryParam("key", Constants.keyMap);
-		
-		System.out.println(builder.buildAndExpand().toUri());
-		
-		
-	    return restTemplate.getForObject(builder.buildAndExpand().toUri(), Maps.class);
-	}
 }

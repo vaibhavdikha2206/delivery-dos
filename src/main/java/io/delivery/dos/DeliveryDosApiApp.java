@@ -13,6 +13,9 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import io.delivery.dos.models.security.KeyObject;
+import io.delivery.dos.models.security.SecretObject;
+
 @SpringBootApplication
 public class DeliveryDosApiApp {
 
@@ -37,6 +40,16 @@ public class DeliveryDosApiApp {
 	@Bean
 	public RestTemplate getRestTemplate() {
 		return new RestTemplate();
+	}
+	
+	@Bean
+	public KeyObject getAPIKey() {
+		return new KeyObject("rzp_test_3tLQHIWIJrioiZ");
+	}
+	
+	@Bean
+	public SecretObject getAPISecret() {
+		return new SecretObject("abuvHv2gRCFwsnMoWmTQr93O");
 	}
 	
 }
