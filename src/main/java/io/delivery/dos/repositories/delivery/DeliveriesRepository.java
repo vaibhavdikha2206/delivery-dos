@@ -8,7 +8,7 @@ import io.delivery.dos.models.delivery.Deliveries;
 
 public interface DeliveriesRepository extends JpaRepository<Deliveries, Integer>{
 
-	@Query(value="select Count(Distinct(riderid)) from deliveries where pickuptime >= :lowerpickuptime && pickuptime <= :upperpickuptime",nativeQuery = true)
+	@Query(value="select Count(Distinct(riderid)) from Deliveries where pickuptime >= :lowerpickuptime && pickuptime <= :upperpickuptime",nativeQuery = true)
 	Integer getNumberOfBusyRiders(@Param("lowerpickuptime")String lowerpickuptime,@Param("upperpickuptime")String upperpickuptime);
 	
 }
