@@ -47,7 +47,7 @@ public class NotificationService {
     		    .putData("body", "Hehehehehe")
     		    .addAllTokens(registrationTokens)
     		    .build();
-    		BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
+    		BatchResponse response = firebaseMessaging.sendMulticast(message);
     		// See the BatchResponse reference documentation
     		// for the contents of response.
     		System.out.println(response.getSuccessCount() + " messages were sent successfully");
