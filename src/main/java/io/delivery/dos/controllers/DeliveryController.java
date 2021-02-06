@@ -25,6 +25,7 @@ import io.delivery.dos.repositories.rider.RiderRepository;
 import io.delivery.dos.security.util.JwtUtil;
 import io.delivery.dos.utils.DateTimeUtil;
 import io.delivery.dos.utils.MapsUtil;
+import io.delivery.dos.utils.RazorPayUtil;
 import io.delivery.dos.constants.Constants;
 
 @RestController
@@ -37,7 +38,7 @@ public class DeliveryController {
 	private RiderRepository riderRepository;
 	
 	@Autowired
-	private RestTemplate restTemplate;
+	private RazorPayUtil razorPayUtil;
 	
 	@Autowired
 	private MapsUtil mapsUtil;
@@ -70,17 +71,13 @@ public class DeliveryController {
 		// get drivers engaged during requested time
 		String jwt = authorizationHeader.substring(7);
         String userid = jwtUtil.extractUsername(jwt);
-		Address originAddress = addressRepository.findOneByUseridAndAddressid(userid, distanceRequest.getAddressid());
-		Maps mapval=mapsUtil.caclulateDistance(originAddress.getLatitude(),originAddress.getLongitude(),distanceRequest.getDestinationLat(),distanceRequest.getDestinationLong());
-		return new DistanceResponseWithAmount(calculateAmount(getValueInMetres(mapval)));
+        
+        Address originAddress = addressRepository.findOneByUseridAndAddressid(userid, distanceRequest.getAddressid());
+        
+        return new DistanceResponseWithAmount(
+        		razorPayUtil.convertPaisaToRs(mapsUtil.getAmountFromDistanceInPaisa(originAddress,distanceRequest.getDestinationLat(),distanceRequest.getDestinationLong()))
+        		);
 	}
 	
-	private double getValueInMetres(Maps mapObject) {
-		return mapObject.getRows().get(0).getElements().get(0).getDistance().getValue();	
-	}
-	
-	private double calculateAmount(Double distanceInMetres) {
-		return (distanceInMetres/1000)*5;
-	}
 	
 }

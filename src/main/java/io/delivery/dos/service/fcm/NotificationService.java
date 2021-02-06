@@ -1,5 +1,7 @@
 package io.delivery.dos.service.fcm;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.google.firebase.messaging.*;
@@ -29,6 +31,7 @@ public class NotificationService {
         Message message = Message
                 .builder()
                 .setToken(token)
+                .setToken(token)
                 .setNotification(notification)
                 .putAllData(note.getData())
                 .build();
@@ -36,4 +39,20 @@ public class NotificationService {
         return firebaseMessaging.send(message);
     }
 
+    public String sendNotificationToMultipleUsers(List<String> registrationTokens) throws FirebaseMessagingException {
+    	
+    	MulticastMessage message = MulticastMessage.builder()
+    		    .putData("type", "notification")
+    		    .putData("title", "bharwa")
+    		    .putData("body", "Hehehehehe")
+    		    .addAllTokens(registrationTokens)
+    		    .build();
+    		BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
+    		// See the BatchResponse reference documentation
+    		// for the contents of response.
+    		System.out.println(response.getSuccessCount() + " messages were sent successfully");
+    	
+    		return response.getSuccessCount() + " messages were sent successfully";
+    		
+    }
 }

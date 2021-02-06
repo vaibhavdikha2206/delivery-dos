@@ -2,20 +2,20 @@ package io.delivery.dos.models.maps.response;
 
 public class DistanceResponseWithAmount {
 
-	private double amount ;
+	private long amount ;
 
 	public DistanceResponseWithAmount() {}
 	
-	public DistanceResponseWithAmount(double amount) {
+	public DistanceResponseWithAmount(long amount) {
 		super();
 		this.amount = amount;
 	}
 
-	public double getAmount() {
+	public long getAmount() {
 		return amount;
 	}
 
-	public void setAmount(double amount) {
+	public void setAmount(long amount) {
 		this.amount = amount;
 	}
 	

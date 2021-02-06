@@ -5,4 +5,14 @@ public class Constants {
 	public final static String  keyMap = "AIzaSyD2BbIwpNyP78sCs-nxA5x3QyVnQbAmPDc";
 	public final static String  keyMetric = "metric";
 	public final static String  status_PAYMENT_AWAITING = "PAYMENT_AWAITING";
+	
+	public final static String  delivery_status_Delivery_Scheduling = "DELIVERY_SCHEDULING";
+	public final static String  delivery_status_Delivery_Scheduled = "DELIVERY_SCHEDULED";
+	
+	public final static String  payment_key_notes_status = "status";
+	public final static String  payment_key_notes_payload = "payload";
+	public final static String  payment_key_notes_deliveryid = "deliveryid";
+	
+	public final static String delivery_scheduled_notification_description_string = "Your Delivery for %s has been successfully scheduled.You can check its status in my orders section of Delivery Dos App.";
+	public final static String delivery_scheduled_notification_title_string = "Delivery Successfully Scheduled";
 }

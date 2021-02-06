@@ -84,7 +84,7 @@ public class LoginController {
 			throw new Exception("Sorry,cant Sign Up , Please Try Again");
 		}
 
-		if(profileRepository.findByUserid(signUpObject.getUserid())!=null) {
+		if(profileRepository.findByUseridCustom(signUpObject.getUserid())!=null) {
 			throw new Exception("Username Already Exists");
 		}
 		Profile profile = new Profile(signUpObject.getUserid(),signUpObject.getName(),signUpObject.getPassword(),signUpObject.getRole());

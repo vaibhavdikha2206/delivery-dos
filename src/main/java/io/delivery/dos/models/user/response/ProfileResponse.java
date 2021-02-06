@@ -17,18 +17,30 @@ public class ProfileResponse {
 	@Column(name = "username")
 	private String username;
 
+	@Column(name = "token")
+	private String token;
 
 	public ProfileResponse() {
 
 	}
 
-	public ProfileResponse(String userid, String username) {
+	public ProfileResponse(String userid, String username,String token) {
 		super();
 		this.userid = userid;
 		this.username = username;
+		this.token = token;
 	}
 
 	
+	
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
 	public String getUserid() {
 		return userid;
 	}

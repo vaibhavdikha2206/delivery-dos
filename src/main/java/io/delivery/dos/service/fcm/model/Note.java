@@ -11,6 +11,16 @@ public class Note {
     private Map<String, String> data;
     private String image;
     
+    public Note() {}
+    
+	public Note(String subject, String content, Map<String, String> data, String image) {
+		super();
+		this.subject = subject;
+		this.content = content;
+		this.data = data;
+		this.image = image;
+	}
+	
 	public String getSubject() {
 		return subject;
 	}

@@ -2,9 +2,9 @@ package io.delivery.dos.models.razorpay;
 
 public class GeneratedOrder {
 
-	private long amount;
+	private int amount;
     private long amountPaid;
-    private Object[] notes;
+    private Object notes;
     private long createdAt;
     private long amountDue;
     private String currency;
@@ -19,7 +19,7 @@ public class GeneratedOrder {
     
     
     
-    public GeneratedOrder(long amount, long amountPaid, Object[] notes, long createdAt, long amountDue,
+    public GeneratedOrder(int amount, long amountPaid, Object notes, long createdAt, long amountDue,
 			String currency, String receipt, String id, String entity, Object offerID, String status, long attempts) {
 		super();
 		this.amount = amount;
@@ -38,9 +38,9 @@ public class GeneratedOrder {
 
 
 
-	public long getAmount() { return amount; }
+	public int getAmount() { return amount; }
   
-    public void setAmount(long value) { this.amount = value; }
+    public void setAmount(int value) { this.amount = value; }
 
   
     public long getAmountPaid() { return amountPaid; }
@@ -48,9 +48,9 @@ public class GeneratedOrder {
     public void setAmountPaid(long value) { this.amountPaid = value; }
 
    
-    public Object[] getNotes() { return notes; }
+    public Object getNotes() { return notes; }
     
-    public void setNotes(Object[] value) { this.notes = value; }
+    public void setNotes(Object value) { this.notes = value; }
 
     
     public long getCreatedAt() { return createdAt; }

@@ -1,6 +1,8 @@
 package io.delivery.dos.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -34,6 +36,17 @@ public class NotificationTestController {
 		
 		
 		return firebaseService.sendNotification(note, token);
+	}
+	
+	@RequestMapping("/send-multicast")
+	@ResponseBody
+	public String sendMulticastNotification(@RequestBody Note note,
+	                               @RequestParam String token) throws FirebaseMessagingException {
+		
+		List<String> tokenList= new ArrayList<String>();
+		tokenList.add(token);
+		
+		return firebaseService.sendNotificationToMultipleUsers(tokenList);
 	}
 	
 }
