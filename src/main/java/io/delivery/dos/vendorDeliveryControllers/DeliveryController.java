@@ -1,4 +1,4 @@
-package io.delivery.dos.controllers;
+package io.delivery.dos.vendorDeliveryControllers;
 
 import java.sql.Timestamp;
 import java.util.List;

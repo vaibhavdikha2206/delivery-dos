@@ -1,4 +1,4 @@
-package io.delivery.dos.controllers;
+package io.delivery.dos.vendorDeliveryControllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

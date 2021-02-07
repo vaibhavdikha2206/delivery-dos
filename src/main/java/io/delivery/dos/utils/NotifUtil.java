@@ -32,6 +32,7 @@ public class NotifUtil {
 	
 	@Async
 	public String sendNotificationToUser(Note note,String token) throws FirebaseMessagingException {
+		System.out.println("sending notification to "+token);
 		return firebaseService.sendNotification(note, token);	
 	}
 	
@@ -53,6 +54,8 @@ public class NotifUtil {
 			if(riderdata.getToken()!=null)
 			riderNotificationList.add(riderdata.getToken());
 		}
+		
+		System.out.println("sending notification to multicast");
 		
 		if(riderNotificationList.size()>0) {
 		firebaseService.sendNotificationToMultipleRiders(riderNotificationList,"Notification",delivery);

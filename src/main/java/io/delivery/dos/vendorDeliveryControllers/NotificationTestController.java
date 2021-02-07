@@ -1,4 +1,4 @@
-package io.delivery.dos.controllers;
+package io.delivery.dos.vendorDeliveryControllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
