@@ -1,10 +1,12 @@
 package io.delivery.dos.controllers;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,8 +16,11 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import io.delivery.dos.models.address.Address;
+import io.delivery.dos.models.delivery.Deliveries;
 import io.delivery.dos.models.delivery.availability.AvailabilityRequest;
 import io.delivery.dos.models.delivery.availability.AvailabilityResponse;
+import io.delivery.dos.models.delivery.userdeliveries.GetDeliveriesListResponse;
+import io.delivery.dos.models.delivery.userdeliveries.GetSingleDeliveryResponse;
 import io.delivery.dos.models.maps.Maps;
 import io.delivery.dos.models.maps.request.DistanceRequest;
 import io.delivery.dos.models.maps.response.DistanceResponseWithAmount;
@@ -79,5 +84,26 @@ public class DeliveryController {
         		);
 	}
 	
+	@RequestMapping(method=RequestMethod.GET,value="/getDeliveriesList")
+	public GetDeliveriesListResponse getUsersDeliveryList(@RequestHeader (name="Authorization") String authorizationHeader) { 
+		// get drivers engaged during requested time
+		String jwt = authorizationHeader.substring(7);
+        String userid = jwtUtil.extractUsername(jwt);
+        
+        List<Deliveries> deliveries = deliveriesRepository.findByUseridOrderbypickuptime(userid);
+        
+        return new GetDeliveriesListResponse(deliveries);
+	}
+	
+	@RequestMapping(method=RequestMethod.GET,value="/getDelivery/{deliverid}")
+	public GetSingleDeliveryResponse getUserDelivery(@PathVariable int deliverid,@RequestHeader (name="Authorization") String authorizationHeader) { 
+		// get drivers engaged during requested time
+		String jwt = authorizationHeader.substring(7);
+        String userid = jwtUtil.extractUsername(jwt);
+        
+        Deliveries delivery = deliveriesRepository.findByUseridAndDeliveryid(userid,deliverid);
+        
+        return new GetSingleDeliveryResponse(delivery);
+	}
 	
 }

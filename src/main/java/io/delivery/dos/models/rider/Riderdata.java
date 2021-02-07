@@ -20,16 +20,29 @@ public class Riderdata {
 	private String phone;
 	
 	@Column(name = "rating")
-	private float rating;
+	private Float rating;
 
+	@Column(name = "token")
+	private String token;
+	
 	public Riderdata() {}
 	
-	public Riderdata(int riderid, String name, String phone, float rating) {
+	public Riderdata(int riderid, String name, String phone, float rating,String token) {
 		super();
 		this.riderid = riderid;
 		this.name = name;
 		this.phone = phone;
 		this.rating = rating;
+		this.token=token;
+	}
+
+	
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 	public int getRiderid() {

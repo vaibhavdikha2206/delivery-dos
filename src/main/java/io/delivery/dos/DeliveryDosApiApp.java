@@ -6,6 +6,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.auth.oauth2.GoogleCredentials;
@@ -17,6 +20,7 @@ import io.delivery.dos.models.security.KeyObject;
 import io.delivery.dos.models.security.SecretObject;
 
 @SpringBootApplication
+@EnableAsync
 public class DeliveryDosApiApp {
 
 	public static void main(String[] args) {
@@ -52,4 +56,12 @@ public class DeliveryDosApiApp {
 		return new SecretObject("abuvHv2gRCFwsnMoWmTQr93O");
 	}
 	
+	@Bean
+    public TaskExecutor taskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(5);
+        executor.setMaxPoolSize(10);
+        executor.setQueueCapacity(25);
+        return executor;
+    }
 }

@@ -14,4 +14,9 @@ public class DeliveryStatusUtil {
 	public Integer updateDeliveryStatus(int deliveryid,String status) {
 		return deliveriesRepository.updateDeliveryStatus(deliveryid, status);
 	}
+	
+	public Integer updateDeliveryPaymentHash(int deliveryid,String razorHash,String razorSignature,String razorPayid) {
+		return deliveriesRepository.updateDeliveryPaymentHash(deliveryid, razorHash,razorSignature,razorPayid);
+	}
+	
 }

@@ -19,6 +19,7 @@ import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 
+import io.delivery.dos.models.delivery.Deliveries;
 import io.delivery.dos.security.util.JwtUtil;
 import io.delivery.dos.service.fcm.NotificationService;
 import io.delivery.dos.service.fcm.model.Note;
@@ -46,7 +47,18 @@ public class NotificationTestController {
 		List<String> tokenList= new ArrayList<String>();
 		tokenList.add(token);
 		
-		return firebaseService.sendNotificationToMultipleUsers(tokenList);
+		return firebaseService.sendNotificationToMultipleRiders(tokenList,"Notification",null);
+	}
+	
+	@RequestMapping("/asyncTest")
+	@ResponseBody
+	public String asyncTest(@RequestBody Note note,
+	                               @RequestParam String token) throws FirebaseMessagingException {
+		
+		firebaseService.asyncTestFun();
+		System.out.println("asyncTestCompleted");
+		
+		return "returned";
 	}
 	
 }
