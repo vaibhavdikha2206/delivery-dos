@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
  import io.jsonwebtoken.Jwts;
  import io.jsonwebtoken.SignatureAlgorithm;
 
+import org.hibernate.type.CharacterArrayType;
 import org.springframework.stereotype.Service;
 
  import java.util.Date;
@@ -21,6 +22,11 @@ import org.springframework.stereotype.Service;
          return extractClaim(token, Claims::getSubject);
      }
 
+     public String extractRole(String token) {
+    	 final Claims claims = extractAllClaims(token);
+    	 return claims.get("role",String.class);
+     }
+     
      public Date extractExpiration(String token) {
          return extractClaim(token, Claims::getExpiration);
      }

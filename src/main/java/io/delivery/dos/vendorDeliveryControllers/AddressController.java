@@ -10,12 +10,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.delivery.dos.models.address.Address;
-import io.delivery.dos.models.address.request.AddressRequestObject;
+
 import io.delivery.dos.models.address.response.AddressResponseObject;
-import io.delivery.dos.models.user.Profile;
-import io.delivery.dos.models.user.response.ProfileResponse;
 import io.delivery.dos.repositories.address.AddressRepository;
-import io.delivery.dos.repositories.user.ProfileRepository;
 import io.delivery.dos.security.util.JwtUtil;
 
 
@@ -31,7 +28,6 @@ public class AddressController {
 	@RequestMapping(method=RequestMethod.GET,value="/getAddress")
 	public AddressResponseObject getAddress(@RequestHeader (name="Authorization") String authorizationHeader) {
 		String jwt = authorizationHeader.substring(7);
-        String username = jwtUtil.extractUsername(jwt);
 		List<Address> address = addressRepository.findByUserid(jwtUtil.extractUsername(jwt));
 		AddressResponseObject responseAddress = new AddressResponseObject(address,"1");
 		return responseAddress;

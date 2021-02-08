@@ -35,7 +35,7 @@ public class Deliveries {
 	private String status;
 	
 	@Column(name = "riderid")
-	private Integer riderid;
+	private String riderid;
 
 	@Column(name = "orderid")
 	private String orderid;
@@ -46,7 +46,7 @@ public class Deliveries {
 	public Deliveries() {}
 	
 	public Deliveries(Integer deliveryid, String userid, String pickuptime, int addressid, String dropaddress,
-			Double droplatitude, Double droplongitude, String status, Integer riderid,String orderid,int deliverycharge) {
+			Double droplatitude, Double droplongitude, String status, String riderid,String orderid,int deliverycharge) {
 		super();
 		this.deliveryid = deliveryid;
 		this.userid = userid;
@@ -141,13 +141,12 @@ public class Deliveries {
 		this.status = status;
 	}
 
-	public Integer getRiderid() {
+	public String getRiderid() {
 		return riderid;
 	}
 
-	public void setRiderid(Integer riderid) {
+	public void setRiderid(String riderid) {
 		this.riderid = riderid;
 	}
-	
-	
+		
 }
