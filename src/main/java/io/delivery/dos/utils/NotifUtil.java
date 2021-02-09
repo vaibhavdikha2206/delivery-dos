@@ -13,6 +13,7 @@ import com.google.firebase.messaging.FirebaseMessagingException;
 
 import io.delivery.dos.models.delivery.Deliveries;
 import io.delivery.dos.models.rider.Riderdata;
+import io.delivery.dos.models.user.response.ProfileResponse;
 import io.delivery.dos.repositories.delivery.DeliveriesRepository;
 import io.delivery.dos.repositories.rider.RiderRepository;
 import io.delivery.dos.service.fcm.NotificationService;
@@ -45,12 +46,12 @@ public class NotifUtil {
 		Timestamp upperDateTime = new Timestamp(requestTime.getTime() + TimeUnit.MINUTES.toMillis(30));
 		Timestamp lowerDateTime = new Timestamp(requestTime.getTime() - TimeUnit.MINUTES.toMillis(30));
 		  	
-		List<Integer> busyDrivers = deliveriesRepository.getBusyRiders(lowerDateTime.toString(), upperDateTime.toString());
-		List<Riderdata> freeDrivers = riderRepository.findByRideridNotIn(busyDrivers);
+		List<String> busyDrivers = deliveriesRepository.getBusyRiders(lowerDateTime.toString(), upperDateTime.toString());
+		List<ProfileResponse> freeDrivers = riderRepository.findByUseridNotIn(busyDrivers);
 		
 		List<String> riderNotificationList = new ArrayList<String>();
-		for (Riderdata riderdata : freeDrivers) {
-			System.out.println("List of freeDrivers drivers "+riderdata.getRiderid());
+		for (ProfileResponse riderdata : freeDrivers) {
+			System.out.println("List of freeDrivers drivers "+riderdata.getUserid());
 			if(riderdata.getToken()!=null)
 			riderNotificationList.add(riderdata.getToken());
 		}
