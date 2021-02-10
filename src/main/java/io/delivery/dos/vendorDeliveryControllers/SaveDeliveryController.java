@@ -144,6 +144,7 @@ public class SaveDeliveryController {
             
     		Note note = new Note(Constants.delivery_scheduled_notification_title_string,String.format(Constants.delivery_scheduled_notification_description_string, delivery.getPickuptime()),notemap,null);
     		
+    		System.out.println("sending single notif to "+usertoken);
     		notifUtil.sendNotificationToUser(note, usertoken);
 		}
 	}

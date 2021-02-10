@@ -62,10 +62,13 @@ public class DeliveryController {
 		Timestamp upperDateTime = new Timestamp(requestTime.getTime() + TimeUnit.MINUTES.toMillis(30));
 		Timestamp lowerDateTime = new Timestamp(requestTime.getTime() - TimeUnit.MINUTES.toMillis(30));
 		System.out.println("requested time was "+requestTime+", upperDateTime was "+upperDateTime+" ,lowerDateTime was "+lowerDateTime);
-		Integer busyDrivers = deliveriesRepository.getNumberOfBusyRiders(lowerDateTime.toString(), upperDateTime.toString());
-		System.out.println("busy drivers are "+busyDrivers+" out of "+riderRepository.count());
 		
-		if(riderRepository.count()>deliveriesRepository.getNumberOfBusyRiders(lowerDateTime.toString(), upperDateTime.toString()))
+		System.out.println("lowertime is "+lowerDateTime.toString()+", upper is "+upperDateTime.toString());
+		
+		Integer busyDrivers = deliveriesRepository.getNumberOfBusyRiders(lowerDateTime.toString(), upperDateTime.toString());
+		System.out.println("busy drivers are "+busyDrivers+" out of "+riderRepository.findCountByRole("RIDER"));
+		
+		if(riderRepository.findCountByRole("RIDER")>deliveriesRepository.getNumberOfBusyRiders(lowerDateTime.toString(), upperDateTime.toString()))
 			return new AvailabilityResponse(true) ;
 		else 
 			return new AvailabilityResponse(false);

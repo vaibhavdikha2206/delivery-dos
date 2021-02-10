@@ -33,27 +33,42 @@ public class NotifUtil {
 	
 	@Async
 	public String sendNotificationToUser(Note note,String token) throws FirebaseMessagingException {
-		System.out.println("sending notification to "+token);
+		//System.out.println("sending notification to "+token);
 		return firebaseService.sendNotification(note, token);	
 	}
 	
 	@Async
 	public void sendNotificationToFreeRiders(Deliveries delivery) throws FirebaseMessagingException {
 		
-		System.out.println("pickup is "+delivery.getPickuptime());
+		System.out.println("p1121ickup is "+delivery.getPickuptime());
 		
 		Timestamp requestTime=DateTimeUtil.convertStringToTimestamp(delivery.getPickuptime());
 		Timestamp upperDateTime = new Timestamp(requestTime.getTime() + TimeUnit.MINUTES.toMillis(30));
 		Timestamp lowerDateTime = new Timestamp(requestTime.getTime() - TimeUnit.MINUTES.toMillis(30));
 		  	
 		List<String> busyDrivers = deliveriesRepository.getBusyRiders(lowerDateTime.toString(), upperDateTime.toString());
-		List<ProfileResponse> freeDrivers = riderRepository.findByUseridNotIn(busyDrivers);
+		
+		System.out.println("busy drivers"+busyDrivers);
+		
+		List<ProfileResponse> freeDrivers = new ArrayList<ProfileResponse>();
+		if(busyDrivers.size()==0) {
+			freeDrivers = riderRepository.findByRole("RIDER");
+		}
+		else {
+			freeDrivers = riderRepository.findByUseridNotIn(busyDrivers,"RIDER");
+		}
+		
 		
 		List<String> riderNotificationList = new ArrayList<String>();
+		
 		for (ProfileResponse riderdata : freeDrivers) {
-			System.out.println("List of freeDrivers drivers "+riderdata.getUserid());
+			System.out.println("freedriver "+riderdata.getUserid());
 			if(riderdata.getToken()!=null)
-			riderNotificationList.add(riderdata.getToken());
+			{
+				System.out.println("sendmulti "+riderdata.getUserid()+","+riderdata.getToken());
+				riderNotificationList.add(riderdata.getToken());
+			
+			}
 		}
 		
 		System.out.println("sending notification to multicast");
