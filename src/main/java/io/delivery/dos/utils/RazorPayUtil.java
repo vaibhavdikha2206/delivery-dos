@@ -50,7 +50,7 @@ public class RazorPayUtil {
 		Order confirmationOrder = client.Orders.fetch(orderid);
 		// Now do the magic.
 		System.out.println("confirmed order "+confirmationOrder);
-		if(confirmationOrder.get("status").equals("captured")) {
+		if(confirmationOrder.get("status").equals("created")) {
 			System.out.println("Payment Captured");
 			return true ;
 		}
