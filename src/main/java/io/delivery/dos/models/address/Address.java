@@ -7,10 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import io.delivery.dos.models.delivery.Deliveries;
 
 @Entity
+@Table(name="Address")
 public class Address  {
 
 	@Id

@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import io.delivery.dos.models.delivery.Deliveries;
 
 @Entity
-@Table(name = "address")
+@Table(name = "Address")
 public class AddressJoin  {
 
 	@Id
