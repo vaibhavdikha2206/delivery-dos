@@ -34,7 +34,7 @@ public class MapsUtil {
 		        .queryParam("destinations", String.format("%f, %f", destinationLat, destinationLong))
 		        .queryParam("key", Constants.keyMap);
 		
-		System.out.println(builder.buildAndExpand().toUri());
+		System.out.println("builder is "+builder.buildAndExpand().toUri());
 		
 		
 	    return restTemplate.getForObject(builder.buildAndExpand().toUri(), Maps.class);
@@ -42,17 +42,21 @@ public class MapsUtil {
 	
 	
 	public int getAmountFromDistanceInPaisa(Address originAddress,double destinationLat,double destinationLong) {
+		System.out.println("origin address "+originAddress.getLatitude()+","+originAddress.getLongitude());
+		System.out.println("destination address "+destinationLat+","+destinationLong);
+		
 		Maps mapval=caclulateDistance(originAddress.getLatitude(),originAddress.getLongitude(),destinationLat,destinationLong);
 		return calculateAmountInPaisa(getValueInMetres(mapval));
 	}
 	
 	private int calculateAmountInPaisa(Double distanceInMetres) {
 		// convert distance to km then multiply by price per km (in paisa) + 10 rs service charge
-		
+		System.out.println("distanceInMetres  "+distanceInMetres);
 		return (int) Math.round( ((distanceInMetres/1000)*(500))+(1000) );
 	}
 	
 	private double getValueInMetres(Maps mapObject) {
+		System.out.println("mapObject  "+mapObject.getRows().get(0).getElements().get(0).getDistance().getValue());
 		return mapObject.getRows().get(0).getElements().get(0).getDistance().getValue();	
 	}
 }

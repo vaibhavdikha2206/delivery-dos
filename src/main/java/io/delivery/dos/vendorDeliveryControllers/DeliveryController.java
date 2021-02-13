@@ -80,6 +80,8 @@ public class DeliveryController {
 		String jwt = authorizationHeader.substring(7);
         String userid = jwtUtil.extractUsername(jwt);
         
+        System.out.println("getamount for "+userid+","+distanceRequest.getAddressid());
+        
         Address originAddress = addressRepository.findOneByUseridAndAddressid(userid, distanceRequest.getAddressid());
         
         return new DistanceResponseWithAmount(
