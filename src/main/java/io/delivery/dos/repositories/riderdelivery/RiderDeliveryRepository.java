@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import io.delivery.dos.models.delivery.Deliveries;
 
+
 public interface RiderDeliveryRepository extends JpaRepository<Deliveries, Integer>{
 
 	@Query(value="select * from Deliveries where riderid is null  order by pickuptime Desc",nativeQuery = true)
@@ -21,4 +22,5 @@ public interface RiderDeliveryRepository extends JpaRepository<Deliveries, Integ
 	@Modifying
 	@Query(value="Update Deliveries set status = :status,riderid= :riderid where deliveryid = :deliveryid",nativeQuery = true)
 	Integer updateDeliveryRiderIdAndDeliveryStatus(@Param("deliveryid")int deliveryid,@Param("status")String status,@Param("riderid")String riderid);
+
 }

@@ -16,11 +16,13 @@ import com.google.firebase.messaging.FirebaseMessagingException;
 
 import io.delivery.dos.constants.Constants;
 import io.delivery.dos.models.address.Address;
+import io.delivery.dos.models.delivery.DeliverResponseWithOriginAddress;
 import io.delivery.dos.models.delivery.Deliveries;
 import io.delivery.dos.models.riderdeliveryaccept.RiderDeliveryAcceptRequest;
 import io.delivery.dos.models.riderdeliveryaccept.RiderDeliveryAcceptResponse;
 import io.delivery.dos.models.riderdeliverylist.RiderPendingDeliveriesResponse;
 import io.delivery.dos.repositories.delivery.DeliveriesRepository;
+import io.delivery.dos.repositories.riderdelivery.RiderDeliveryJoinRepository;
 import io.delivery.dos.repositories.riderdelivery.RiderDeliveryRepository;
 import io.delivery.dos.repositories.user.ProfileRepository;
 import io.delivery.dos.security.util.JwtUtil;
@@ -41,6 +43,9 @@ public class DeliveryAcceptanceController {
 	
 	@Autowired
 	private ProfileRepository profileRepository;
+	
+	@Autowired
+	RiderDeliveryJoinRepository riderDeliveryJoinRepository;
 	
 	@Autowired
 	private NotifUtil notifUtil;
@@ -67,7 +72,7 @@ public class DeliveryAcceptanceController {
 		String jwt = authorizationHeader.substring(7);
         String userid = jwtUtil.extractUsername(jwt);
         checkRider(jwt);
-        List<Deliveries> acceptedDeliveries = riderDeliveryRepository.findByRiderid(userid);
+        List<DeliverResponseWithOriginAddress> acceptedDeliveries = riderDeliveryJoinRepository.findByRiderid(userid,"DELIVERY_SCHEDULED");
         return new RiderPendingDeliveriesResponse(acceptedDeliveries);
 	}
 	

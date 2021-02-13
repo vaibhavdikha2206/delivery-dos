@@ -7,11 +7,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import io.delivery.dos.models.delivery.Deliveries;
 
 @Entity
-public class Address  {
+@Table(name = "address")
+public class AddressJoin  {
 
 	@Id
 	@GeneratedValue
@@ -20,9 +22,6 @@ public class Address  {
 	
 	@Column(name = "userid")
 	private String userid;
-	
-	@Column(name = "defaultbit")
-	private int defaultbit;
 
 	@Column(name = "housenumber")
 	private String housenumber;
@@ -44,21 +43,6 @@ public class Address  {
 	
 	@Column(name = "city")
 	private String city;
-	
-	@Column(name = "placeid")
-	private String placeid;
-	
-	
-	
-
-	public String getPlaceid() {
-		return placeid;
-	}
-
-
-	public void setPlaceid(String placeid) {
-		this.placeid = placeid;
-	}
 
 
 	public void setLongitude(Double longitude) {
@@ -82,16 +66,6 @@ public class Address  {
 
 	public void setUserid(String userid) {
 		this.userid = userid;
-	}
-
-
-	public int getDefaultbit() {
-		return defaultbit;
-	}
-
-
-	public void setDefaultbit(int defaultbit) {
-		this.defaultbit = defaultbit;
 	}
 
 
@@ -165,12 +139,12 @@ public class Address  {
 	}
 
 
-	public Address(Integer addressid, String userid, int defaultbit, String housenumber, String floor, String block,
-			Double latitude, Double longitude, String locality, String city,String placeid) {
+	public AddressJoin(Integer addressid, String userid, String housenumber, String floor, String block,
+			Double latitude, Double longitude, String locality, String city) {
 		super();
 		this.addressid = addressid;
 		this.userid = userid;
-		this.defaultbit = defaultbit;
+		
 		this.housenumber = housenumber;
 		this.floor = floor;
 		this.block = block;
@@ -178,10 +152,10 @@ public class Address  {
 		this.longitude = longitude;
 		this.locality = locality;
 		this.city = city;
-		this.placeid=placeid;
+
 	}
 	
-	public Address() {
+	public AddressJoin() {
 		
 	}
 	

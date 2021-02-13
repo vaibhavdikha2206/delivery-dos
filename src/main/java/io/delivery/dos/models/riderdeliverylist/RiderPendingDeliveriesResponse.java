@@ -2,22 +2,23 @@ package io.delivery.dos.models.riderdeliverylist;
 
 import java.util.List;
 
+import io.delivery.dos.models.delivery.DeliverResponseWithOriginAddress;
 import io.delivery.dos.models.delivery.Deliveries;
 
 public class RiderPendingDeliveriesResponse {
 
-	private List<Deliveries> deliveries;
+	private List<DeliverResponseWithOriginAddress> deliveries;
 
-	public RiderPendingDeliveriesResponse(List<Deliveries> deliveries) {
+	public RiderPendingDeliveriesResponse(List<DeliverResponseWithOriginAddress> deliveries) {
 		super();
 		this.deliveries = deliveries;
 	}
 
-	public List<Deliveries> getDeliveries() {
+	public List<DeliverResponseWithOriginAddress> getDeliveries() {
 		return deliveries;
 	}
 
-	public void setDeliveries(List<Deliveries> deliveries) {
+	public void setDeliveries(List<DeliverResponseWithOriginAddress> deliveries) {
 		this.deliveries = deliveries;
 	}
 	

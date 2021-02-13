@@ -74,18 +74,20 @@ public class SaveDeliveryController {
 		String jwt = authorizationHeader.substring(7);
         String userid = jwtUtil.extractUsername(jwt);
         
-        Address originAddress = addressUtil.checkIfAddressCorrespondsToUser(userid, saveDeliveryRequestObject.getAddressid());
+        Address originAddress = addressUtil.checkIfAddressCorrespondsToUser(userid, saveDeliveryRequestObject.getOriginaddressid());
+        System.out.println("deliveryaddress verified for "+userid+","+saveDeliveryRequestObject.getOriginaddressid());
         if(originAddress !=null) {
         Map<String, String> map = new HashMap<String, String>();
         map.put("key1", "key1 value");
         map.put("key2", "key2 value");
       
+        System.out.println("1");
         int amountInPaisa = mapsUtil.getAmountFromDistanceInPaisa(originAddress,saveDeliveryRequestObject.getDroplatitude(),saveDeliveryRequestObject.getDroplongitude());
-        
+        System.out.println("2");
         GeneratedOrder generatedOrder = razorPayUtil.generateOrderId(amountInPaisa,"reciept for "+userid,map);   
 		
         Deliveries recvdDelivery = new Deliveries(null,userid,saveDeliveryRequestObject.getPickuptime(),
-				saveDeliveryRequestObject.getAddressid(),saveDeliveryRequestObject.getDropaddress(),
+				saveDeliveryRequestObject.getOriginaddressid(),saveDeliveryRequestObject.getDropaddress(),
 				saveDeliveryRequestObject.getDroplatitude(),saveDeliveryRequestObject.getDroplongitude(),
 				Constants.status_PAYMENT_AWAITING,null,generatedOrder.getID(),razorPayUtil.convertPaisaToRs(generatedOrder.getAmount()));
 		

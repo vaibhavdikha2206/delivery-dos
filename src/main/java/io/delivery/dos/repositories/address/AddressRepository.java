@@ -11,4 +11,6 @@ public interface AddressRepository extends JpaRepository<Address, Integer> {
 	
 	List<Address> findByUserid(String userid);
 	Address findOneByUseridAndAddressid(String userid,int addressid);
+	Address findOneByAddressid(int addressid);
+	
 }

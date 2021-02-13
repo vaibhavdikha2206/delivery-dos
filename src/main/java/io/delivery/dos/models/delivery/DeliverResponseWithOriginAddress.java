@@ -6,11 +6,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import io.delivery.dos.models.address.Address;
+import io.delivery.dos.models.address.AddressJoin;
 
 @Entity
-public class Deliveries {
+@Table(name="Deliveries")
+public class DeliverResponseWithOriginAddress {
 
 	@Id
 	@GeneratedValue
@@ -47,11 +50,22 @@ public class Deliveries {
 	@Column(name = "deliverycharge")
 	private int deliverycharge;
 	
-
-
-	public Deliveries() {}
+	@ManyToOne
+    @JoinColumn(name="addressid", nullable=false)
+    private AddressJoin address;
 	
-	public Deliveries(Integer deliveryid, String userid, String pickuptime, int originaddressid, String dropaddress,
+	
+	public AddressJoin getAddress() {
+		return address;
+	}
+
+	public void setAddress(AddressJoin address) {
+		this.address = address;
+	}
+
+	public DeliverResponseWithOriginAddress() {}
+	
+	public DeliverResponseWithOriginAddress(Integer deliveryid, String userid, String pickuptime, int originaddressid, String dropaddress,
 			Double droplatitude, Double droplongitude, String status, String riderid,String orderid,int deliverycharge) {
 		super();
 		this.deliveryid = deliveryid;

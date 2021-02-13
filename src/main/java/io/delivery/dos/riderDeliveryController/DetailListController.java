@@ -9,9 +9,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.delivery.dos.models.address.Address;
+import io.delivery.dos.models.delivery.DeliverResponseWithOriginAddress;
 import io.delivery.dos.models.delivery.Deliveries;
+
 import io.delivery.dos.models.riderdeliverylist.RiderPendingDeliveriesResponse;
+import io.delivery.dos.models.riderdeliverylist.RiderPendingDeliveriesWithAddressResponse;
 import io.delivery.dos.models.riderdeliverylist.RiderPendingDeliveryResponse;
+import io.delivery.dos.repositories.address.AddressRepository;
+import io.delivery.dos.repositories.riderdelivery.RiderDeliveryJoinRepository;
 import io.delivery.dos.repositories.riderdelivery.RiderDeliveryRepository;
 import io.delivery.dos.security.util.JwtUtil;
 
@@ -22,21 +28,33 @@ public class DetailListController {
 	RiderDeliveryRepository riderDeliveryRepository;
 	
 	@Autowired
+	RiderDeliveryJoinRepository riderDeliveryJoinRepository;
+	
+	@Autowired
+	AddressRepository addressRepository;
+	
+	@Autowired
     private JwtUtil jwtUtil;
 	
 	@RequestMapping(method=RequestMethod.GET,value="/getPendingDeliveries")
-	public RiderPendingDeliveriesResponse getPendingDeliveryList(@RequestHeader (name="Authorization") String authorizationHeader) throws Exception {
+	public RiderPendingDeliveriesWithAddressResponse getPendingDeliveryList(@RequestHeader (name="Authorization") String authorizationHeader) throws Exception {
 		String jwt = authorizationHeader.substring(7);
         checkRider(jwt);
-        List<Deliveries> pendingDeliveries = riderDeliveryRepository.findPendingDeliveries();
-        return new RiderPendingDeliveriesResponse(pendingDeliveries);
+        
+        //List<Deliveries> pendingDeliveries = riderDeliveryRepository.findPendingDeliveries();
+
+        List<DeliverResponseWithOriginAddress> pendingDeliveriesWithAddress = riderDeliveryJoinRepository.getJoinedInfo("DELIVERY_SCHEDULING");
+        
+      
+        return new RiderPendingDeliveriesWithAddressResponse(pendingDeliveriesWithAddress);
 	}
 	
 	@RequestMapping(method=RequestMethod.GET,value="/getPendingDelivery/{deliveryid}")
 	public RiderPendingDeliveryResponse getPendingDelivery(@RequestHeader (name="Authorization") String authorizationHeader,@PathVariable("deliveryid") Integer deliveryid) throws Exception {
 		String jwt = authorizationHeader.substring(7);
         checkRider(jwt);
-        Deliveries pendingDelivery= riderDeliveryRepository.findByDeliveryidAndRideridIsNull(deliveryid);
+        DeliverResponseWithOriginAddress pendingDelivery= riderDeliveryJoinRepository.findByDeliveryidandStatus(deliveryid,"DELIVERY_SCHEDULING");
+        
         return new RiderPendingDeliveryResponse(pendingDelivery);
 	}
 	
