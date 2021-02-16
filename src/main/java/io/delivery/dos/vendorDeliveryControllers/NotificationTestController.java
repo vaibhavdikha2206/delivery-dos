@@ -47,18 +47,7 @@ public class NotificationTestController {
 		List<String> tokenList= new ArrayList<String>();
 		tokenList.add(token);
 		
-		return firebaseService.sendNotificationToMultipleRiders(tokenList,"Notification",null);
+		return firebaseService.sendNotificationToMultipleRiders(tokenList,new Deliveries());
 	}
-	
-	@RequestMapping("/asyncTest")
-	@ResponseBody
-	public String asyncTest(@RequestBody Note note,
-	                               @RequestParam String token) throws FirebaseMessagingException {
-		
-		firebaseService.asyncTestFun();
-		System.out.println("asyncTestCompleted");
-		
-		return "returned";
-	}
-	
+
 }

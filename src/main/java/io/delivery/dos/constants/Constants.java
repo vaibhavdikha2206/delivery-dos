@@ -15,4 +15,10 @@ public class Constants {
 	
 	public final static String delivery_scheduled_notification_description_string = "Your Delivery for %s has been successfully scheduled.You can check its status in my orders section of Delivery Dos App.";
 	public final static String delivery_scheduled_notification_title_string = "Delivery Successfully Scheduled";
+	
+	public final static String delivery_scheduling_notification_description_string = "Thank You for using DeliveryDos, we are Scheduling your delivery for %s. A rider will be assigned to you shortly.";
+	public final static String delivery_scheduling_notification_title_string = "Delivery Request Recieved.";
+	
+	public final static String capturedStatusRazorPay = "captured";
+	public final static String statusKeyRazorPay = "status";
 }

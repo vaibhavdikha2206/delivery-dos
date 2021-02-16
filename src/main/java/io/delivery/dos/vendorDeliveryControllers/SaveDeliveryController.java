@@ -120,7 +120,7 @@ public class SaveDeliveryController {
         	
         		String usertoken = profileRepository.findByUseridCustom(userid).getToken();
         		if(usertoken!=null) {
-        			sendNotificationToUser(userid,delivery);
+        			sendNotificationToUserForScheduling(userid,delivery);
         		}
         		
         		// now trigger notif to free riders
@@ -135,16 +135,16 @@ public class SaveDeliveryController {
 		
 	}
 	
-	private void sendNotificationToUser(String userid,Deliveries delivery) throws FirebaseMessagingException {
+	private void sendNotificationToUserForScheduling(String userid,Deliveries delivery) throws FirebaseMessagingException {
 		
 		String usertoken = profileRepository.findByUseridCustom(userid).getToken();
 		if(usertoken!=null) {
     		Map<String, String> notemap = new HashMap<String, String>();
-    		notemap.put(Constants.payment_key_notes_status, "200");
-    		notemap.put(Constants.payment_key_notes_payload, Constants.delivery_status_Delivery_Scheduling);
-    		notemap.put(Constants.payment_key_notes_deliveryid, delivery.getDeliveryid().toString());
+    		notemap.put("deliveryId", delivery.getDeliveryid().toString());
+    		notemap.put("type", delivery.getStatus());
+    		notemap.put("pickuptime", delivery.getPickuptime());
             
-    		Note note = new Note(Constants.delivery_scheduled_notification_title_string,String.format(Constants.delivery_scheduled_notification_description_string, delivery.getPickuptime()),notemap,null);
+    		Note note = new Note(Constants.delivery_scheduling_notification_title_string,String.format(Constants.delivery_scheduling_notification_description_string, delivery.getPickuptime()),notemap,null);
     		
     		System.out.println("sending single notif to "+usertoken);
     		notifUtil.sendNotificationToUser(note, usertoken);

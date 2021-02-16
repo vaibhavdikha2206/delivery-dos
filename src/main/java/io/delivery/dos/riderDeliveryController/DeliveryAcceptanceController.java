@@ -61,7 +61,7 @@ public class DeliveryAcceptanceController {
         // send notification to user about his deliveryorder accepted
         String userToken = profileRepository.findByUseridCustom( delivery.getUserid()).getToken();
         if(userToken!=null) {
-			sendNotificationToUser(delivery.getUserid(),delivery);
+        	sendNotificationToUserForAcceptance(delivery.getUserid(),delivery);
 		}
         
         return new RiderDeliveryAcceptResponse(delivery.getStatus(),delivery.getDeliveryid());
@@ -76,14 +76,15 @@ public class DeliveryAcceptanceController {
         return new RiderPendingDeliveriesResponse(acceptedDeliveries);
 	}
 	
-	private void sendNotificationToUser(String userid,Deliveries delivery) throws FirebaseMessagingException {
+	private void sendNotificationToUserForAcceptance(String userid,Deliveries delivery) throws FirebaseMessagingException {
 		
 		String usertoken = profileRepository.findByUseridCustom(userid).getToken();
 		if(usertoken!=null) {
-    		Map<String, String> notemap = new HashMap<String, String>();
-    		notemap.put(Constants.payment_key_notes_status, "200");
-    		notemap.put(Constants.payment_key_notes_payload, Constants.delivery_status_Delivery_Scheduled);
-    		notemap.put(Constants.payment_key_notes_deliveryid, delivery.getDeliveryid().toString());
+			Map<String, String> notemap = new HashMap<String, String>();
+			
+    		notemap.put("deliveryId", delivery.getDeliveryid().toString());
+    		notemap.put("type", delivery.getStatus());
+    		notemap.put("pickuptime", delivery.getPickuptime());
             
     		Note note = new Note(Constants.delivery_scheduled_notification_title_string,String.format(Constants.delivery_scheduled_notification_description_string, delivery.getPickuptime()),notemap,null);
     		

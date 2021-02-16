@@ -15,6 +15,7 @@ import com.razorpay.Payment;
 import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
 
+import io.delivery.dos.constants.Constants;
 import io.delivery.dos.models.razorpay.GeneratedOrder;
 import io.delivery.dos.models.razorpay.RazorPayNotes;
 import io.delivery.dos.models.security.KeyObject;
@@ -47,10 +48,12 @@ public class RazorPayUtil {
 
 	public Boolean confirmPaymentStatus(String orderid) throws RazorpayException, JSONException {
 		
-		Order confirmationOrder = client.Orders.fetch(orderid);
+		List<Payment> payments = client.Orders.fetchPayments(orderid);
+		
+		//Order confirmationOrder = client.Orders.fetch(orderid);
 		// Now do the magic.
-		System.out.println("confirmed order "+confirmationOrder);
-		if(confirmationOrder.get("status").equals("created")) {
+		System.out.println("confirmed order "+payments.get(0).get(Constants.statusKeyRazorPay));
+		if(payments.get(0).get(Constants.statusKeyRazorPay).equals(Constants.capturedStatusRazorPay)) {
 			System.out.println("Payment Captured");
 			return true ;
 		}

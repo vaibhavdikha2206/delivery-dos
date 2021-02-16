@@ -43,8 +43,8 @@ public class NotifUtil {
 		System.out.println("p1121ickup is "+delivery.getPickuptime());
 		
 		Timestamp requestTime=DateTimeUtil.convertStringToTimestamp(delivery.getPickuptime());
-		Timestamp upperDateTime = new Timestamp(requestTime.getTime() + TimeUnit.MINUTES.toMillis(30));
-		Timestamp lowerDateTime = new Timestamp(requestTime.getTime() - TimeUnit.MINUTES.toMillis(30));
+		Timestamp upperDateTime = new Timestamp(requestTime.getTime() + TimeUnit.MINUTES.toMillis(29));
+		Timestamp lowerDateTime = new Timestamp(requestTime.getTime() - TimeUnit.MINUTES.toMillis(29));
 		  	
 		List<String> busyDrivers = deliveriesRepository.getBusyRiders(lowerDateTime.toString(), upperDateTime.toString());
 		
@@ -74,16 +74,8 @@ public class NotifUtil {
 		System.out.println("sending notification to multicast");
 		
 		if(riderNotificationList.size()>0) {
-		firebaseService.sendNotificationToMultipleRiders(riderNotificationList,"Notification",delivery);
+		firebaseService.sendNotificationToMultipleRiders(riderNotificationList,delivery);
 		}
 	}
 	
-	/*long pause = 5000 ; 
-	
-	try {
-		Thread.sleep(pause);
-	}
-	catch(Exception e){
-		
-	}*/
 }
