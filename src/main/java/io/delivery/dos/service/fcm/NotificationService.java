@@ -49,16 +49,21 @@ public class NotificationService {
         return firebaseMessaging.send(message);
     }
 
-    public String sendNotificationToMultipleRiders(List<String> registrationTokens,Deliveries delivery) throws FirebaseMessagingException {
+    public String sendNotificationToMultipleRiders(List<String> registrationTokens,Deliveries delivery) {
     	//only for sending notification to riders yet
     	MulticastMessage message = MulticastMessage.builder()
-    			.putAllData(null)
     		    .putData("deliveryId", delivery.getDeliveryid().toString())
     		    .putData("type", delivery.getStatus())
     		    .putData("pickupTime", delivery.getPickuptime())
     		    .addAllTokens(registrationTokens)
     		    .build();
-    		BatchResponse response = firebaseMessaging.sendMulticast(message);
+    		BatchResponse response = null;
+			try {
+				response = firebaseMessaging.sendMulticast(message);
+			} catch (FirebaseMessagingException e) {
+				// TODO Auto-generated catch block
+				System.out.println("error is "+e);
+			}
     		// See the BatchResponse reference documentation
     		
     		System.out.println(response.getSuccessCount() + " messages were sent successfully");

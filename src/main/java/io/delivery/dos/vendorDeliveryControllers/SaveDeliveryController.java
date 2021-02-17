@@ -107,12 +107,17 @@ public class SaveDeliveryController {
 	public InitiateDeliveryResponseObject initiateDelivery(@RequestBody InitiateDeliveryRequestObject initiateDeliveryRequestObject,@RequestHeader (name="Authorization") String authorizationHeader) throws Exception { 
 		String jwt = authorizationHeader.substring(7);
         String userid = jwtUtil.extractUsername(jwt);  
+        System.out.println("id is "+initiateDeliveryRequestObject.getDeliveryid());
+        System.out.println("orderid is "+initiateDeliveryRequestObject.getOrderid());
+        System.out.println("user is "+userid);
         Deliveries delivery = deliveriesRepository.findOneByDeliveryidAndUseridAndOrderid(initiateDeliveryRequestObject.getDeliveryid(),userid,initiateDeliveryRequestObject.getOrderid());
         // first check if delivery id is for the user with correct jwt
+        System.out.println("delivery is "+delivery.getOrderid());
         if(delivery!=null) {
         	//then confirm payment status first	
         	if(razorPayUtil.confirmPaymentStatus(delivery.getOrderid())) {	
         		//update status , send notification
+        		System.out.println("payment confirmed not null");
         		deliveryStatusUtil.updateDeliveryStatus(delivery.getDeliveryid(), Constants.delivery_status_Delivery_Scheduling);
         		
         		if(initiateDeliveryRequestObject.getRazorhash()!=null)
@@ -124,6 +129,7 @@ public class SaveDeliveryController {
         		}
         		
         		// now trigger notif to free riders
+        		
         		notifUtil.sendNotificationToFreeRiders(delivery);
         		
         		return new InitiateDeliveryResponseObject(delivery.getDeliveryid(),Constants.delivery_status_Delivery_Scheduling);
@@ -131,6 +137,7 @@ public class SaveDeliveryController {
         	}
         }
      
+        System.out.println("Seedha Throw");
         throw new Exception("Unable To Initiate Delivery");
 		
 	}
