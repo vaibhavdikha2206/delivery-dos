@@ -55,6 +55,7 @@ public class NotificationService {
     		    .putData("deliveryId", delivery.getDeliveryid().toString())
     		    .putData("type", delivery.getStatus())
     		    .putData("pickupTime", delivery.getPickuptime())
+    		    .putData("click_action", Constants.FLUTTER_NOTIF_VALUE_STRING)
     		    .addAllTokens(registrationTokens)
     		    .build();
     		BatchResponse response = null;

@@ -5,6 +5,7 @@ public class Constants {
 	public final static String  keyMap = "AIzaSyD2BbIwpNyP78sCs-nxA5x3QyVnQbAmPDc";
 	public final static String  keyMetric = "metric";
 	public final static String  status_PAYMENT_AWAITING = "PAYMENT_AWAITING";
+	public final static String  FLUTTER_NOTIF_VALUE_STRING = "FLUTTER_NOTIFICATION_CLICK";
 	
 	public final static String  delivery_status_Delivery_Scheduling = "DELIVERY_SCHEDULING";
 	public final static String  delivery_status_Delivery_Scheduled = "DELIVERY_SCHEDULED";

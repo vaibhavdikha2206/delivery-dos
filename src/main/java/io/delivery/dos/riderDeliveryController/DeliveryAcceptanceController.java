@@ -85,7 +85,8 @@ public class DeliveryAcceptanceController {
     		notemap.put("deliveryId", delivery.getDeliveryid().toString());
     		notemap.put("type", delivery.getStatus());
     		notemap.put("pickuptime", delivery.getPickuptime());
-            
+    		notemap.put("click_action", Constants.FLUTTER_NOTIF_VALUE_STRING);
+    		
     		Note note = new Note(Constants.delivery_scheduled_notification_title_string,String.format(Constants.delivery_scheduled_notification_description_string, delivery.getPickuptime()),notemap,null);
     		
     		notifUtil.sendNotificationToUser(note, usertoken);

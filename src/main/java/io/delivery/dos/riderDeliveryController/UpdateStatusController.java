@@ -85,7 +85,8 @@ public class UpdateStatusController {
     		notemap.put("deliveryId", delivery.getDeliveryid().toString());
     		notemap.put("type", Constants.delivery_status_Delivery_Success);
     		notemap.put("pickuptime", delivery.getPickuptime());
-            
+    		notemap.put("click_action", Constants.FLUTTER_NOTIF_VALUE_STRING);
+    		
     		Note note = new Note(Constants.delivery_scheduling_notification_title_string,String.format(Constants.delivery_scheduling_notification_description_string, delivery.getPickuptime()),notemap,null);
     		
     		System.out.println("sending single notif to "+usertoken);
