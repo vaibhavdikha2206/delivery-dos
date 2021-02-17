@@ -8,6 +8,7 @@ public class Constants {
 	
 	public final static String  delivery_status_Delivery_Scheduling = "DELIVERY_SCHEDULING";
 	public final static String  delivery_status_Delivery_Scheduled = "DELIVERY_SCHEDULED";
+	public final static String  delivery_status_Delivery_Success = "SUCCESS_DELIVERY";
 	
 	public final static String  payment_key_notes_status = "status";
 	public final static String  payment_key_notes_payload = "payload";

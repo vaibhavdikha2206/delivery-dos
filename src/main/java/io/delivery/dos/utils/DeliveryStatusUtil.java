@@ -15,6 +15,11 @@ public class DeliveryStatusUtil {
 		return deliveriesRepository.updateDeliveryStatus(deliveryid, status);
 	}
 	
+	public Integer updateDeliveryStatusForRider(int deliveryid,String status,String riderid) {
+		 System.out.println("updating "+deliveryid+","+status+","+riderid);
+		return deliveriesRepository.updateDeliveryStatusForRider(deliveryid, status,riderid);
+	}
+	
 	public Integer updateDeliveryPaymentHash(int deliveryid,String razorHash,String razorSignature,String razorPayid) {
 		return deliveriesRepository.updateDeliveryPaymentHash(deliveryid, razorHash,razorSignature,razorPayid);
 	}

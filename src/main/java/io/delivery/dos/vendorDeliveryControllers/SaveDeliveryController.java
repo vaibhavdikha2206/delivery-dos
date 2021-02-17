@@ -125,7 +125,7 @@ public class SaveDeliveryController {
         	
         		String usertoken = profileRepository.findByUseridCustom(userid).getToken();
         		if(usertoken!=null) {
-        			sendNotificationToUserForScheduling(userid,delivery);
+        			sendNotificationToUserForScheduling(userid,delivery,usertoken);
         		}
         		
         		// now trigger notif to free riders
@@ -137,14 +137,13 @@ public class SaveDeliveryController {
         	}
         }
      
-        System.out.println("Seedha Throw");
         throw new Exception("Unable To Initiate Delivery");
 		
 	}
 	
-	private void sendNotificationToUserForScheduling(String userid,Deliveries delivery) throws FirebaseMessagingException {
+	private void sendNotificationToUserForScheduling(String userid,Deliveries delivery,String usertoken) throws FirebaseMessagingException {
 		
-		String usertoken = profileRepository.findByUseridCustom(userid).getToken();
+		//String usertoken = profileRepository.findByUseridCustom(userid).getToken();
 		if(usertoken!=null) {
     		Map<String, String> notemap = new HashMap<String, String>();
     		notemap.put("deliveryId", delivery.getDeliveryid().toString());
