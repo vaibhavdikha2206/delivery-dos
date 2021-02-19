@@ -125,7 +125,7 @@ public class SaveDeliveryController {
         	
         		String usertoken = profileRepository.findByUseridCustom(userid).getToken();
         		if(usertoken!=null) {
-        			sendNotificationToUserForScheduling(userid,delivery,usertoken);
+        			sendNotificationToUserForScheduling(userid,delivery,usertoken,Constants.delivery_status_Delivery_Scheduling);
         		}
         		
         		// now trigger notif to free riders
@@ -141,13 +141,13 @@ public class SaveDeliveryController {
 		
 	}
 	
-	private void sendNotificationToUserForScheduling(String userid,Deliveries delivery,String usertoken) throws FirebaseMessagingException {
+	private void sendNotificationToUserForScheduling(String userid,Deliveries delivery,String usertoken,String status) throws FirebaseMessagingException {
 		
 		//String usertoken = profileRepository.findByUseridCustom(userid).getToken();
 		if(usertoken!=null) {
     		Map<String, String> notemap = new HashMap<String, String>();
     		notemap.put("deliveryId", delivery.getDeliveryid().toString());
-    		notemap.put("type", delivery.getStatus());
+    		notemap.put("type", status);
     		notemap.put("pickuptime", delivery.getPickuptime());
     		notemap.put("click_action", Constants.FLUTTER_NOTIF_VALUE_STRING);
     		

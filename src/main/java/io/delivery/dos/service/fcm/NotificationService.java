@@ -61,7 +61,7 @@ public class NotificationService {
     	//only for sending notification to riders yet
     	MulticastMessage message = MulticastMessage.builder()
     		    .putData("deliveryId", delivery.getDeliveryid().toString())
-    		    .putData("type", delivery.getStatus())
+    		    .putData("type", Constants.delivery_status_Delivery_Scheduling)
     		    .putData("pickupTime", delivery.getPickuptime())
     		    .putData("click_action", Constants.FLUTTER_NOTIF_VALUE_STRING)
     		    .addAllTokens(registrationTokens)

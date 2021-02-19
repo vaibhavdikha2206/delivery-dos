@@ -83,7 +83,7 @@ public class DeliveryAcceptanceController {
 			Map<String, String> notemap = new HashMap<String, String>();
 			
     		notemap.put("deliveryId", delivery.getDeliveryid().toString());
-    		notemap.put("type", delivery.getStatus());
+    		notemap.put("type", Constants.delivery_status_Delivery_Scheduled);
     		notemap.put("pickuptime", delivery.getPickuptime());
     		notemap.put("click_action", Constants.FLUTTER_NOTIF_VALUE_STRING);
     		
