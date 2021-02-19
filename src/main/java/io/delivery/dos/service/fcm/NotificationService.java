@@ -44,6 +44,7 @@ public class NotificationService {
                 .setToken(token)
                 .setNotification(notification)
                 .putAllData(note.getData())
+                .putData("click_action", Constants.FLUTTER_NOTIF_VALUE_STRING)
                 .build();
 
         return firebaseMessaging.send(message);
