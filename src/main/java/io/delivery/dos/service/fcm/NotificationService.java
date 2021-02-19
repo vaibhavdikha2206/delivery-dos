@@ -32,7 +32,7 @@ public class NotificationService {
 
     public String sendNotification(Note note, String token) throws FirebaseMessagingException {
 
-        Notification notification = Notification
+        /*Notification notification = Notification
                 .builder()
                 .setTitle(note.getSubject())
                 .setBody(note.getContent())
@@ -44,9 +44,16 @@ public class NotificationService {
                 .setToken(token)
                 .setNotification(notification)
                 .putAllData(note.getData())
-                .putData("click_action", Constants.FLUTTER_NOTIF_VALUE_STRING)
-                .build();
+                .build();*/
 
+
+        Message message = Message.builder()
+        		.putAllData(note.getData())
+        	    .putData("click_action", Constants.FLUTTER_NOTIF_VALUE_STRING)
+        	    .setToken(token)
+        	    .build();
+
+        
         return firebaseMessaging.send(message);
     }
 
