@@ -38,4 +38,5 @@ public interface DeliveriesRepository extends JpaRepository<Deliveries, Integer>
 	@Modifying
 	@Query(value="Update Deliveries set razorhash = :razorhash,razorsignature= :razorsignature,razorpayid = :razorpayid where deliveryid = :deliveryid",nativeQuery = true)
 	Integer updateDeliveryPaymentHash(@Param("deliveryid")int deliveryid,@Param("razorhash")String razorhash,@Param("razorsignature")String razorsignature,@Param("razorpayid")String razorpayid);
+
 }

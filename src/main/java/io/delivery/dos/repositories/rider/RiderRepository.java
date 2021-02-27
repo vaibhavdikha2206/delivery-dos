@@ -13,6 +13,7 @@ import io.delivery.dos.models.user.response.ProfileResponse;
 
 public interface RiderRepository extends JpaRepository<ProfileResponse, Integer>{
 	
+	//used in finding free riders
 	@Query(value="SELECT userid,username,token FROM profile WHERE userid Not IN (:userids) And role = :role",nativeQuery = true)
 	List<ProfileResponse> findByUseridNotIn(@Param("userids")List<String> userids,@Param("role")String role);
 	

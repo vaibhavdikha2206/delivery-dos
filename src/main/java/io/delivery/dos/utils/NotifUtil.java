@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
@@ -42,22 +43,7 @@ public class NotifUtil {
 		
 		System.out.println("p1121ickup is "+delivery.getPickuptime());
 		
-		Timestamp requestTime=DateTimeUtil.convertStringToTimestamp(delivery.getPickuptime());
-		Timestamp upperDateTime = new Timestamp(requestTime.getTime() + TimeUnit.MINUTES.toMillis(29));
-		Timestamp lowerDateTime = new Timestamp(requestTime.getTime() - TimeUnit.MINUTES.toMillis(29));
-		  	
-		List<String> busyDrivers = deliveriesRepository.getBusyRiders(lowerDateTime.toString(), upperDateTime.toString());
-		
-		System.out.println("busy drivers"+busyDrivers);
-		
-		List<ProfileResponse> freeDrivers = new ArrayList<ProfileResponse>();
-		if(busyDrivers.size()==0) {
-			freeDrivers = riderRepository.findByRole("RIDER");
-		}
-		else {
-			freeDrivers = riderRepository.findByUseridNotIn(busyDrivers,"RIDER");
-		}
-		
+		List<ProfileResponse> freeDrivers = getFreeDrivers(delivery.getPickuptime());
 		
 		List<String> riderNotificationList = new ArrayList<String>();
 		
@@ -76,6 +62,27 @@ public class NotifUtil {
 		if(riderNotificationList.size()>0) {
 		firebaseService.sendNotificationToMultipleRiders(riderNotificationList,delivery);
 		}
+	}
+	
+	public List<ProfileResponse> getFreeDrivers(String pickuptime){
+		
+		Timestamp requestTime=DateTimeUtil.convertStringToTimestamp(pickuptime);
+		Timestamp upperDateTime = new Timestamp(requestTime.getTime() + TimeUnit.MINUTES.toMillis(29));
+		Timestamp lowerDateTime = new Timestamp(requestTime.getTime() - TimeUnit.MINUTES.toMillis(29));
+		
+		List<String> busyDrivers = deliveriesRepository.getBusyRiders(lowerDateTime.toString(), upperDateTime.toString());
+		
+		System.out.println("busy drivers"+busyDrivers);
+		
+		List<ProfileResponse> freeDrivers = new ArrayList<ProfileResponse>();
+		if(busyDrivers.size()==0) {
+			freeDrivers = riderRepository.findByRole("RIDER");
+		}
+		else {
+			freeDrivers = riderRepository.findByUseridNotIn(busyDrivers,"RIDER");
+		}
+		
+		return freeDrivers;
 	}
 	
 }
