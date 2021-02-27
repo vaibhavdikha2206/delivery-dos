@@ -57,6 +57,13 @@ public class UpdateStatusController {
         	sendUpdateToVendor(userid,statusUpdateRequestObject.getDeliveryid());
         	return new StatusUpdateResponseObject( Constants.delivery_status_Delivery_Success );
         }
+        
+        case 201 : {
+        	int value = deliveryStatusUtil.updateDeliveryStatusForRider(statusUpdateRequestObject.getDeliveryid(), Constants.delivery_status_Delivery_Ongoing,userid);
+        	System.out.println("code is"+value);
+        	sendUpdateToVendor(userid,statusUpdateRequestObject.getDeliveryid());
+        	return new StatusUpdateResponseObject( Constants.delivery_status_Delivery_Ongoing );
+        }
         default : { 
         	throw new Exception("Status Code Invalid");
          }
