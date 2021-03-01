@@ -54,14 +54,14 @@ public class UpdateStatusController {
         case 200 : {
         	int value = deliveryStatusUtil.updateDeliveryStatusForRider(statusUpdateRequestObject.getDeliveryid(), Constants.delivery_status_Delivery_Success,userid);
         	System.out.println("code is"+value);
-        	sendUpdateToVendor(userid,statusUpdateRequestObject.getDeliveryid());
+        	notifUtil.sendUpdateToVendorForRider(userid,statusUpdateRequestObject.getDeliveryid(),Constants.delivery_status_Delivery_Success);
         	return new StatusUpdateResponseObject( Constants.delivery_status_Delivery_Success );
         }
         
         case 201 : {
         	int value = deliveryStatusUtil.updateDeliveryStatusForRider(statusUpdateRequestObject.getDeliveryid(), Constants.delivery_status_Delivery_Ongoing,userid);
         	System.out.println("code is"+value);
-        	sendUpdateToVendor(userid,statusUpdateRequestObject.getDeliveryid());
+        	notifUtil.sendUpdateToVendorForRider(userid,statusUpdateRequestObject.getDeliveryid(),Constants.delivery_status_Delivery_Ongoing);
         	return new StatusUpdateResponseObject( Constants.delivery_status_Delivery_Ongoing );
         }
         default : { 
@@ -70,35 +70,6 @@ public class UpdateStatusController {
      }
      
         
-	}
-	
-	private void sendUpdateToVendor(String riderid,int deliveryid) throws FirebaseMessagingException {
-		
-		Deliveries delivery = deliveriesRepository.findByRideridAndDeliveryid(riderid, deliveryid);
-		System.out.println("printing is ");
-		System.out.println("userid is "+delivery.getUserid());
-		String usertoken = profileRepository.findByUseridCustom(delivery.getUserid()).getToken();
-		if(usertoken!=null) {
-			sendNotificationToUserForDeliverySuccess(delivery.getUserid(),delivery,usertoken);
-		}
-		
-	}
-	
-	private void sendNotificationToUserForDeliverySuccess(String userid,Deliveries delivery,String usertoken) throws FirebaseMessagingException {
-		
-		//String usertoken = profileRepository.findByUseridCustom(userid).getToken();
-		if(usertoken!=null) {
-    		Map<String, String> notemap = new HashMap<String, String>();
-    		notemap.put("deliveryId", delivery.getDeliveryid().toString());
-    		notemap.put("type", Constants.delivery_status_Delivery_Success);
-    		notemap.put("pickuptime", delivery.getPickuptime());
-    		notemap.put("click_action", Constants.FLUTTER_NOTIF_VALUE_STRING);
-    		
-    		Note note = new Note(Constants.delivery_scheduling_notification_title_string,String.format(Constants.delivery_scheduling_notification_description_string, delivery.getPickuptime()),notemap,null);
-    		
-    		System.out.println("sending single notif to "+usertoken);
-    		notifUtil.sendNotificationToUser(note, usertoken);
-		}
 	}
 	
 	private void checkRider(String jwt) throws Exception {

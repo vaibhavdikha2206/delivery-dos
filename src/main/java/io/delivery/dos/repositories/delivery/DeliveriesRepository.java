@@ -17,6 +17,9 @@ public interface DeliveriesRepository extends JpaRepository<Deliveries, Integer>
 	@Query(value="select * from Deliveries where riderid = :riderid  and deliveryid = :deliveryid",nativeQuery = true)
 	Deliveries findByRideridAndDeliveryid(@Param("riderid")String riderid,@Param("deliveryid")int deliveryid);
 	
+	@Query(value="select * from Deliveries where deliveryid = :deliveryid",nativeQuery = true)
+	Deliveries findByDeliveryid(@Param("deliveryid")int deliveryid);
+	
 	Deliveries findByUseridAndDeliveryid(String userid,int deliveryid);
 	
 	@Query(value="select Count(Distinct(riderid)) from Deliveries where pickuptime >= :lowerpickuptime && pickuptime <= :upperpickuptime",nativeQuery = true)
@@ -39,4 +42,8 @@ public interface DeliveriesRepository extends JpaRepository<Deliveries, Integer>
 	@Query(value="Update Deliveries set razorhash = :razorhash,razorsignature= :razorsignature,razorpayid = :razorpayid where deliveryid = :deliveryid",nativeQuery = true)
 	Integer updateDeliveryPaymentHash(@Param("deliveryid")int deliveryid,@Param("razorhash")String razorhash,@Param("razorsignature")String razorsignature,@Param("razorpayid")String razorpayid);
 
+	@Modifying
+	@Query(value="Update Deliveries set status = :status where deliveryid = :deliveryid",nativeQuery = true)
+	Integer updateDeliveryStatusForAdmin(@Param("deliveryid")int deliveryid,@Param("status")String status);
+	
 }

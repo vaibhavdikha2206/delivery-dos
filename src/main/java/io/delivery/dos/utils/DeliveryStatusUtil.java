@@ -24,4 +24,8 @@ public class DeliveryStatusUtil {
 		return deliveriesRepository.updateDeliveryPaymentHash(deliveryid, razorHash,razorSignature,razorPayid);
 	}
 	
+	public Integer updateDeliveryStatusForAdmin(int deliveryid,String status) {
+		 System.out.println("updating "+deliveryid+","+status);
+		return deliveriesRepository.updateDeliveryStatusForAdmin(deliveryid, status);
+	}
 }
