@@ -20,7 +20,7 @@ public class ProfileResponse {
 
 	@Column(name = "token")
 	private String token;
-
+	
 	public ProfileResponse() {
 
 	}
@@ -31,8 +31,6 @@ public class ProfileResponse {
 		this.username = username;
 		this.token = token;
 	}
-
-	
 	
 	public String getToken() {
 		return token;

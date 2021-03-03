@@ -69,6 +69,7 @@ public class NotifUtil {
 		if(riderNotificationList.size()>0) {
 		firebaseService.sendNotificationToMultipleRiders(riderNotificationList,delivery);
 		}
+		sendNotificationToAdminWithDeliveryObject(delivery,Constants.delivery_status_Delivery_Scheduling);
 	}
 	
 	public List<ProfileResponse> getFreeDrivers(String pickuptime){
@@ -93,6 +94,16 @@ public class NotifUtil {
 	}
 	
 	
+	public List<ProfileResponse> getAdmin(){
+		
+		List<ProfileResponse> admins = new ArrayList<ProfileResponse>();
+		
+		admins = riderRepository.findByRole("ADMIN");
+		
+		return admins;
+	}
+	
+
 	public void sendUpdateToVendorForRider(String riderid,int deliveryid,String notificationType) throws FirebaseMessagingException {
 		
 		Deliveries delivery = deliveriesRepository.findByRideridAndDeliveryid(riderid, deliveryid);
@@ -102,7 +113,7 @@ public class NotifUtil {
 		if(usertoken!=null) {
 			sendNotificationToUserForDeliverySuccess(delivery.getUserid(),delivery,usertoken,notificationType);
 		}
-		
+		sendNotificationToAdminWithDeliveryObject(delivery,notificationType);
 	}
 	
 	public void sendUpdateToVendorForAdmin(int deliveryid,String notificationType) throws FirebaseMessagingException {
@@ -131,7 +142,50 @@ public class NotifUtil {
     		
     		System.out.println("sending single notif to "+usertoken);
     		sendNotificationToUser(note, usertoken);
+    		sendNotificationToAdminWithDeliveryObject(delivery,notificationType);
+		}
+	}
+
+	@Async
+	public void sendNotificationToAdminWithDeliveryObject(Deliveries delivery,String notificationType) {
+		
+		List<ProfileResponse> admins = getAdmin();
+		List<String> adminNotificationList = new ArrayList<String>();
+		
+		for (ProfileResponse admindata : admins) {
+			System.out.println("freedriver "+admindata.getUserid());
+			if(admindata.getToken()!=null)
+			{
+				System.out.println("sendmulti "+admindata.getUserid()+","+admindata.getToken());
+				adminNotificationList.add(admindata.getToken());
+			
+			}
+		}
+		System.out.println("sending notification to multicast");		
+		if(adminNotificationList.size()>0) {
+		firebaseService.sendNotificationToMultipleAdmins(adminNotificationList,delivery,notificationType);
 		}
 	}
 	
+	@Async
+	public void sendNotificationToAdminWithoutDeliveryObject(String notificationType,String deliveryid,String pickuptime) {
+		
+		List<ProfileResponse> admins = getAdmin();
+		List<String> adminNotificationList = new ArrayList<String>();
+		
+		for (ProfileResponse admindata : admins) {
+			System.out.println("freedriver "+admindata.getUserid());
+			if(admindata.getToken()!=null)
+			{
+				System.out.println("sendmulti "+admindata.getUserid()+","+admindata.getToken());
+				adminNotificationList.add(admindata.getToken());
+			
+			}
+		}
+		System.out.println("sending notification to multicast");		
+		if(adminNotificationList.size()>0) {
+		firebaseService.sendNotificationToMultipleAdminsNoDeliveryObject(adminNotificationList,deliveryid,pickuptime,notificationType);
+		}
+	}
+
 }

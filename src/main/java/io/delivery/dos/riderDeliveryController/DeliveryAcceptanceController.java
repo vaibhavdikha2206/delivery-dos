@@ -89,6 +89,7 @@ public class DeliveryAcceptanceController {
     		
     		Note note = new Note(Constants.delivery_scheduled_notification_title_string,String.format(Constants.delivery_scheduled_notification_description_string, delivery.getPickuptime()),notemap,null);
     		
+    		notifUtil.sendNotificationToAdminWithDeliveryObject(delivery, Constants.delivery_status_Delivery_Scheduled);
     		notifUtil.sendNotificationToUser(note, usertoken);
 		}
 	}

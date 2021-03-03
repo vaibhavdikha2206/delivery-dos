@@ -155,6 +155,7 @@ public class SaveDeliveryController {
     		
     		System.out.println("sending single notif to "+usertoken);
     		notifUtil.sendNotificationToUser(note, usertoken);
+    		notifUtil.sendNotificationToAdminWithDeliveryObject(delivery, status);
 		}
 	}
 }
