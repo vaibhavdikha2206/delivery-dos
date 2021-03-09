@@ -49,12 +49,14 @@ public class Deliveries {
 	@Column(name = "img")
 	private String img;
 	
-	public Deliveries() {}
+	@Column(name = "weightcategory")
+	private Integer weightcategory;
 	
+	public Deliveries() {}
 	
 	public Deliveries(Integer deliveryid, String userid, String pickuptime, int originaddressid, String dropaddress,
 			Double droplatitude, Double droplongitude, String status, String riderid, String orderid,
-			int deliverycharge, String description, String img) {
+			int deliverycharge, String description, String img, Integer weightcategory) {
 		super();
 		this.deliveryid = deliveryid;
 		this.userid = userid;
@@ -69,24 +71,31 @@ public class Deliveries {
 		this.deliverycharge = deliverycharge;
 		this.description = description;
 		this.img = img;
+		this.weightcategory = weightcategory;
+	}
+	
+	public Integer getWeightcategory() {
+		if(weightcategory==null) {
+			return 2;
+		}
+		return weightcategory;
 	}
 
-	
+	public void setWeightcategory(Integer weightcategory) {
+		this.weightcategory = weightcategory;
+	}
 
 	public String getDescription() {
 		return description;
 	}
 
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-
 	public String getImg() {
 		return img;
 	}
-
 
 	public void setImg(String img) {
 		this.img = img;

@@ -90,7 +90,7 @@ public class SaveDeliveryController {
 				saveDeliveryRequestObject.getOriginaddressid(),saveDeliveryRequestObject.getDropaddress(),
 				saveDeliveryRequestObject.getDroplatitude(),saveDeliveryRequestObject.getDroplongitude(),
 				Constants.status_PAYMENT_AWAITING,null,generatedOrder.getID(),razorPayUtil.convertPaisaToRs(generatedOrder.getAmount()),
-				saveDeliveryRequestObject.getDescription(),saveDeliveryRequestObject.getImg());
+				saveDeliveryRequestObject.getDescription(),saveDeliveryRequestObject.getImg(),saveDeliveryRequestObject.getWeightcategory());
 		
         
 		Deliveries savedDelivery=deliveriesRepository.save(recvdDelivery);
