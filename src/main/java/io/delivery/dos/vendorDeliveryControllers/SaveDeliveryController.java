@@ -89,7 +89,8 @@ public class SaveDeliveryController {
         Deliveries recvdDelivery = new Deliveries(null,userid,saveDeliveryRequestObject.getPickuptime(),
 				saveDeliveryRequestObject.getOriginaddressid(),saveDeliveryRequestObject.getDropaddress(),
 				saveDeliveryRequestObject.getDroplatitude(),saveDeliveryRequestObject.getDroplongitude(),
-				Constants.status_PAYMENT_AWAITING,null,generatedOrder.getID(),razorPayUtil.convertPaisaToRs(generatedOrder.getAmount()));
+				Constants.status_PAYMENT_AWAITING,null,generatedOrder.getID(),razorPayUtil.convertPaisaToRs(generatedOrder.getAmount()),
+				saveDeliveryRequestObject.getDescription(),saveDeliveryRequestObject.getImg());
 		
         
 		Deliveries savedDelivery=deliveriesRepository.save(recvdDelivery);

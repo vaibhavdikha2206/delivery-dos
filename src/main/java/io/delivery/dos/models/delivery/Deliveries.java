@@ -43,12 +43,18 @@ public class Deliveries {
 	@Column(name = "deliverycharge")
 	private int deliverycharge;
 	
-
-
+	@Column(name = "description")
+	private String description;
+	
+	@Column(name = "img")
+	private String img;
+	
 	public Deliveries() {}
 	
+	
 	public Deliveries(Integer deliveryid, String userid, String pickuptime, int originaddressid, String dropaddress,
-			Double droplatitude, Double droplongitude, String status, String riderid,String orderid,int deliverycharge) {
+			Double droplatitude, Double droplongitude, String status, String riderid, String orderid,
+			int deliverycharge, String description, String img) {
 		super();
 		this.deliveryid = deliveryid;
 		this.userid = userid;
@@ -60,8 +66,32 @@ public class Deliveries {
 		this.status = status;
 		this.riderid = riderid;
 		this.orderid = orderid;
-		this.deliverycharge=deliverycharge;
+		this.deliverycharge = deliverycharge;
+		this.description = description;
+		this.img = img;
 	}
+
+	
+
+	public String getDescription() {
+		return description;
+	}
+
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+
+	public String getImg() {
+		return img;
+	}
+
+
+	public void setImg(String img) {
+		this.img = img;
+	}
+
 
 	public int getDeliverycharge() {
 		return deliverycharge;
