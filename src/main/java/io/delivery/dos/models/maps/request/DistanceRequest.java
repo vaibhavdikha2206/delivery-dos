@@ -5,15 +5,29 @@ public class DistanceRequest {
 	private double destinationLat;
 	private double destinationLong;
 	private int addressid;
+	private int weightcategory;
 	
 	public DistanceRequest() {}
 
-	public DistanceRequest(double destinationLat, double destinationLong,int addressid) {
+	
+	public DistanceRequest(double destinationLat, double destinationLong, int addressid, int weightcategory) {
 		super();
 		this.destinationLat = destinationLat;
 		this.destinationLong = destinationLong;
 		this.addressid = addressid;
+		this.weightcategory = weightcategory;
 	}
+
+
+	public int getWeightcategory() {
+		return weightcategory;
+	}
+
+
+	public void setWeightcategory(int weightcategory) {
+		this.weightcategory = weightcategory;
+	}
+
 
 	public double getDestinationLat() {
 		return destinationLat;

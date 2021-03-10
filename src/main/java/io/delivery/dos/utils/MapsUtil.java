@@ -51,6 +51,7 @@ public class MapsUtil {
 	
 	private int calculateAmountInPaisa(Double distanceInMetres) {
 		// convert distance to km then multiply by price per km (in paisa) + 10 rs service charge
+		// on top of that metric for weightCategory also Add
 		System.out.println("distanceInMetres  "+distanceInMetres);
 		return (int) Math.round( ((distanceInMetres/1000)*(500))+(1000) );
 	}

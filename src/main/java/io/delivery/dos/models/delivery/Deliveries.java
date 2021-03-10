@@ -52,11 +52,16 @@ public class Deliveries {
 	@Column(name = "weightcategory")
 	private Integer weightcategory;
 	
+	@Column(name = "destinationcontact")
+	private String destinationcontact;
+	
 	public Deliveries() {}
+	
+	
 	
 	public Deliveries(Integer deliveryid, String userid, String pickuptime, int originaddressid, String dropaddress,
 			Double droplatitude, Double droplongitude, String status, String riderid, String orderid,
-			int deliverycharge, String description, String img, Integer weightcategory) {
+			int deliverycharge, String description, String img, Integer weightcategory, String destinationcontact) {
 		super();
 		this.deliveryid = deliveryid;
 		this.userid = userid;
@@ -72,8 +77,17 @@ public class Deliveries {
 		this.description = description;
 		this.img = img;
 		this.weightcategory = weightcategory;
+		this.destinationcontact = destinationcontact;
+	}
+
+	public String getDestinationcontact() {
+		return destinationcontact;
 	}
 	
+	public void setDestinationcontact(String destinationcontact) {
+		this.destinationcontact = destinationcontact;
+	}
+
 	public Integer getWeightcategory() {
 		if(weightcategory==null) {
 			return 2;
