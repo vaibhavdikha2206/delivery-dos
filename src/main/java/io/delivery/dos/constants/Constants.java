@@ -9,6 +9,7 @@ public class Constants {
 	
 	public final static String  delivery_status_Delivery_Scheduling = "DELIVERY_SCHEDULING";
 	public final static String  delivery_status_Delivery_Scheduled = "DELIVERY_SCHEDULED";
+	public final static String  delivery_status_Delivery_Scheduled_Updated = "DELIVERY_SCHEDULED_UPDATED";
 	public final static String  delivery_status_Delivery_Ongoing = "DELIVERY_ONGOING";
 	public final static String  delivery_status_Delivery_Success = "SUCCESS_DELIVERY";
 	

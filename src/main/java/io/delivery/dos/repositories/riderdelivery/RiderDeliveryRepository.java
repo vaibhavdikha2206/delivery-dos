@@ -16,6 +16,7 @@ public interface RiderDeliveryRepository extends JpaRepository<Deliveries, Integ
 	List<Deliveries> findPendingDeliveries();
 	
 	Deliveries findByDeliveryidAndRideridIsNull(Integer deliveryid);
+	Deliveries findByDeliveryid(Integer deliveryid);
 	
 	List<Deliveries> findByRiderid(String riderid);
 	
