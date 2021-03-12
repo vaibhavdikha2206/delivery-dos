@@ -61,7 +61,7 @@ public class DeliverResponseWithOriginAddress {
 	
 	@Column(name = "destinationcontact")
 	private String destinationcontact;
-	
+
 	@ManyToOne
     @JoinColumn(name="addressid", nullable=false)
     private AddressJoin address;
@@ -77,8 +77,12 @@ public class DeliverResponseWithOriginAddress {
 
 	public DeliverResponseWithOriginAddress() {}
 	
-	public DeliverResponseWithOriginAddress(Integer deliveryid, String userid, String pickuptime, int originaddressid, String dropaddress,
-			Double droplatitude, Double droplongitude, String status, String riderid,String orderid,int deliverycharge) {
+	
+
+	public DeliverResponseWithOriginAddress(Integer deliveryid, String userid, String pickuptime, int originaddressid,
+			String dropaddress, Double droplatitude, Double droplongitude, String status, String riderid,
+			String orderid, int deliverycharge, String description, String img, Integer weightcategory,
+			String destinationcontact, AddressJoin address) {
 		super();
 		this.deliveryid = deliveryid;
 		this.userid = userid;
@@ -90,9 +94,46 @@ public class DeliverResponseWithOriginAddress {
 		this.status = status;
 		this.riderid = riderid;
 		this.orderid = orderid;
-		this.deliverycharge=deliverycharge;
+		this.deliverycharge = deliverycharge;
+		this.description = description;
+		this.img = img;
+		this.weightcategory = weightcategory;
+		this.destinationcontact = destinationcontact;
+		this.address = address;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getImg() {
+		return img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
+	}
+
+	public Integer getWeightcategory() {
+		return weightcategory;
+	}
+
+	public void setWeightcategory(Integer weightcategory) {
+		this.weightcategory = weightcategory;
+	}
+
+	public String getDestinationcontact() {
+		return destinationcontact;
+	}
+
+	public void setDestinationcontact(String destinationcontact) {
+		this.destinationcontact = destinationcontact;
+	}
+	
 	public int getDeliverycharge() {
 		return deliverycharge;
 	}
