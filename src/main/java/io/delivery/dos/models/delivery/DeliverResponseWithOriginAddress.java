@@ -50,6 +50,18 @@ public class DeliverResponseWithOriginAddress {
 	@Column(name = "deliverycharge")
 	private int deliverycharge;
 	
+	@Column(name = "description")
+	private String description;
+	
+	@Column(name = "img")
+	private String img;
+	
+	@Column(name = "weightcategory")
+	private Integer weightcategory;
+	
+	@Column(name = "destinationcontact")
+	private String destinationcontact;
+	
 	@ManyToOne
     @JoinColumn(name="addressid", nullable=false)
     private AddressJoin address;
