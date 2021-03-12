@@ -76,8 +76,6 @@ public class DeliverResponseWithOriginAddress {
 	}
 
 	public DeliverResponseWithOriginAddress() {}
-	
-	
 
 	public DeliverResponseWithOriginAddress(Integer deliveryid, String userid, String pickuptime, int originaddressid,
 			String dropaddress, Double droplatitude, Double droplongitude, String status, String riderid,
