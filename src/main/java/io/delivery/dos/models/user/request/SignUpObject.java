@@ -6,6 +6,7 @@ public class SignUpObject {
 	private String name;
 	private String password;
 	private String role;
+	private String email;
 	private String signkey;
 	
 	
@@ -13,14 +14,27 @@ public class SignUpObject {
 
 	}
 
-	public SignUpObject(String userid, String name, String password,String signkey,String role) {
+	
+	public SignUpObject(String userid, String name, String password, String role, String email, String signkey) {
 		super();
 		this.userid = userid;
 		this.name = name;
 		this.password = password;
-		this.signkey=signkey;
-		this.role=role;
+		this.role = role;
+		this.email = email;
+		this.signkey = signkey;
 	}
+
+
+	public String getEmail() {
+		return email;
+	}
+
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 
 	public String getSignkey() {
 		return signkey;

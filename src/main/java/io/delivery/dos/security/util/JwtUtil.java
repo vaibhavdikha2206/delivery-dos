@@ -47,6 +47,7 @@ import org.springframework.stereotype.Service;
          Map<String, Object> claims = new HashMap<>();
          claims.put("name", userDetails.getName());
          claims.put("role", userDetails.getRole());
+         claims.put("email", userDetails.getEmail());
          return createToken(claims, userDetails.getUsername());
      }
 

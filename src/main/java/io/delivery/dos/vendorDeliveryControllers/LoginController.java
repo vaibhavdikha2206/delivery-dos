@@ -78,7 +78,7 @@ public class LoginController {
 	public Profile signUp(@RequestBody SignUpObject signUpObject) throws JpaSystemException , Exception {
 		
 		if(signUpObject.getSignkey().equals(keySign)) {	
-		System.out.println("Signup "+signUpObject.getName()+","+signUpObject.getUserid()+","+signUpObject.getPassword());
+		System.out.println("Signup "+signUpObject.getName()+","+signUpObject.getUserid()+","+signUpObject.getPassword()+","+signUpObject.getEmail());
 		}
 		else {
 			throw new Exception("Sorry,cant Sign Up , Please Try Again");
@@ -87,7 +87,7 @@ public class LoginController {
 		if(profileRepository.findByUseridCustom(signUpObject.getUserid())!=null) {
 			throw new Exception("Username Already Exists");
 		}
-		Profile profile = new Profile(signUpObject.getUserid(),signUpObject.getName(),signUpObject.getPassword(),signUpObject.getRole());
+		Profile profile = new Profile(signUpObject.getUserid(),signUpObject.getName(),signUpObject.getPassword(),signUpObject.getRole(),signUpObject.getEmail());
 		return signUpRepository.save(profile);	
 	}
 	

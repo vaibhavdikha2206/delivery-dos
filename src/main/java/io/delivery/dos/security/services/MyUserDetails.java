@@ -18,6 +18,7 @@ public class MyUserDetails implements UserDetails{
 	private String name;
 	private String password;
 	private String role;
+	private String email;
 	
 	public MyUserDetails(ProfileUser user) {
 		super();
@@ -26,6 +27,7 @@ public class MyUserDetails implements UserDetails{
 		this.name = user.getUsername();
 		this.password = user.getPassword();
 		this.role = user.getRole();
+		this.email = user.getEmail();
 	}
 
 
@@ -87,6 +89,17 @@ public class MyUserDetails implements UserDetails{
 		this.name = name;
 	}
 	
+	
+	public String getEmail() {
+		return email;
+	}
+
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+
 	public String getRole() {
 		return role;
 	}

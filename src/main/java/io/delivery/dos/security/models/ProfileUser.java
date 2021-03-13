@@ -16,19 +16,29 @@ public class ProfileUser {
 	private String username;
 	private String password;
 	private String role;
+	private String email;
 	
 	public ProfileUser() {
 		
 	}
 	
-	public ProfileUser(String userid,String password,String username,String role) {
+	public ProfileUser(String userid, String username, String password, String role, String email) {
 		super();
 		this.userid = userid;
 		this.username = username;
 		this.password = password;
-		this.role=role;
+		this.role = role;
+		this.email = email;
 	}
-	
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public String getUsername() {
 		return username;
 	}
