@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.delivery.dos.models.delivery.DeliverResponseWithOriginAddress;
 import io.delivery.dos.models.delivery.Deliveries;
 import io.delivery.dos.models.delivery.userdeliveries.GetDeliveriesListResponse;
+import io.delivery.dos.models.delivery.userdeliveries.GetDeliveriesListWithAddressResponse;
 import io.delivery.dos.repositories.delivery.AdminDeliveriesRepository;
+import io.delivery.dos.repositories.delivery.AdminDeliveryRepositoryWithAddress;
 import io.delivery.dos.repositories.delivery.DeliveriesRepository;
 import io.delivery.dos.security.util.JwtUtil;
 
@@ -24,18 +27,17 @@ public class AdminDataController {
     private JwtUtil jwtUtil;
 	
 	@Autowired
-	private AdminDeliveriesRepository adminDeliveriesRepository;
+	private AdminDeliveryRepositoryWithAddress adminDeliveryRepositoryWithAddress;
 	
 	@RequestMapping(method=RequestMethod.GET,value="/getDeliveriesList/{status}")
-	public GetDeliveriesListResponse getUsersDeliveryList(@RequestHeader (name="Authorization") String authorizationHeader,@PathVariable String status) throws Exception { 
+	public GetDeliveriesListWithAddressResponse getUsersDeliveryList(@RequestHeader (name="Authorization") String authorizationHeader,@PathVariable String status) throws Exception { 
 		// get drivers engaged during requested time
 		String jwt = authorizationHeader.substring(7);
-        String userid = jwtUtil.extractUsername(jwt);
         checkAdmin(jwt);
         
-        List<Deliveries> deliveries = adminDeliveriesRepository.findByStatusOrderbypickuptime(status);
+        List<DeliverResponseWithOriginAddress> deliveries = adminDeliveryRepositoryWithAddress.getJoinedInfo(status);
         
-        return new GetDeliveriesListResponse(deliveries);
+        return new GetDeliveriesListWithAddressResponse(deliveries);
 	}
 
 	
