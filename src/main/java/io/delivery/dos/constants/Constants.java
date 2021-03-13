@@ -25,4 +25,6 @@ public class Constants {
 	
 	public final static String capturedStatusRazorPay = "captured";
 	public final static String statusKeyRazorPay = "status";
+	
+	public final static int  basePriceInPaisa = 5000;
 }

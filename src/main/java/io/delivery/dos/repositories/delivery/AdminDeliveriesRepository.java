@@ -15,6 +15,6 @@ public interface AdminDeliveriesRepository extends JpaRepository<Deliveries, Int
 	List<Deliveries> findByStatusOrderbypickuptime(@Param("status")String status);
 	
 	//gets you entire schedule at specified pickuptime
-	@Query(value="select * from Deliveries where pickuptime = :pickuptime And riderid is not null",nativeQuery = true)
+	@Query(value="select * from Deliveries where pickuptime = :pickuptime And riderid is not null order by deliveryid desc",nativeQuery = true)
 	List<Deliveries> findByPickuptimeWhereRideridIsNotnull(@Param("pickuptime")String pickuptime);
 }

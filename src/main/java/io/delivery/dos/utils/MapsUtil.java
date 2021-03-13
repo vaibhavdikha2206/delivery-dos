@@ -41,19 +41,37 @@ public class MapsUtil {
 	}
 	
 	
-	public int getAmountFromDistanceInPaisa(Address originAddress,double destinationLat,double destinationLong) {
+	public int getAmountFromDistanceInPaisa(Address originAddress,double destinationLat,double destinationLong,int weightCategory) {
 		System.out.println("origin address "+originAddress.getLatitude()+","+originAddress.getLongitude());
 		System.out.println("destination address "+destinationLat+","+destinationLong);
 		
 		Maps mapval=caclulateDistance(originAddress.getLatitude(),originAddress.getLongitude(),destinationLat,destinationLong);
-		return calculateAmountInPaisa(getValueInMetres(mapval));
+		return calculateAmountInPaisa(getValueInMetres(mapval),weightCategory);
 	}
 	
-	private int calculateAmountInPaisa(Double distanceInMetres) {
+	private int calculateAmountInPaisa(Double distanceInMetres,int weightCategory) {
 		// convert distance to km then multiply by price per km (in paisa) + 10 rs service charge
 		// on top of that metric for weightCategory also Add
 		System.out.println("distanceInMetres  "+distanceInMetres);
-		return (int) Math.round( ((distanceInMetres/1000)*(500))+(1000) );
+		return (int) Math.round( Constants.basePriceInPaisa + ((getDistanceForAmountCalculation(distanceInMetres))*(1000))+ getAmountInPaisaForWeightCategory(weightCategory) );
+	}
+	
+	private int getAmountInPaisaForWeightCategory(int weightCategory) {
+		switch(weightCategory) {
+		case 1 : return 3000;
+		case 2 : return 4000;
+		default: return 5000;
+		}
+	}
+	
+	private double getDistanceForAmountCalculation(Double distanceInMetres) {
+		
+		if(((distanceInMetres/1000)-2)>=0) {
+			return ((distanceInMetres/1000)-2) ;
+		}
+		else {
+			return 0;
+		}
 	}
 	
 	private double getValueInMetres(Maps mapObject) {

@@ -82,7 +82,7 @@ public class SaveDeliveryController {
         map.put("key2", "key2 value");
       
         System.out.println("1");
-        int amountInPaisa = mapsUtil.getAmountFromDistanceInPaisa(originAddress,saveDeliveryRequestObject.getDroplatitude(),saveDeliveryRequestObject.getDroplongitude());
+        int amountInPaisa = mapsUtil.getAmountFromDistanceInPaisa(originAddress,saveDeliveryRequestObject.getDroplatitude(),saveDeliveryRequestObject.getDroplongitude(),saveDeliveryRequestObject.getWeightcategory());
         System.out.println("2");
         GeneratedOrder generatedOrder = razorPayUtil.generateOrderId(amountInPaisa,"reciept for "+userid,map);   
 		
