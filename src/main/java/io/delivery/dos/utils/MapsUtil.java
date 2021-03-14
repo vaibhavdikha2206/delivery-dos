@@ -58,8 +58,8 @@ public class MapsUtil {
 	
 	private int getAmountInPaisaForWeightCategory(int weightCategory) {
 		switch(weightCategory) {
-		case 1 : return 3000;
-		case 2 : return 4000;
+		case 1 : return 0;
+		case 2 : return 3000;
 		default: return 5000;
 		}
 	}
