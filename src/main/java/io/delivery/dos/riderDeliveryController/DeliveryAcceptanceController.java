@@ -1,5 +1,7 @@
 package io.delivery.dos.riderDeliveryController;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,8 +74,15 @@ public class DeliveryAcceptanceController {
 		String jwt = authorizationHeader.substring(7);
         String userid = jwtUtil.extractUsername(jwt);
         checkRider(jwt);
-        List<DeliverResponseWithOriginAddress> acceptedDeliveries = riderDeliveryJoinRepository.findByRiderid(userid,"DELIVERY_SCHEDULED");
+        getCurrentTime();
+        List<DeliverResponseWithOriginAddress> acceptedDeliveries = riderDeliveryJoinRepository.getJoinedInfoForPendingAndOnGoingDeliveries(userid,Constants.delivery_status_Delivery_Scheduled,Constants.delivery_status_Delivery_Ongoing);
         return new RiderPendingDeliveriesResponse(acceptedDeliveries);
+	}
+	
+	private void getCurrentTime() {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+		   LocalDateTime now = LocalDateTime.now();  
+		   System.out.println("Current Time is "+dtf.format(now));  	
 	}
 	
 	private void sendNotificationToUserForAcceptance(String userid,Deliveries delivery) throws FirebaseMessagingException {
