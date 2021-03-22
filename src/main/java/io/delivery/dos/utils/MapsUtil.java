@@ -41,19 +41,42 @@ public class MapsUtil {
 	}
 	
 	
-	public int getAmountFromDistanceInPaisa(Address originAddress,double destinationLat,double destinationLong,int weightCategory) {
+	public int getAmountFromParamsInPaisa(Address originAddress,double destinationLat,double destinationLong,int weightCategory, boolean isDelicate, boolean isBalloonAdded, boolean isBouqetAdded, boolean isTwoCake) {
 		System.out.println("origin address "+originAddress.getLatitude()+","+originAddress.getLongitude());
 		System.out.println("destination address "+destinationLat+","+destinationLong);
 		
 		Maps mapval=caclulateDistance(originAddress.getLatitude(),originAddress.getLongitude(),destinationLat,destinationLong);
-		return calculateAmountInPaisa(getValueInMetres(mapval),weightCategory);
+		return calculateAmountInPaisa(getValueInMetres(mapval),weightCategory,isDelicate,isBalloonAdded,isBouqetAdded,isTwoCake);
 	}
 	
-	private int calculateAmountInPaisa(Double distanceInMetres,int weightCategory) {
+	private int calculateAmountInPaisa(Double distanceInMetres,int weightCategory, boolean isDelicate, boolean isBalloonAdded, boolean isBouqetAdded, boolean isTwoCake) {
 		// convert distance to km then multiply by price per km (in paisa) + 10 rs service charge
 		// on top of that metric for weightCategory also Add
 		System.out.println("distanceInMetres  "+distanceInMetres);
-		return (int) Math.round( Constants.basePriceInPaisa + ((getDistanceForAmountCalculation(distanceInMetres))*(1000))+ getAmountInPaisaForWeightCategory(weightCategory) );
+		return (int) Math.round( Constants.basePriceInPaisa + ((getDistanceForAmountCalculation(distanceInMetres))*(1000))+ getAmountInPaisaForWeightCategory(weightCategory) 
+				//extra items pricing
+				+ getAmountForDelicateCake(isDelicate) + getAmountForExtraBalloon(isBalloonAdded) + getAmountForExtraBouqet(isBouqetAdded) + getAmountForExtraTwoCake(isTwoCake)
+				);
+	}
+	
+	private int getAmountForDelicateCake(boolean isDelicate) {
+		if(isDelicate) return 3000;
+		else return 0;
+	}
+	
+	private int getAmountForExtraBalloon(boolean isBalloonAdded) {
+		if(isBalloonAdded) return 2000;
+		else return 0;
+	}
+	
+	private int getAmountForExtraBouqet(boolean isBouqetAdded) {
+		if(isBouqetAdded) return 3000;
+		else return 0;
+	}
+	
+	private int getAmountForExtraTwoCake(boolean isTwoCake) {
+		if(isTwoCake) return 4000;
+		else return 0;
 	}
 	
 	private int getAmountInPaisaForWeightCategory(int weightCategory) {

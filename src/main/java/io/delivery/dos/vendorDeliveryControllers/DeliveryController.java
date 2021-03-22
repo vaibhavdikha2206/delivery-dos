@@ -85,7 +85,9 @@ public class DeliveryController {
         Address originAddress = addressRepository.findOneByUseridAndAddressid(userid, distanceRequest.getAddressid());
         
         return new DistanceResponseWithAmount(
-        		razorPayUtil.convertPaisaToRs(mapsUtil.getAmountFromDistanceInPaisa(originAddress,distanceRequest.getDestinationLat(),distanceRequest.getDestinationLong(),distanceRequest.getWeightcategory()))
+        		razorPayUtil.convertPaisaToRs(mapsUtil.getAmountFromParamsInPaisa(originAddress,distanceRequest.getDestinationLat(),distanceRequest.getDestinationLong(),distanceRequest.getWeightcategory(),
+        				distanceRequest.isDelicate(),distanceRequest.isBalloonAdded(),distanceRequest.isBouqetAdded(),distanceRequest.isTwoCakes()
+        				))
         		);
 	}
 	

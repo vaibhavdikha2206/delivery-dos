@@ -62,25 +62,31 @@ public class DeliverResponseWithOriginAddress {
 	@Column(name = "destinationcontact")
 	private String destinationcontact;
 
+	@Column(name = "isDelicate")
+	private boolean isDelicate;
+
+	@Column(name = "isBalloonAdded")
+	private boolean isBalloonAdded;
+
+	@Column(name = "isBouqetAdded")
+	private boolean isBouqetAdded;
+	
+	@Column(name = "isTwoCakes")
+	private boolean isTwoCakes;
+
 	@ManyToOne
     @JoinColumn(name="addressid", nullable=false)
     private AddressJoin address;
-	
-	
-	public AddressJoin getAddress() {
-		return address;
-	}
-
-	public void setAddress(AddressJoin address) {
-		this.address = address;
-	}
 
 	public DeliverResponseWithOriginAddress() {}
+
+
 
 	public DeliverResponseWithOriginAddress(Integer deliveryid, String userid, String pickuptime, int originaddressid,
 			String dropaddress, Double droplatitude, Double droplongitude, String status, String riderid,
 			String orderid, int deliverycharge, String description, String img, Integer weightcategory,
-			String destinationcontact, AddressJoin address) {
+			String destinationcontact, boolean isDelicate, boolean isBalloonAdded, boolean isBouqetAdded,
+			boolean isTwoCakes, AddressJoin address) {
 		super();
 		this.deliveryid = deliveryid;
 		this.userid = userid;
@@ -97,9 +103,55 @@ public class DeliverResponseWithOriginAddress {
 		this.img = img;
 		this.weightcategory = weightcategory;
 		this.destinationcontact = destinationcontact;
+		this.isDelicate = isDelicate;
+		this.isBalloonAdded = isBalloonAdded;
+		this.isBouqetAdded = isBouqetAdded;
+		this.isTwoCakes = isTwoCakes;
 		this.address = address;
 	}
 
+
+
+	public AddressJoin getAddress() {
+		return address;
+	}
+
+	public void setAddress(AddressJoin address) {
+		this.address = address;
+	}
+	
+	public boolean getIsDelicate() {
+		return isDelicate;
+	}
+
+	public void setIsDelicate(boolean isDelicate) {
+		this.isDelicate = isDelicate;
+	}
+
+	public boolean getIsBalloonAdded() {
+		return isBalloonAdded;
+	}
+
+	public void setIsBalloonAdded(boolean isBalloonAdded) {
+		this.isBalloonAdded = isBalloonAdded;
+	}
+
+	public boolean getIsBouqetAdded() {
+		return isBouqetAdded;
+	}
+
+	public void setIsBouqetAdded(boolean isBouqetAdded) {
+		this.isBouqetAdded = isBouqetAdded;
+	}
+
+	public boolean getIsTwoCakes() {
+		return isTwoCakes;
+	}
+
+	public void setIsTwoCakes(boolean isTwoCakes) {
+		this.isTwoCakes = isTwoCakes;
+	}
+	
 	public String getDescription() {
 		return description;
 	}
