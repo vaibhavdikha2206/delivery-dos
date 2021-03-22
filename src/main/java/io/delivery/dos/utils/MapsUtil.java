@@ -44,7 +44,7 @@ public class MapsUtil {
 	public int getAmountFromParamsInPaisa(Address originAddress,double destinationLat,double destinationLong,int weightCategory, boolean isDelicate, boolean isBalloonAdded, boolean isBouqetAdded, boolean isTwoCake) {
 		System.out.println("origin address "+originAddress.getLatitude()+","+originAddress.getLongitude());
 		System.out.println("destination address "+destinationLat+","+destinationLong);
-		
+		System.out.println("isDelicate "+isDelicate);
 		Maps mapval=caclulateDistance(originAddress.getLatitude(),originAddress.getLongitude(),destinationLat,destinationLong);
 		return calculateAmountInPaisa(getValueInMetres(mapval),weightCategory,isDelicate,isBalloonAdded,isBouqetAdded,isTwoCake);
 	}

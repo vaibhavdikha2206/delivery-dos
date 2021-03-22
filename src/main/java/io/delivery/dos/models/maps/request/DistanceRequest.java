@@ -2,6 +2,8 @@ package io.delivery.dos.models.maps.request;
 
 import javax.persistence.Column;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class DistanceRequest {
 
 	private double destinationLat;
@@ -9,9 +11,13 @@ public class DistanceRequest {
 	private int addressid;
 	private int weightcategory;
 	
+	@JsonProperty
 	private boolean isDelicate;
+	@JsonProperty
 	private boolean isBalloonAdded;
+	@JsonProperty
 	private boolean isBouqetAdded;
+	@JsonProperty
 	private boolean isTwoCakes;
 	
 	public DistanceRequest() {}

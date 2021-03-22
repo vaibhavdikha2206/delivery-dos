@@ -76,6 +76,9 @@ public class SaveDeliveryController {
         
         Address originAddress = addressUtil.checkIfAddressCorrespondsToUser(userid, saveDeliveryRequestObject.getOriginaddressid());
         System.out.println("deliveryaddress verified for "+userid+","+saveDeliveryRequestObject.getOriginaddressid());
+        
+        System.out.println("isDelicateCheck "+saveDeliveryRequestObject.getIsDelicate());
+        
         if(originAddress !=null) {
         Map<String, String> map = new HashMap<String, String>();
         map.put("key1", "key1 value");

@@ -80,7 +80,7 @@ public class DeliveryController {
 		String jwt = authorizationHeader.substring(7);
         String userid = jwtUtil.extractUsername(jwt);
         
-        System.out.println("getamount for "+userid+","+distanceRequest.getAddressid()+",weightCat"+distanceRequest.getWeightcategory());
+        System.out.println("getamount for "+userid+","+distanceRequest.getAddressid()+",weightCat "+distanceRequest.getWeightcategory()+", isDelicate "+distanceRequest.isDelicate());
         
         Address originAddress = addressRepository.findOneByUseridAndAddressid(userid, distanceRequest.getAddressid());
         

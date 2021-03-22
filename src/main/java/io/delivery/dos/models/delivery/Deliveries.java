@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 public class Deliveries {
 
@@ -55,15 +57,19 @@ public class Deliveries {
 	@Column(name = "destinationcontact")
 	private String destinationcontact;
 	
+	@JsonProperty
 	@Column(name = "isDelicate")
 	private boolean isDelicate;
 
+	@JsonProperty
 	@Column(name = "isBalloonAdded")
 	private boolean isBalloonAdded;
 
+	@JsonProperty
 	@Column(name = "isBouqetAdded")
 	private boolean isBouqetAdded;
 	
+	@JsonProperty
 	@Column(name = "isTwoCakes")
 	private boolean isTwoCakes;
 	
