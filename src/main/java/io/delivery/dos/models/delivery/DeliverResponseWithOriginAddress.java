@@ -8,6 +8,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import io.delivery.dos.models.address.Address;
 import io.delivery.dos.models.address.AddressJoin;
 
@@ -62,15 +64,19 @@ public class DeliverResponseWithOriginAddress {
 	@Column(name = "destinationcontact")
 	private String destinationcontact;
 
+	@JsonProperty
 	@Column(name = "isDelicate")
 	private boolean isDelicate;
 
+	@JsonProperty
 	@Column(name = "isBalloonAdded")
 	private boolean isBalloonAdded;
 
+	@JsonProperty
 	@Column(name = "isBouqetAdded")
 	private boolean isBouqetAdded;
 	
+	@JsonProperty
 	@Column(name = "isTwoCakes")
 	private boolean isTwoCakes;
 
