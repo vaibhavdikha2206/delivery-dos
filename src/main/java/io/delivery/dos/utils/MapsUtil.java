@@ -53,10 +53,11 @@ public class MapsUtil {
 		// convert distance to km then multiply by price per km (in paisa) + 10 rs service charge
 		// on top of that metric for weightCategory also Add
 		System.out.println("distanceInMetres  "+distanceInMetres);
-		return (int) Math.round( Constants.basePriceInPaisa + ((getDistanceForAmountCalculation(distanceInMetres))*(1000))+ getAmountInPaisaForWeightCategory(weightCategory) 
+		return (int) Math.round(200);
+		/*return (int) Math.round( Constants.basePriceInPaisa + ((getDistanceForAmountCalculation(distanceInMetres))*(1000))+ getAmountInPaisaForWeightCategory(weightCategory) 
 				//extra items pricing
 				+ getAmountForDelicateCake(isDelicate) + getAmountForExtraBalloon(isBalloonAdded) + getAmountForExtraBouqet(isBouqetAdded) + getAmountForExtraTwoCake(isTwoCake)
-				);
+				);*/
 	}
 	
 	private int getAmountForDelicateCake(boolean isDelicate) {
