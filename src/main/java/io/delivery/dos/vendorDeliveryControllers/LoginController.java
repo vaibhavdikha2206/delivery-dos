@@ -109,7 +109,7 @@ public class LoginController {
 	
 	private void getCurrentTime() {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
-		   LocalDateTime now = LocalDateTime.now();  
+		   LocalDateTime now = LocalDateTime.now().plusMinutes(330);  
 		   System.out.println("Current Time is "+dtf.format(now));  	
 	}
 	
