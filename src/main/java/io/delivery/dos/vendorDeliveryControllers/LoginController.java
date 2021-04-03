@@ -1,5 +1,8 @@
 package io.delivery.dos.vendorDeliveryControllers;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
@@ -70,7 +73,8 @@ public class LoginController {
 		}
 		
 		final MyUserDetails userDetails = (MyUserDetails) userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-		final String jwt = jwtTokenUtil.generateToken(userDetails);		
+		final String jwt = jwtTokenUtil.generateToken(userDetails);	
+		getCurrentTime();
 		return ResponseEntity.ok(new AuthenticationResponse(jwt));
 	}
 
@@ -102,4 +106,11 @@ public class LoginController {
 		}
 		return new TokenUpdatedResponseObject(0,"Error"); 
 	}
+	
+	private void getCurrentTime() {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+		   LocalDateTime now = LocalDateTime.now();  
+		   System.out.println("Current Time is "+dtf.format(now));  	
+	}
+	
 }

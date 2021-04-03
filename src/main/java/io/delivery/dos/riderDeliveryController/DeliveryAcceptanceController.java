@@ -74,15 +74,8 @@ public class DeliveryAcceptanceController {
 		String jwt = authorizationHeader.substring(7);
         String userid = jwtUtil.extractUsername(jwt);
         checkRider(jwt);
-        getCurrentTime();
         List<DeliverResponseWithOriginAddress> acceptedDeliveries = riderDeliveryJoinRepository.getJoinedInfoForPendingAndOnGoingDeliveries(userid,Constants.delivery_status_Delivery_Scheduled,Constants.delivery_status_Delivery_Ongoing);
         return new RiderPendingDeliveriesResponse(acceptedDeliveries);
-	}
-	
-	private void getCurrentTime() {
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
-		   LocalDateTime now = LocalDateTime.now();  
-		   System.out.println("Current Time is "+dtf.format(now));  	
 	}
 	
 	private void sendNotificationToUserForAcceptance(String userid,Deliveries delivery) throws FirebaseMessagingException {

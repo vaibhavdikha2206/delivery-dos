@@ -46,7 +46,14 @@ public class MapsUtil {
 		System.out.println("destination address "+destinationLat+","+destinationLong);
 		System.out.println("isDelicate "+isDelicate);
 		Maps mapval=caclulateDistance(originAddress.getLatitude(),originAddress.getLongitude(),destinationLat,destinationLong);
-		return calculateAmountInPaisa(getValueInMetres(mapval),weightCategory,isDelicate,isBalloonAdded,isBouqetAdded,isTwoCake);
+		return getPrettyPrice( 
+				calculateAmountInPaisa(getValueInMetres(mapval),weightCategory,isDelicate,isBalloonAdded,isBouqetAdded,isTwoCake)
+				);
+	}
+	
+	//pretty price is just to cater to absurd 56.75 types prices out of the question
+	private int getPrettyPrice(int price) {
+		return (Math.round(price/100))*100;
 	}
 	
 	private int calculateAmountInPaisa(Double distanceInMetres,int weightCategory, boolean isDelicate, boolean isBalloonAdded, boolean isBouqetAdded, boolean isTwoCake) {
@@ -54,10 +61,22 @@ public class MapsUtil {
 		// on top of that metric for weightCategory also Add
 		System.out.println("distanceInMetres  "+distanceInMetres);
 		//return (int) Math.round(200);
-		return (int) Math.round( Constants.basePriceInPaisa + ((getDistanceForAmountCalculation(distanceInMetres))*(1000))+ getAmountInPaisaForWeightCategory(weightCategory) 
+		return (int) Math.round( getRoundedPrice(
+					Constants.basePriceInPaisa + ((getDistanceForAmountCalculation(distanceInMetres))*(1000))+ getAmountInPaisaForWeightCategory(weightCategory) 
 				//extra items pricing
 				+ getAmountForDelicateCake(isDelicate) + getAmountForExtraBalloon(isBalloonAdded) + getAmountForExtraBouqet(isBouqetAdded) + getAmountForExtraTwoCake(isTwoCake)
-				);
+				)
+			);
+	}
+	
+	private double getRoundedPrice(double price) {
+		if(5000<price&&price<=7000) {
+			return 7000;
+		}
+		else if ( 7000<price&&price<=9000) {
+			return 9000;
+		}
+		else return price ;
 	}
 	
 	private int getAmountForDelicateCake(boolean isDelicate) {
