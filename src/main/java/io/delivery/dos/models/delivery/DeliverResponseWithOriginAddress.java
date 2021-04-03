@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.delivery.dos.models.address.Address;
 import io.delivery.dos.models.address.AddressJoin;
+import io.delivery.dos.models.user.ProfileJoin;
 
 @Entity
 @Table(name="Deliveries")
@@ -80,10 +81,17 @@ public class DeliverResponseWithOriginAddress {
 	@Column(name = "isTwoCakes")
 	private boolean isTwoCakes;
 
+	@Column(name = "amount")
+	private double amount ;
+	
 	@ManyToOne
     @JoinColumn(name="addressid", nullable=false)
     private AddressJoin address;
 
+	@ManyToOne
+    @JoinColumn(name="userid", nullable=false,insertable =false,updatable = false)
+    private ProfileJoin profile;
+	
 	public DeliverResponseWithOriginAddress() {}
 
 
@@ -92,7 +100,7 @@ public class DeliverResponseWithOriginAddress {
 			String dropaddress, Double droplatitude, Double droplongitude, String status, String riderid,
 			String orderid, int deliverycharge, String description, String img, Integer weightcategory,
 			String destinationcontact, boolean isDelicate, boolean isBalloonAdded, boolean isBouqetAdded,
-			boolean isTwoCakes, AddressJoin address) {
+			boolean isTwoCakes, double amount,AddressJoin address,ProfileJoin profile) {
 		super();
 		this.deliveryid = deliveryid;
 		this.userid = userid;
@@ -114,6 +122,32 @@ public class DeliverResponseWithOriginAddress {
 		this.isBouqetAdded = isBouqetAdded;
 		this.isTwoCakes = isTwoCakes;
 		this.address = address;
+		this.profile= profile;
+		this.amount=amount;
+	}
+
+
+
+	public double getAmount() {
+		return amount;
+	}
+
+
+
+	public void setAmount(double amount) {
+		this.amount = amount;
+	}
+
+
+
+	public ProfileJoin getProfile() {
+		return profile;
+	}
+
+
+
+	public void setProfile(ProfileJoin profile) {
+		this.profile = profile;
 	}
 
 
