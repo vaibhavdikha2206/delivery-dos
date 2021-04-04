@@ -73,15 +73,12 @@ public class Deliveries {
 	@Column(name = "isTwoCakes")
 	private boolean isTwoCakes;
 	
-	@Column(name = "amount")
-	private double amount ;
-	
 	public Deliveries() {}
 	
 	public Deliveries(Integer deliveryid, String userid, String pickuptime, int originaddressid, String dropaddress,
 			Double droplatitude, Double droplongitude, String status, String riderid, String orderid,
 			int deliverycharge, String description, String img, Integer weightcategory, String destinationcontact,
-			boolean isDelicate, boolean isBalloonAdded, boolean isBouqetAdded, boolean isTwoCakes,double amount) {
+			boolean isDelicate, boolean isBalloonAdded, boolean isBouqetAdded, boolean isTwoCakes) {
 		super();
 		this.deliveryid = deliveryid;
 		this.userid = userid;
@@ -102,16 +99,6 @@ public class Deliveries {
 		this.isBalloonAdded = isBalloonAdded;
 		this.isBouqetAdded = isBouqetAdded;
 		this.isTwoCakes = isTwoCakes;
-		this.amount = amount;
-	}
-
-	
-	public double getAmount() {
-		return amount;
-	}
-
-	public void setAmount(double amount) {
-		this.amount = amount;
 	}
 
 	public boolean getIsDelicate() {

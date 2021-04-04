@@ -97,7 +97,7 @@ public class SaveDeliveryController {
 				saveDeliveryRequestObject.getDroplatitude(),saveDeliveryRequestObject.getDroplongitude(),
 				Constants.status_PAYMENT_AWAITING,null,generatedOrder.getID(),razorPayUtil.convertPaisaToRs(generatedOrder.getAmount()),
 				saveDeliveryRequestObject.getDescription(),saveDeliveryRequestObject.getImg(),saveDeliveryRequestObject.getWeightcategory(),saveDeliveryRequestObject.getDestinationcontact(),
-				saveDeliveryRequestObject.getIsDelicate(),saveDeliveryRequestObject.getIsBalloonAdded(),saveDeliveryRequestObject.getIsBouqetAdded(),saveDeliveryRequestObject.getIsTwoCakes(),razorPayUtil.convertPaisaToRs(amountInPaisa));
+				saveDeliveryRequestObject.getIsDelicate(),saveDeliveryRequestObject.getIsBalloonAdded(),saveDeliveryRequestObject.getIsBouqetAdded(),saveDeliveryRequestObject.getIsTwoCakes());
         
 		Deliveries savedDelivery=deliveriesRepository.save(recvdDelivery);
 		//after save success get order id and send object		
