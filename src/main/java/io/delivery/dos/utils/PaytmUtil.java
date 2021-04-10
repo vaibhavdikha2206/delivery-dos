@@ -34,8 +34,8 @@ public class PaytmUtil {
 		body.put("mid", "KaUwui76667909288501");
 		body.put("websiteName", "WEBSTAGING");
 		body.put("orderId", orderId);
-		body.put("callbackUrl", "https://merchant.com/callback");
-
+		body.put("callbackUrl", String.format("https://securegw-stage.paytm.in/theia/paytmCallback?ORDER_ID=%s",orderId));
+		
 		JSONObject txnAmount = new JSONObject();
 		txnAmount.put("value",amountInRs);
 		txnAmount.put("currency", "INR");
