@@ -5,14 +5,34 @@ public class SaveDeliveryResponse {
 	private long amountDue ;
 	private String orderId ;
 	private int deliveryId ;
+	private String txnToken ; 
+	private String paymentMethod ; 
 	
 	public SaveDeliveryResponse() {}
 	
-	public SaveDeliveryResponse(long amountDue, String orderId, int deliveryId) {
+	public SaveDeliveryResponse(long amountDue, String orderId, int deliveryId,String txnToken,String paymentMethod) {
 		super();
 		this.amountDue = amountDue;
 		this.orderId = orderId;
 		this.deliveryId = deliveryId;
+		this.txnToken = txnToken;
+		this.paymentMethod = paymentMethod;
+	}
+
+	public String getTxnToken() {
+		return txnToken;
+	}
+
+	public void setTxnToken(String txnToken) {
+		this.txnToken = txnToken;
+	}
+
+	public String getPaymentMethod() {
+		return paymentMethod;
+	}
+
+	public void setPaymentMethod(String paymentMethod) {
+		this.paymentMethod = paymentMethod;
 	}
 
 	public long getAmountDue() {

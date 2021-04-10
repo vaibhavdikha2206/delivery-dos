@@ -1,5 +1,7 @@
 package io.delivery.dos.vendorDeliveryControllers;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +30,7 @@ import io.delivery.dos.models.delivery.savedelivery.SaveDeliveryRequestObject;
 import io.delivery.dos.models.delivery.savedelivery.SaveDeliveryResponse;
 import io.delivery.dos.models.initiatedelivery.InitiateDeliveryRequestObject;
 import io.delivery.dos.models.initiatedelivery.InitiateDeliveryResponseObject;
+import io.delivery.dos.models.paytm.GeneratedOrderPaytm;
 import io.delivery.dos.models.razorpay.GeneratedOrder;
 import io.delivery.dos.models.razorpay.RazorPayNotes;
 import io.delivery.dos.repositories.delivery.DeliveriesRepository;
@@ -38,6 +41,7 @@ import io.delivery.dos.utils.AddressUtil;
 import io.delivery.dos.utils.DeliveryStatusUtil;
 import io.delivery.dos.utils.MapsUtil;
 import io.delivery.dos.utils.NotifUtil;
+import io.delivery.dos.utils.PaytmUtil;
 import io.delivery.dos.utils.RazorPayUtil;
 
 @RestController
@@ -51,6 +55,9 @@ public class SaveDeliveryController {
 	
 	@Autowired
 	private RazorPayUtil razorPayUtil;
+	
+	@Autowired
+	private PaytmUtil paytmUtil;
 	
 	@Autowired
 	private MapsUtil mapsUtil;
@@ -67,6 +74,13 @@ public class SaveDeliveryController {
 	@Autowired
 	private DeliveryStatusUtil deliveryStatusUtil;
 	
+	private String getCurrentTime() {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH_mm_ss");  
+		   LocalDateTime now = LocalDateTime.now().plusMinutes(330);  
+		   System.out.println("Current Time is "+dtf.format(now));
+		   return dtf.format(now);
+	}
+	
 	@RequestMapping(method=RequestMethod.POST,value="/deliveryRequest")
 	public SaveDeliveryResponse deliveryRequest(@RequestBody Deliveries saveDeliveryRequestObject,@RequestHeader (name="Authorization") String authorizationHeader) throws Exception { 
 	
@@ -75,39 +89,70 @@ public class SaveDeliveryController {
         String userid = jwtUtil.extractUsername(jwt);
         
         Address originAddress = addressUtil.checkIfAddressCorrespondsToUser(userid, saveDeliveryRequestObject.getOriginaddressid());
-        System.out.println("deliveryaddress verified for "+userid+","+saveDeliveryRequestObject.getOriginaddressid());
-        
-        System.out.println("isDelicateCheck "+saveDeliveryRequestObject.getIsDelicate());
-        
+         
         if(originAddress !=null) {
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("key1", "key1 value");
-        map.put("key2", "key2 value");
       
-        System.out.println("1");
         int amountInPaisa = mapsUtil.getAmountFromParamsInPaisa(originAddress,saveDeliveryRequestObject.getDroplatitude(),saveDeliveryRequestObject.getDroplongitude(),saveDeliveryRequestObject.getWeightcategory(),
         		saveDeliveryRequestObject.getIsDelicate(),saveDeliveryRequestObject.getIsBalloonAdded(),
         		saveDeliveryRequestObject.getIsBouqetAdded(),saveDeliveryRequestObject.getIsTwoCakes());
-        
-        System.out.println("2 "+Double.valueOf(amountInPaisa));
-        GeneratedOrder generatedOrder = razorPayUtil.generateOrderId(amountInPaisa,"reciept for "+userid,map);   
-		
-        Deliveries recvdDelivery = new Deliveries(null,userid,saveDeliveryRequestObject.getPickuptime(),
-				saveDeliveryRequestObject.getOriginaddressid(),saveDeliveryRequestObject.getDropaddress(),
-				saveDeliveryRequestObject.getDroplatitude(),saveDeliveryRequestObject.getDroplongitude(),
-				Constants.status_PAYMENT_AWAITING,null,generatedOrder.getID(),razorPayUtil.convertPaisaToRs(generatedOrder.getAmount()),
-				saveDeliveryRequestObject.getDescription(),saveDeliveryRequestObject.getImg(),saveDeliveryRequestObject.getWeightcategory(),saveDeliveryRequestObject.getDestinationcontact(),
-				saveDeliveryRequestObject.getIsDelicate(),saveDeliveryRequestObject.getIsBalloonAdded(),saveDeliveryRequestObject.getIsBouqetAdded(),saveDeliveryRequestObject.getIsTwoCakes());
-        
+
+        Deliveries recvdDelivery = getSaveDeliveryObject(saveDeliveryRequestObject,userid,amountInPaisa);
+
 		Deliveries savedDelivery=deliveriesRepository.save(recvdDelivery);
 		//after save success get order id and send object		
 		
-		return new SaveDeliveryResponse(razorPayUtil.convertPaisaToRs(generatedOrder.getAmount()),generatedOrder.getID(),savedDelivery.getDeliveryid()) ; 
+		return new SaveDeliveryResponse(savedDelivery.getDeliverycharge(),savedDelivery.getOrderid(),savedDelivery.getDeliveryid(),savedDelivery.getPaytmTxnToken(),getPaymentMethod(savedDelivery.getPaymentMethod())) ; 
         }
         
         else throw new Exception("Incorrect addressid"); 
       }
 	
+	
+	private Deliveries getSaveDeliveryObject(Deliveries saveDeliveryRequestObject,String userid,int amountInPaisa) throws Exception {
+		
+		switch(getPaymentMethod(saveDeliveryRequestObject.getPaymentMethod())) {
+        case Constants.paymentMethodPayTM : {
+        	//PAYTM ORDER GENERATION
+        	System.out.println("PaytmTime");
+        	String paytmOrderId = String.format("%s_%s_%s", Constants.paytmOrderIdText,userid, getCurrentTime());
+        	GeneratedOrderPaytm generatedOrderPaytm = paytmUtil.generateOrderId(razorPayUtil.convertPaisaToRs(amountInPaisa),userid,paytmOrderId);
+        	 
+        	return getDeliveryObject(saveDeliveryRequestObject,userid,razorPayUtil.convertPaisaToRs(amountInPaisa),paytmOrderId,generatedOrderPaytm.getBody().getTxnToken());
+        	
+        }
+
+        default : {
+        	//RAZORPAY ORDER GENERATION
+        	System.out.println("RazorPayTime");
+        	 Map<String, String> map = new HashMap<String, String>();
+             map.put("userid", userid);
+             map.put("amount", amountInPaisa+"");
+        	 GeneratedOrder generatedOrder = razorPayUtil.generateOrderId(amountInPaisa,"reciept for "+userid,map);
+        	 return getDeliveryObject(saveDeliveryRequestObject,userid,razorPayUtil.convertPaisaToRs(generatedOrder.getAmount()),generatedOrder.getID(),null);
+         	
+        }
+        }	
+	}
+	
+	private Deliveries getDeliveryObject(Deliveries saveDeliveryRequestObject,String userid,int amountInRs,String orderid,String paytmTxnToken) {
+		System.out.println("----------------------------------");
+		return new Deliveries(null,userid,saveDeliveryRequestObject.getPickuptime(),
+ 				saveDeliveryRequestObject.getOriginaddressid(),saveDeliveryRequestObject.getDropaddress(),
+ 				saveDeliveryRequestObject.getDroplatitude(),saveDeliveryRequestObject.getDroplongitude(),
+ 				Constants.status_PAYMENT_AWAITING,null,orderid,amountInRs,
+ 				saveDeliveryRequestObject.getDescription(),saveDeliveryRequestObject.getImg(),saveDeliveryRequestObject.getWeightcategory(),saveDeliveryRequestObject.getDestinationcontact(),
+ 				saveDeliveryRequestObject.getIsDelicate(),saveDeliveryRequestObject.getIsBalloonAdded(),saveDeliveryRequestObject.getIsBouqetAdded(),saveDeliveryRequestObject.getIsTwoCakes(),getPaymentMethod(saveDeliveryRequestObject.getPaymentMethod()),paytmTxnToken);
+	}
+	
+	private String getPaymentMethod(String paymentMethod) {
+		System.out.println("payemnt method "+paymentMethod);
+		if(paymentMethod==null||(!paymentMethod.equals(Constants.paymentMethodPayTM))) {
+			System.out.println("returning  "+Constants.paymentMethodRazorPay);
+			return Constants.paymentMethodRazorPay;
+		}
+		System.out.println("returning  "+Constants.paymentMethodPayTM);
+		return Constants.paymentMethodPayTM;
+	}
 	
 	@Transactional
 	@RequestMapping(method=RequestMethod.POST,value="/initiateDelivery")
@@ -122,7 +167,8 @@ public class SaveDeliveryController {
         System.out.println("delivery is "+delivery.getOrderid());
         if(delivery!=null) {
         	//then confirm payment status first	
-        	if(razorPayUtil.confirmPaymentStatus(delivery.getOrderid())) {	
+        	
+        	if(confirmPaymentStatus(delivery)) {	
         		//update status , send notification
         		System.out.println("payment confirmed not null");
         		deliveryStatusUtil.updateDeliveryStatus(delivery.getDeliveryid(), Constants.delivery_status_Delivery_Scheduling);
@@ -146,6 +192,17 @@ public class SaveDeliveryController {
      
         throw new Exception("Unable To Initiate Delivery");
 		
+	}
+	
+	private boolean confirmPaymentStatus(Deliveries delivery) throws Exception {
+	switch(delivery.getPaymentMethod()) {
+	 case Constants.paymentMethodPayTM : {
+		 return paytmUtil.confirmPaytmPaymentStatus(delivery.getOrderid());
+	 }
+	 default : {
+		 return razorPayUtil.confirmPaymentStatus(delivery.getOrderid());
+	 }
+	}
 	}
 	
 	private void sendNotificationToUserForScheduling(String userid,Deliveries delivery,String usertoken,String status) throws FirebaseMessagingException {

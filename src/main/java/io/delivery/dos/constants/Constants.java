@@ -26,5 +26,12 @@ public class Constants {
 	public final static String capturedStatusRazorPay = "captured";
 	public final static String statusKeyRazorPay = "status";
 	
+	public final static String paymentMethodRazorPay = "RAZORPAY";
+	public final static String paymentMethodPayTM = "PAYTM";
+	public final static String paytmOrderIdText = "OrderId";
+	
+	public final static String capturedStatusCodePaytm = "01";
+	public final static String capturedStatusPaytm = "TXN_SUCCESS";
+	
 	public final static int  basePriceInPaisa = 5000;
 }

@@ -73,12 +73,18 @@ public class Deliveries {
 	@Column(name = "isTwoCakes")
 	private boolean isTwoCakes;
 	
+	@Column(name = "paymentMethod")
+	private String paymentMethod;
+	
+	@Column(name = "paytmTxnToken")
+	private String paytmTxnToken;
+	
 	public Deliveries() {}
 	
 	public Deliveries(Integer deliveryid, String userid, String pickuptime, int originaddressid, String dropaddress,
 			Double droplatitude, Double droplongitude, String status, String riderid, String orderid,
 			int deliverycharge, String description, String img, Integer weightcategory, String destinationcontact,
-			boolean isDelicate, boolean isBalloonAdded, boolean isBouqetAdded, boolean isTwoCakes) {
+			boolean isDelicate, boolean isBalloonAdded, boolean isBouqetAdded, boolean isTwoCakes,String paymentMethod,String paytmTxnToken) {
 		super();
 		this.deliveryid = deliveryid;
 		this.userid = userid;
@@ -99,6 +105,24 @@ public class Deliveries {
 		this.isBalloonAdded = isBalloonAdded;
 		this.isBouqetAdded = isBouqetAdded;
 		this.isTwoCakes = isTwoCakes;
+		this.paymentMethod = paymentMethod;
+		this.paytmTxnToken = paytmTxnToken;
+	}
+
+	public String getPaytmTxnToken() {
+		return paytmTxnToken;
+	}
+
+	public void setPaytmTxnToken(String paytmTxnToken) {
+		this.paytmTxnToken = paytmTxnToken;
+	}
+
+	public String getPaymentMethod() {
+		return paymentMethod;
+	}
+
+	public void setPaymentMethod(String paymentMethod) {
+		this.paymentMethod = paymentMethod;
 	}
 
 	public boolean getIsDelicate() {
