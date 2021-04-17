@@ -48,12 +48,12 @@ public class DeliveryDosApiApp {
 	
 	@Bean
 	public KeyObject getAPIKey() {
-		return new KeyObject("rzp_live_be9q6OLLsHMLZD");
+		return new KeyObject("rzp_test_3tLQHIWIJrioiZ");
 	}
 	
 	@Bean
 	public SecretObject getAPISecret() {
-		return new SecretObject("lj6GdNKS49H2WBqKd510TSql");
+		return new SecretObject("abuvHv2gRCFwsnMoWmTQr93O");
 	}
 	
 	@Bean

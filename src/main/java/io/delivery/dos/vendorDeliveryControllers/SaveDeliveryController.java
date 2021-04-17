@@ -164,6 +164,7 @@ public class SaveDeliveryController {
         System.out.println("user is "+userid);
         Deliveries delivery = deliveriesRepository.findOneByDeliveryidAndUseridAndOrderid(initiateDeliveryRequestObject.getDeliveryid(),userid,initiateDeliveryRequestObject.getOrderid());
         // first check if delivery id is for the user with correct jwt
+        System.out.println("delivery is "+delivery);
         System.out.println("delivery is "+delivery.getOrderid());
         if(delivery!=null) {
         	//then confirm payment status first	

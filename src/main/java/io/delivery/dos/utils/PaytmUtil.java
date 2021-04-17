@@ -31,10 +31,13 @@ public class PaytmUtil {
 
 		JSONObject body = new JSONObject();
 		body.put("requestType", "Payment");
-		body.put("mid", "KaUwui76667909288501");
-		body.put("websiteName", "WEBSTAGING");
+		//body.put("mid", "KaUwui76667909288501"); //test
+		body.put("mid", "xgoisa93682054870842"); //live
+		//body.put("websiteName", "WEBSTAGING"); //test
+		body.put("websiteName", "SIMPLIFIED"); //live
 		body.put("orderId", orderId);
-		body.put("callbackUrl", String.format("https://securegw-stage.paytm.in/theia/paytmCallback?ORDER_ID=%s",orderId));
+		//body.put("callbackUrl", String.format("https://securegw-stage.paytm.in/theia/paytmCallback?ORDER_ID=%s",orderId));  // test
+		body.put("callbackUrl", String.format("https://securegw.paytm.in/theia/paytmCallback?ORDER_ID=%s",orderId)); //live
 		
 		JSONObject txnAmount = new JSONObject();
 		txnAmount.put("value",amountInRs);
@@ -45,7 +48,8 @@ public class PaytmUtil {
 		body.put("txnAmount", txnAmount);
 		body.put("userInfo", userInfo);
 
-		String checksum = PaytmChecksum.generateSignature(body.toString(), "gXqM_dy7Z@U6o85J");
+		// String checksum = PaytmChecksum.generateSignature(body.toString(), "gXqM_dy7Z@U6o85J"); //test
+		String checksum = PaytmChecksum.generateSignature(body.toString(), "#GY_jNcyoizFVSSp@U6o85J"); //live
 
 		JSONObject head = new JSONObject();
 		head.put("signature", checksum);
@@ -54,7 +58,9 @@ public class PaytmUtil {
 		paytmParams.put("head", head);
 		String post_data = paytmParams.toString();
 
-		URL url = new URL(String.format("https://securegw-stage.paytm.in/theia/api/v1/initiateTransaction?mid=%s&orderId=%s", "KaUwui76667909288501",orderId));
+		//URL url = new URL(String.format("https://securegw-stage.paytm.in/theia/api/v1/initiateTransaction?mid=%s&orderId=%s", "KaUwui76667909288501",orderId)); //test
+		URL url = new URL(String.format("https://securegw.paytm.in/theia/api/v1/initiateTransaction?mid=%s&orderId=%s", "KaUwui76667909288501",orderId)); //test
+		
 
 		try {
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -91,7 +97,8 @@ public class PaytmUtil {
 		JSONObject body = new JSONObject();
 
 		/* Find your MID in your Paytm Dashboard at https://dashboard.paytm.com/next/apikeys */
-		body.put("mid", "KaUwui76667909288501");
+		// body.put("mid", "KaUwui76667909288501"); //test
+		body.put("mid", "xgoisa93682054870842");	//live
 
 		/* Enter your order id which needs to be check status for */
 		body.put("orderId", orderid);
@@ -101,7 +108,8 @@ public class PaytmUtil {
 		* You can get Checksum JAR from https://developer.paytm.com/docs/checksum/
 		* Find your Merchant Key in your Paytm Dashboard at https://dashboard.paytm.com/next/apikeys 
 		*/
-		String checksum = PaytmChecksum.generateSignature(body.toString(), "gXqM_dy7Z@U6o85J");
+		
+		String checksum = PaytmChecksum.generateSignature(body.toString(), "#GY_jNcyoizFVSSp");
 		/* head parameters */
 		JSONObject head = new JSONObject();
 
@@ -114,10 +122,10 @@ public class PaytmUtil {
 		String post_data = paytmParams.toString();
 
 		/* for Staging */
-		URL url = new URL("https://securegw-stage.paytm.in/v3/order/status");
+		//URL url = new URL("https://securegw-stage.paytm.in/v3/order/status");
 
 		/* for Production */
-		// URL url = new URL("https://securegw.paytm.in/v3/order/status");
+		URL url = new URL("https://securegw.paytm.in/v3/order/status");
 
 		try {
 		    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
