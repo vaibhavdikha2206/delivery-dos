@@ -25,7 +25,7 @@ public class PaytmUtil {
 
 	public GeneratedOrderPaytm generateOrderId(int amountInRs,String customerId,String orderId) throws Exception {
 		
-		System.out.println("orderid "+orderId);
+		System.out.println("orderid for paytm "+orderId);
 		
 		JSONObject paytmParams = new JSONObject();
 
@@ -49,7 +49,7 @@ public class PaytmUtil {
 		body.put("userInfo", userInfo);
 
 		// String checksum = PaytmChecksum.generateSignature(body.toString(), "gXqM_dy7Z@U6o85J"); //test
-		String checksum = PaytmChecksum.generateSignature(body.toString(), "#GY_jNcyoizFVSSp@U6o85J"); //live
+		String checksum = PaytmChecksum.generateSignature(body.toString(), "#GY_jNcyoizFVSSp"); //live
 
 		JSONObject head = new JSONObject();
 		head.put("signature", checksum);
