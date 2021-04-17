@@ -59,7 +59,7 @@ public class PaytmUtil {
 		String post_data = paytmParams.toString();
 
 		//URL url = new URL(String.format("https://securegw-stage.paytm.in/theia/api/v1/initiateTransaction?mid=%s&orderId=%s", "KaUwui76667909288501",orderId)); //test
-		URL url = new URL(String.format("https://securegw.paytm.in/theia/api/v1/initiateTransaction?mid=%s&orderId=%s", "KaUwui76667909288501",orderId)); //test
+		URL url = new URL(String.format("https://securegw.paytm.in/theia/api/v1/initiateTransaction?mid=%s&orderId=%s", "xgoisa93682054870842",orderId)); //live
 		
 
 		try {
