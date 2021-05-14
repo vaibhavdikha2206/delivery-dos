@@ -1,6 +1,8 @@
 package io.delivery.dos.vendorDeliveryControllers;
 
 import java.sql.Timestamp;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -54,11 +56,16 @@ public class DeliveryController {
 	@Autowired
     private JwtUtil jwtUtil;
 	
+	public static final LocalTime starttime = LocalTime.parse( "08:59" );
+	public static final LocalTime endtime = LocalTime.parse( "17:31" );
+	
 	@RequestMapping(method=RequestMethod.POST,value="/checkAvailable")
 	public AvailabilityResponse checkAvailability(@RequestBody AvailabilityRequest availabilityRequestObject,@RequestHeader (name="Authorization") String authorizationHeader) { 
 		// get drivers engaged during requested time
 		System.out.println("object is "+availabilityRequestObject.getRequestDateTime());
 		Timestamp requestTime=DateTimeUtil.convertStringToTimestamp(availabilityRequestObject.getRequestDateTime());
+		
+		if(compareTimeAvailability(requestTime.toLocalDateTime().toLocalTime())) {
 		Timestamp upperDateTime = new Timestamp(requestTime.getTime() + TimeUnit.MINUTES.toMillis(29));
 		Timestamp lowerDateTime = new Timestamp(requestTime.getTime() - TimeUnit.MINUTES.toMillis(29));
 		System.out.println("requested time was "+requestTime+", upperDateTime was "+upperDateTime+" ,lowerDateTime was "+lowerDateTime);
@@ -72,6 +79,24 @@ public class DeliveryController {
 			return new AvailabilityResponse(true) ;
 		else 
 			return new AvailabilityResponse(false);
+		}
+		
+		else {
+			return new AvailabilityResponse(false);
+		}
+	}
+	
+	private boolean compareTimeAvailability(LocalTime requestTime) {
+		
+		if(requestTime.isBefore(endtime)&&requestTime.isAfter(starttime)) {
+			System.out.println(requestTime+" is in bounds");
+			return true;
+			
+		}
+		else {
+			System.out.println("Not in bounds");
+			return false;
+		}
 	}
 	
 	@RequestMapping(method=RequestMethod.POST,value="/getAmount")

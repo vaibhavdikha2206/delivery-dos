@@ -1,6 +1,8 @@
 package io.delivery.dos.vendorDeliveryControllers;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +76,6 @@ public class LoginController {
 		
 		final MyUserDetails userDetails = (MyUserDetails) userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 		final String jwt = jwtTokenUtil.generateToken(userDetails);	
-		getCurrentTime();
 		return ResponseEntity.ok(new AuthenticationResponse(jwt));
 	}
 
@@ -109,8 +110,12 @@ public class LoginController {
 	
 	private void getCurrentTime() {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
-		   LocalDateTime now = LocalDateTime.now().plusMinutes(330);  
-		   System.out.println("Current Time is "+dtf.format(now));  	
+		ZoneId zone = ZoneId.of("Asia/Kolkata");
+		LocalTime now = LocalTime.now(zone);
+		//LocalDateTime now = LocalDateTime.now().plusMinutes(330);  
+		System.out.println("Current Time is "+dtf.format(now));  	
 	}
+	
+
 	
 }
