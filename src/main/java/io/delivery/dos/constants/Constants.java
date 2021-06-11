@@ -13,6 +13,9 @@ public class Constants {
 	public final static String  delivery_status_Delivery_Ongoing = "DELIVERY_ONGOING";
 	public final static String  delivery_status_Delivery_Success = "SUCCESS_DELIVERY";
 	
+	public final static String  user_notification_Credits_updated = "CREDITS_UPDATED";
+	
+	
 	public final static String  payment_key_notes_status = "status";
 	public final static String  payment_key_notes_payload = "payload";
 	public final static String  payment_key_notes_deliveryid = "deliveryid";
@@ -23,6 +26,9 @@ public class Constants {
 	public final static String delivery_scheduling_notification_description_string = "Thank You for using DeliveryDos, we are Scheduling your delivery for %s. A rider will be assigned to you shortly.";
 	public final static String delivery_scheduling_notification_title_string = "Delivery Request Recieved.";
 	
+	public final static String updated_credits_notification_title_string = "Congratulations ! Your Credits have been updated.";
+	public final static String updated_credits_notification_description_string = "Please open your profile page to see your updated credits";
+			
 	public final static String capturedStatusRazorPay = "captured";
 	public final static String statusKeyRazorPay = "status";
 	

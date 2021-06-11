@@ -141,7 +141,8 @@ public class SaveDeliveryController {
  				saveDeliveryRequestObject.getDroplatitude(),saveDeliveryRequestObject.getDroplongitude(),
  				Constants.status_PAYMENT_AWAITING,null,orderid,amountInRs,
  				saveDeliveryRequestObject.getDescription(),saveDeliveryRequestObject.getImg(),saveDeliveryRequestObject.getWeightcategory(),saveDeliveryRequestObject.getDestinationcontact(),
- 				saveDeliveryRequestObject.getIsDelicate(),saveDeliveryRequestObject.getIsBalloonAdded(),saveDeliveryRequestObject.getIsBouqetAdded(),saveDeliveryRequestObject.getIsTwoCakes(),getPaymentMethod(saveDeliveryRequestObject.getPaymentMethod()),paytmTxnToken);
+ 				saveDeliveryRequestObject.getIsDelicate(),saveDeliveryRequestObject.getIsBalloonAdded(),saveDeliveryRequestObject.getIsBouqetAdded(),saveDeliveryRequestObject.getIsTwoCakes(),getPaymentMethod(saveDeliveryRequestObject.getPaymentMethod()),paytmTxnToken,
+ 				amountInRs,saveDeliveryRequestObject.getCreditsused());
 	}
 	
 	private String getPaymentMethod(String paymentMethod) {
@@ -173,6 +174,8 @@ public class SaveDeliveryController {
         		//update status , send notification
         		System.out.println("payment confirmed not null");
         		deliveryStatusUtil.updateDeliveryStatus(delivery.getDeliveryid(), Constants.delivery_status_Delivery_Scheduling);
+        		
+        		// for express : ALSO UPDATE CREDITS HERE
         		
         		if(initiateDeliveryRequestObject.getRazorhash()!=null)
         		deliveryStatusUtil.updateDeliveryPaymentHash(delivery.getDeliveryid(), initiateDeliveryRequestObject.getRazorhash(),initiateDeliveryRequestObject.getRazorsignature(),initiateDeliveryRequestObject.getRazorpayid());

@@ -7,24 +7,37 @@ public class SignUpObject {
 	private String password;
 	private String role;
 	private String email;
+	private String referralcode;
 	private String signkey;
-	
-	
+
 	public SignUpObject() {
 
 	}
 
-	
-	public SignUpObject(String userid, String name, String password, String role, String email, String signkey) {
+	public SignUpObject(String userid, String name, String password, String role, String email, String referralcode,
+			String signkey) {
 		super();
 		this.userid = userid;
 		this.name = name;
 		this.password = password;
 		this.role = role;
 		this.email = email;
+		this.referralcode = referralcode;
 		this.signkey = signkey;
 	}
 
+
+
+
+	public String getReferralcode() {
+		return referralcode;
+	}
+
+
+	public void setReferralcode(String referralcode) {
+		this.referralcode = referralcode;
+	}
+	
 
 	public String getEmail() {
 		return email;

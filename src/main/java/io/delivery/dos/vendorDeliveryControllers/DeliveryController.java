@@ -75,6 +75,10 @@ public class DeliveryController {
 		Integer busyDrivers = deliveriesRepository.getNumberOfBusyRiders(lowerDateTime.toString(), upperDateTime.toString());
 		System.out.println("busy drivers are "+busyDrivers+" out of "+riderRepository.findCountByRole("RIDER"));
 		
+		// & to check number of busy riders &(check if there's any deliveries between this time period with status delivery_scheduling 
+		//+(if there is already 1 delivery in delivery_scheduling status and number of free drivers is 1 , then also reject ) )
+		
+		
 		if(riderRepository.findCountByRole("RIDER")>deliveriesRepository.getNumberOfBusyRiders(lowerDateTime.toString(), upperDateTime.toString()))
 			return new AvailabilityResponse(true) ;
 		else 

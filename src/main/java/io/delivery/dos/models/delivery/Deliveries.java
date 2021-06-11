@@ -79,12 +79,20 @@ public class Deliveries {
 	@Column(name = "paytmTxnToken")
 	private String paytmTxnToken;
 	
+	@Column(name = "totaldeliverycharge")
+	private int totaldeliverycharge;
+	
+	@Column(name = "creditsused")
+	private int creditsused;
+	
 	public Deliveries() {}
+	
 	
 	public Deliveries(Integer deliveryid, String userid, String pickuptime, int originaddressid, String dropaddress,
 			Double droplatitude, Double droplongitude, String status, String riderid, String orderid,
 			int deliverycharge, String description, String img, Integer weightcategory, String destinationcontact,
-			boolean isDelicate, boolean isBalloonAdded, boolean isBouqetAdded, boolean isTwoCakes,String paymentMethod,String paytmTxnToken) {
+			boolean isDelicate, boolean isBalloonAdded, boolean isBouqetAdded, boolean isTwoCakes, String paymentMethod,
+			String paytmTxnToken, int totaldeliverycharge, int creditsused) {
 		super();
 		this.deliveryid = deliveryid;
 		this.userid = userid;
@@ -107,6 +115,27 @@ public class Deliveries {
 		this.isTwoCakes = isTwoCakes;
 		this.paymentMethod = paymentMethod;
 		this.paytmTxnToken = paytmTxnToken;
+		this.totaldeliverycharge = totaldeliverycharge;
+		this.creditsused = creditsused;
+	}
+
+
+
+
+	public int getTotaldeliverycharge() {
+		return totaldeliverycharge;
+	}
+
+	public void setTotaldeliverycharge(int totaldeliverycharge) {
+		this.totaldeliverycharge = totaldeliverycharge;
+	}
+
+	public int getCreditsused() {
+		return creditsused;
+	}
+
+	public void setCreditsused(int creditsused) {
+		this.creditsused = creditsused;
 	}
 
 	public String getPaytmTxnToken() {

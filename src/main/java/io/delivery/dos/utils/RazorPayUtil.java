@@ -66,4 +66,9 @@ public class RazorPayUtil {
 	public int convertPaisaToRs(int paisaAmount) {
 		return (paisaAmount/100);
 	}
+	
+	public int convertRsToPaisa(int rsAmount) {
+		return (rsAmount*100);
+	}
+	
 }

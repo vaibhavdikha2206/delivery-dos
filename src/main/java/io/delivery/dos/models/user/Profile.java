@@ -23,19 +23,45 @@ public class Profile {
 	@Column(name = "email")
 	private String email;
 	
+	@Column(name = "credits")
+	private Float credits;
+	
+	@Column(name = "referralcode")
+	private String referralcode;
 	
 	public Profile() {
 
 	}
 
-	
-	public Profile(String userid, String username, String password, String role, String email) {
+	public Profile(String userid, String username, String password, String role, String email, Float credits,
+			String referralcode) {
 		super();
 		this.userid = userid;
 		this.username = username;
 		this.password = password;
 		this.role = role;
 		this.email = email;
+		this.credits = credits;
+		this.referralcode = referralcode;
+	}
+
+	public Float getCredits() {
+		return credits;
+	}
+
+
+	public void setCredits(Float credits) {
+		this.credits = credits;
+	}
+
+
+	public String getReferralcode() {
+		return referralcode;
+	}
+
+
+	public void setReferralcode(String referralcode) {
+		this.referralcode = referralcode;
 	}
 
 

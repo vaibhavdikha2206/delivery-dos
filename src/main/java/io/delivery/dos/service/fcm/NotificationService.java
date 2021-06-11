@@ -13,6 +13,7 @@ import com.google.firebase.messaging.*;
 import io.delivery.dos.constants.Constants;
 import io.delivery.dos.models.address.Address;
 import io.delivery.dos.models.delivery.Deliveries;
+import io.delivery.dos.models.expressdelivery.ExpressDeliveries;
 import io.delivery.dos.repositories.address.AddressRepository;
 import io.delivery.dos.service.fcm.model.Note;
 
@@ -80,7 +81,55 @@ public class NotificationService {
     		return response.getSuccessCount() + " messages were sent successfully";
     }
     
+
+    public String sendNotificationToMultipleRidersWithExpressDelivery(List<String> registrationTokens,ExpressDeliveries delivery) {
+    	//only for sending notification to riders yet
+    	MulticastMessage message = MulticastMessage.builder()
+    		    .putData("deliveryId", delivery.getDeliveryid().toString())
+    		    .putData("type", Constants.delivery_status_Delivery_Scheduling)
+    		    .putData("pickupTime", delivery.getPickuptime())
+    		    .putData("click_action", Constants.FLUTTER_NOTIF_VALUE_STRING)
+    		    .addAllTokens(registrationTokens)
+    		    .build();
+    		BatchResponse response = null;
+			try {
+				response = firebaseMessaging.sendMulticast(message);
+			} catch (FirebaseMessagingException e) {
+				// TODO Auto-generated catch block
+				System.out.println("error is "+e);
+			}
+    		// See the BatchResponse reference documentation
+    		
+    		System.out.println(response.getSuccessCount() + " messages were sent successfully");
+    	
+    		return response.getSuccessCount() + " messages were sent successfully";
+    }
+    
+    
     public String sendNotificationToMultipleAdmins(List<String> registrationTokens,Deliveries delivery,String notificationType) {
+    	//only for sending notification to riders yet
+    	MulticastMessage message = MulticastMessage.builder()
+    		    .putData("deliveryId", delivery.getDeliveryid().toString())
+    		    .putData("type", notificationType)
+    		    .putData("pickupTime", delivery.getPickuptime())
+    		    .putData("click_action", Constants.FLUTTER_NOTIF_VALUE_STRING)
+    		    .addAllTokens(registrationTokens)
+    		    .build();
+    		BatchResponse response = null;
+			try {
+				response = firebaseMessaging.sendMulticast(message);
+			} catch (FirebaseMessagingException e) {
+				// TODO Auto-generated catch block
+				System.out.println("error is "+e);
+			}
+    		// See the BatchResponse reference documentation
+    		
+    		System.out.println(response.getSuccessCount() + " messages were sent successfully");
+    	
+    		return response.getSuccessCount() + " messages were sent successfully";
+    }
+    
+    public String sendNotificationToMultipleAdminsWithExpressDelivery(List<String> registrationTokens,ExpressDeliveries delivery,String notificationType) {
     	//only for sending notification to riders yet
     	MulticastMessage message = MulticastMessage.builder()
     		    .putData("deliveryId", delivery.getDeliveryid().toString())
