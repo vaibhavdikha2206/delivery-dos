@@ -17,18 +17,29 @@ public class ProfileUser {
 	private String password;
 	private String role;
 	private String email;
+	private int locationcode;
 	
 	public ProfileUser() {
 		
 	}
 	
-	public ProfileUser(String userid, String username, String password, String role, String email) {
+	public ProfileUser(String userid, String username, String password, String role, String email,int locationcode) {
 		super();
 		this.userid = userid;
 		this.username = username;
 		this.password = password;
 		this.role = role;
 		this.email = email;
+		this.locationcode = locationcode;
+	}
+
+	
+	public int getLocationcode() {
+		return locationcode;
+	}
+
+	public void setLocationcode(int locationcode) {
+		this.locationcode = locationcode;
 	}
 
 	public String getEmail() {

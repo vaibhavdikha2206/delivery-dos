@@ -61,6 +61,10 @@ public class DeliveryController {
 	
 	@RequestMapping(method=RequestMethod.POST,value="/checkAvailable")
 	public AvailabilityResponse checkAvailability(@RequestBody AvailabilityRequest availabilityRequestObject,@RequestHeader (name="Authorization") String authorizationHeader) { 
+		
+		String jwt = authorizationHeader.substring(7);
+        int locationcode = jwtUtil.extractLocationcode(jwt);
+        
 		// get drivers engaged during requested time
 		System.out.println("object is "+availabilityRequestObject.getRequestDateTime());
 		Timestamp requestTime=DateTimeUtil.convertStringToTimestamp(availabilityRequestObject.getRequestDateTime());
@@ -72,14 +76,14 @@ public class DeliveryController {
 		
 		System.out.println("lowertime is "+lowerDateTime.toString()+", upper is "+upperDateTime.toString());
 		
-		Integer busyDrivers = deliveriesRepository.getNumberOfBusyRiders(lowerDateTime.toString(), upperDateTime.toString());
-		System.out.println("busy drivers are "+busyDrivers+" out of "+riderRepository.findCountByRole("RIDER"));
+		Integer busyDrivers = deliveriesRepository.getNumberOfBusyRiders(lowerDateTime.toString(), upperDateTime.toString(),locationcode);
+		System.out.println("busy drivers are "+busyDrivers+" out of "+riderRepository.findCountByRole("RIDER",locationcode));
 		
 		// & to check number of busy riders &(check if there's any deliveries between this time period with status delivery_scheduling 
 		//+(if there is already 1 delivery in delivery_scheduling status and number of free drivers is 1 , then also reject ) )
 		
 		
-		if(riderRepository.findCountByRole("RIDER")>deliveriesRepository.getNumberOfBusyRiders(lowerDateTime.toString(), upperDateTime.toString()))
+		if(riderRepository.findCountByRole("RIDER",locationcode)>deliveriesRepository.getNumberOfBusyRiders(lowerDateTime.toString(), upperDateTime.toString(),locationcode))
 			return new AvailabilityResponse(true) ;
 		else 
 			return new AvailabilityResponse(false);
@@ -108,7 +112,9 @@ public class DeliveryController {
 		// get drivers engaged during requested time
 		String jwt = authorizationHeader.substring(7);
         String userid = jwtUtil.extractUsername(jwt);
+        int locationcode = jwtUtil.extractLocationcode(jwt);
         
+        System.out.println("locationcode "+locationcode);
         System.out.println("getamount for "+userid+","+distanceRequest.getAddressid()+",weightCat "+distanceRequest.getWeightcategory()+", isDelicate "+distanceRequest.isDelicate());
         
         Address originAddress = addressRepository.findOneByUseridAndAddressid(userid, distanceRequest.getAddressid());

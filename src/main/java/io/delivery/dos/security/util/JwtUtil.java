@@ -27,6 +27,11 @@ import org.springframework.stereotype.Service;
     	 return claims.get("role",String.class);
      }
      
+     public Integer extractLocationcode(String token) {
+    	 final Claims claims = extractAllClaims(token);
+    	 return claims.get("locationcode",Integer.class);
+     }
+     
      public Date extractExpiration(String token) {
          return extractClaim(token, Claims::getExpiration);
      }
@@ -48,6 +53,7 @@ import org.springframework.stereotype.Service;
          claims.put("name", userDetails.getName());
          claims.put("role", userDetails.getRole());
          claims.put("email", userDetails.getEmail());
+         claims.put("locationcode", userDetails.getLocationcode());
          return createToken(claims, userDetails.getUsername());
      }
 

@@ -85,6 +85,9 @@ public class Deliveries {
 	@Column(name = "creditsused")
 	private int creditsused;
 	
+	@Column(name = "locationcode")
+	private int locationcode;
+	
 	public Deliveries() {}
 	
 	
@@ -92,7 +95,7 @@ public class Deliveries {
 			Double droplatitude, Double droplongitude, String status, String riderid, String orderid,
 			int deliverycharge, String description, String img, Integer weightcategory, String destinationcontact,
 			boolean isDelicate, boolean isBalloonAdded, boolean isBouqetAdded, boolean isTwoCakes, String paymentMethod,
-			String paytmTxnToken, int totaldeliverycharge, int creditsused) {
+			String paytmTxnToken, int totaldeliverycharge, int creditsused,int locationcode) {
 		super();
 		this.deliveryid = deliveryid;
 		this.userid = userid;
@@ -117,9 +120,18 @@ public class Deliveries {
 		this.paytmTxnToken = paytmTxnToken;
 		this.totaldeliverycharge = totaldeliverycharge;
 		this.creditsused = creditsused;
+		this.locationcode = locationcode;
 	}
 
 
+	public int getLocationcode() {
+		return locationcode;
+	}
+
+
+	public void setLocationcode(int locationcode) {
+		this.locationcode = locationcode;
+	}
 
 
 	public int getTotaldeliverycharge() {

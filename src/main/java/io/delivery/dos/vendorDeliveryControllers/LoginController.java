@@ -117,13 +117,21 @@ public class LoginController {
 		Profile profile ;
 
 		if( checkReferralCodeValidity(signUpObject.getReferralcode()) ){
-			profile = new Profile(signUpObject.getUserid(),signUpObject.getName(),signUpObject.getPassword(),signUpObject.getRole(),signUpObject.getEmail(),defaultCreds,getReferralCode(signUpObject.getName()));	
+			profile = new Profile(signUpObject.getUserid(),signUpObject.getName(),signUpObject.getPassword(),signUpObject.getRole(),signUpObject.getEmail(),defaultCreds,getReferralCode(signUpObject.getName()),getLocationCode(signUpObject.getLocationcode()));	
 		}
 		else {
-			profile = new Profile(signUpObject.getUserid(),signUpObject.getName(),signUpObject.getPassword(),signUpObject.getRole(),signUpObject.getEmail(),defaultZeroCreds,getReferralCode(signUpObject.getName()));	
+			profile = new Profile(signUpObject.getUserid(),signUpObject.getName(),signUpObject.getPassword(),signUpObject.getRole(),signUpObject.getEmail(),defaultZeroCreds,getReferralCode(signUpObject.getName()),getLocationCode(signUpObject.getLocationcode()));	
 		}
 
 		return signUpRepository.save(profile);	
+	}
+	
+	private int getLocationCode(Integer locationcode) {
+	
+		if(locationcode == null || locationcode == 1) {
+			return 1;
+		}
+		else return 2;
 	}
 	
 	private void addCreditsToReferrer(ProfileWithReferralCode profileWithReferralCode) throws FirebaseMessagingException{

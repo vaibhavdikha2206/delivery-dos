@@ -39,11 +39,12 @@ public class DetailListController {
 	@RequestMapping(method=RequestMethod.GET,value="/getPendingDeliveries")
 	public RiderPendingDeliveriesWithAddressResponse getPendingDeliveryList(@RequestHeader (name="Authorization") String authorizationHeader) throws Exception {
 		String jwt = authorizationHeader.substring(7);
+		 int locationcode = jwtUtil.extractLocationcode(jwt);
         checkRider(jwt);
         
         //List<Deliveries> pendingDeliveries = riderDeliveryRepository.findPendingDeliveries();
 
-        List<DeliverResponseWithOriginAddress> pendingDeliveriesWithAddress = riderDeliveryJoinRepository.getJoinedInfo("DELIVERY_SCHEDULING");
+        List<DeliverResponseWithOriginAddress> pendingDeliveriesWithAddress = riderDeliveryJoinRepository.getJoinedInfo("DELIVERY_SCHEDULING",locationcode);
         
       
         return new RiderPendingDeliveriesWithAddressResponse(pendingDeliveriesWithAddress);

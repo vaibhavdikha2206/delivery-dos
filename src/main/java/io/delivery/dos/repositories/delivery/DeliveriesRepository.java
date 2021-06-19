@@ -22,11 +22,11 @@ public interface DeliveriesRepository extends JpaRepository<Deliveries, Integer>
 	
 	Deliveries findByUseridAndDeliveryid(String userid,int deliveryid);
 	
-	@Query(value="select Count(Distinct(riderid)) from Deliveries where pickuptime >= :lowerpickuptime && pickuptime <= :upperpickuptime",nativeQuery = true)
-	Integer getNumberOfBusyRiders(@Param("lowerpickuptime") String lowerpickuptime,@Param("upperpickuptime") String upperpickuptime);
+	@Query(value="select Count(Distinct(riderid)) from Deliveries where pickuptime >= :lowerpickuptime && pickuptime <= :upperpickuptime && locationcode = :locationcode",nativeQuery = true)
+	Integer getNumberOfBusyRiders(@Param("lowerpickuptime") String lowerpickuptime,@Param("upperpickuptime") String upperpickuptime,@Param("locationcode") int locationcode);
 	
-	@Query(value="select Distinct(riderid) from Deliveries where pickuptime >= :lowerpickuptime && pickuptime <= :upperpickuptime  && riderid is not null",nativeQuery = true)
-	List<String> getBusyRiders(@Param("lowerpickuptime")String lowerpickuptime,@Param("upperpickuptime")String upperpickuptime);
+	@Query(value="select Distinct(riderid) from Deliveries where pickuptime >= :lowerpickuptime && pickuptime <= :upperpickuptime  && riderid is not null && locationcode = :locationcode",nativeQuery = true)
+	List<String> getBusyRiders(@Param("lowerpickuptime")String lowerpickuptime,@Param("upperpickuptime")String upperpickuptime,@Param("locationcode") int locationcode);
 	
 	Deliveries findOneByDeliveryidAndUseridAndOrderid(int deliveryid,String userid,String orderid);
 	

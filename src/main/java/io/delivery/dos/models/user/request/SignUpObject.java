@@ -8,13 +8,14 @@ public class SignUpObject {
 	private String role;
 	private String email;
 	private String referralcode;
+	private Integer locationcode;
 	private String signkey;
 
 	public SignUpObject() {
 
 	}
 
-	public SignUpObject(String userid, String name, String password, String role, String email, String referralcode,
+	public SignUpObject(String userid, String name, String password, String role, String email, String referralcode,Integer locationcode,
 			String signkey) {
 		super();
 		this.userid = userid;
@@ -23,11 +24,18 @@ public class SignUpObject {
 		this.role = role;
 		this.email = email;
 		this.referralcode = referralcode;
+		this.locationcode = locationcode;
 		this.signkey = signkey;
 	}
 
 
+	public Integer getLocationcode() {
+		return locationcode;
+	}
 
+	public void setLocationcode(Integer locationcode) {
+		this.locationcode = locationcode;
+	}
 
 	public String getReferralcode() {
 		return referralcode;

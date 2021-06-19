@@ -21,7 +21,7 @@ public interface RiderDeliveryRepository extends JpaRepository<Deliveries, Integ
 	List<Deliveries> findByRiderid(String riderid);
 	
 	@Modifying
-	@Query(value="Update Deliveries set status = :status,riderid= :riderid where deliveryid = :deliveryid",nativeQuery = true)
-	Integer updateDeliveryRiderIdAndDeliveryStatus(@Param("deliveryid")int deliveryid,@Param("status")String status,@Param("riderid")String riderid);
+	@Query(value="Update Deliveries set status = :status,riderid= :riderid where deliveryid = :deliveryid and locationcode = :locationcode",nativeQuery = true)
+	Integer updateDeliveryRiderIdAndDeliveryStatus(@Param("deliveryid")int deliveryid,@Param("status")String status,@Param("riderid")String riderid,@Param("locationcode")int locationcode);
 
 }

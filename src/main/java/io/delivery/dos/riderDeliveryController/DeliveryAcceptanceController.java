@@ -57,9 +57,10 @@ public class DeliveryAcceptanceController {
 	public RiderDeliveryAcceptResponse acceptDelivery(@RequestBody RiderDeliveryAcceptRequest riderDeliveryAcceptRequest,@RequestHeader (name="Authorization") String authorizationHeader) throws Exception {
 		String jwt = authorizationHeader.substring(7);
         String userid = jwtUtil.extractUsername(jwt);
+        int locationcode = jwtUtil.extractLocationcode(jwt);
         checkRider(jwt);
 		Deliveries delivery = riderDeliveryRepository.findByDeliveryidAndRideridIsNull(riderDeliveryAcceptRequest.getDeliveryid());
-        riderDeliveryRepository.updateDeliveryRiderIdAndDeliveryStatus(riderDeliveryAcceptRequest.getDeliveryid(), Constants.delivery_status_Delivery_Scheduled, userid);
+        riderDeliveryRepository.updateDeliveryRiderIdAndDeliveryStatus(riderDeliveryAcceptRequest.getDeliveryid(), Constants.delivery_status_Delivery_Scheduled, userid,locationcode);
         // send notification to user about his deliveryorder accepted
         String userToken = profileRepository.findByUseridCustom( delivery.getUserid()).getToken();
         if(userToken!=null) {

@@ -29,7 +29,6 @@ import io.delivery.dos.models.delivery.availability.AvailabilityRequest;
 import io.delivery.dos.models.delivery.availability.AvailabilityResponse;
 import io.delivery.dos.models.delivery.savedelivery.SaveDeliveryRequestObject;
 import io.delivery.dos.models.delivery.savedelivery.SaveDeliveryResponse;
-import io.delivery.dos.models.expressdelivery.ExpressDeliveries;
 import io.delivery.dos.models.initiatedelivery.InitiateDeliveryRequestObject;
 import io.delivery.dos.models.initiatedelivery.InitiateDeliveryResponseObject;
 import io.delivery.dos.models.paytm.GeneratedOrderPaytm;
@@ -37,7 +36,6 @@ import io.delivery.dos.models.razorpay.GeneratedOrder;
 import io.delivery.dos.models.razorpay.RazorPayNotes;
 import io.delivery.dos.models.user.ProfileWithReferralCode;
 import io.delivery.dos.repositories.delivery.DeliveriesRepository;
-import io.delivery.dos.repositories.expressdelivery.ExpressDeliveriesRepository;
 import io.delivery.dos.repositories.user.ProfileRepository;
 import io.delivery.dos.repositories.user.ProfileRepositoryWithReferralCode;
 import io.delivery.dos.security.util.JwtUtil;
@@ -95,6 +93,7 @@ public class ExpressSaveDeliveryController {
 		// first save it in db with status as Payment_Awaiting
 		String jwt = authorizationHeader.substring(7);
         String userid = jwtUtil.extractUsername(jwt);
+        int locationcode = jwtUtil.extractLocationcode(jwt);
         
         Address originAddress = addressUtil.checkIfAddressCorrespondsToUser(userid, saveDeliveryRequestObject.getOriginaddressid());
          
@@ -103,7 +102,7 @@ public class ExpressSaveDeliveryController {
         int totalAmountInPaisa = mapsUtil.getExpressAmountFromParamsInPaisa(originAddress,saveDeliveryRequestObject.getDroplatitude(),saveDeliveryRequestObject.getDroplongitude(),saveDeliveryRequestObject.getWeightcategory(),
         		saveDeliveryRequestObject.getIsDelicate());
 
-        Deliveries recvdDelivery = getExpressSaveDeliveryObject(saveDeliveryRequestObject,userid,totalAmountInPaisa,saveDeliveryRequestObject.getCreditsused());
+        Deliveries recvdDelivery = getExpressSaveDeliveryObject(saveDeliveryRequestObject,userid,totalAmountInPaisa,saveDeliveryRequestObject.getCreditsused(),locationcode);
 
         Deliveries savedDelivery=deliveriesRepository.save(recvdDelivery);
 		//after save success get order id and send object		
@@ -114,7 +113,7 @@ public class ExpressSaveDeliveryController {
         else throw new Exception("Incorrect addressid"); 
       }
 	
-		private Deliveries getExpressSaveDeliveryObject(Deliveries saveDeliveryRequestObject, String userid, int totalAmountInPaisa,int creditsUsed)
+		private Deliveries getExpressSaveDeliveryObject(Deliveries saveDeliveryRequestObject, String userid, int totalAmountInPaisa,int creditsUsed,int locationcode)
 				throws Exception {
 			
 			switch (getExpressPaymentMethod(saveDeliveryRequestObject.getPaymentMethod())) {
@@ -134,7 +133,7 @@ public class ExpressSaveDeliveryController {
 
 				return getExpressDeliveryObject(saveDeliveryRequestObject, userid,
 						razorPayUtil.convertPaisaToRs(payableDeliveryAmountInPaisa),totalAmountInPaisa, paytmOrderId,
-						generatedOrderPaytm.getBody().getTxnToken());
+						generatedOrderPaytm.getBody().getTxnToken(),locationcode);
 				
 				}
 				
@@ -157,7 +156,7 @@ public class ExpressSaveDeliveryController {
 				GeneratedOrder generatedOrder = razorPayUtil.generateOrderId(payableDeliveryAmountInPaisa, "reciept for " + userid,
 						map);
 				return getExpressDeliveryObject(saveDeliveryRequestObject, userid,
-						razorPayUtil.convertPaisaToRs(generatedOrder.getAmount()),totalAmountInPaisa, generatedOrder.getID(), null);
+						razorPayUtil.convertPaisaToRs(generatedOrder.getAmount()),totalAmountInPaisa, generatedOrder.getID(), null,locationcode);
 				}
 				 else throw new Exception("Request Unsuccessful , Please try again with Correct Selections"); 
 
@@ -175,7 +174,7 @@ public class ExpressSaveDeliveryController {
 			return false;
 		}
 
-		private Deliveries getExpressDeliveryObject(Deliveries saveDeliveryRequestObject,String userid,int payableAmountInRs, int totalAmountInPaisa,String orderid,String paytmTxnToken) {
+		private Deliveries getExpressDeliveryObject(Deliveries saveDeliveryRequestObject,String userid,int payableAmountInRs, int totalAmountInPaisa,String orderid,String paytmTxnToken,int locationcode) {
 			System.out.println("----------------------------------");
 			return new Deliveries(null,userid,saveDeliveryRequestObject.getPickuptime(),
 	 				saveDeliveryRequestObject.getOriginaddressid(),saveDeliveryRequestObject.getDropaddress(),
@@ -183,7 +182,7 @@ public class ExpressSaveDeliveryController {
 	 				Constants.status_PAYMENT_AWAITING,null,orderid,payableAmountInRs,
 	 				saveDeliveryRequestObject.getDescription(),saveDeliveryRequestObject.getImg(),saveDeliveryRequestObject.getWeightcategory(),saveDeliveryRequestObject.getDestinationcontact(),
 	 				saveDeliveryRequestObject.getIsDelicate(),saveDeliveryRequestObject.getIsBalloonAdded(),saveDeliveryRequestObject.getIsBouqetAdded(),saveDeliveryRequestObject.getIsTwoCakes(),getExpressPaymentMethod(saveDeliveryRequestObject.getPaymentMethod()),paytmTxnToken,
-	 				razorPayUtil.convertPaisaToRs(totalAmountInPaisa),saveDeliveryRequestObject.getCreditsused());
+	 				razorPayUtil.convertPaisaToRs(totalAmountInPaisa),saveDeliveryRequestObject.getCreditsused(),locationcode);
 		}
 		
 		private int getPayableDeliveryCharge(int totalDeliveryCharge,int creditsUsed) throws Exception {
@@ -209,7 +208,9 @@ public class ExpressSaveDeliveryController {
 		@RequestMapping(method=RequestMethod.POST,value="/initiateExpressDelivery")
 		public InitiateDeliveryResponseObject initiateExpressDelivery(@RequestBody InitiateDeliveryRequestObject initiateDeliveryRequestObject,@RequestHeader (name="Authorization") String authorizationHeader) throws Exception { 
 			String jwt = authorizationHeader.substring(7);
-	        String userid = jwtUtil.extractUsername(jwt);  
+	        String userid = jwtUtil.extractUsername(jwt); 
+	        int locationcode = jwtUtil.extractLocationcode(jwt);
+	        
 	        System.out.println("id is "+initiateDeliveryRequestObject.getDeliveryid());
 	        System.out.println("orderid is "+initiateDeliveryRequestObject.getOrderid());
 	        System.out.println("user is "+userid);
@@ -239,7 +240,7 @@ public class ExpressSaveDeliveryController {
 	        		}
 	        		
 	        		// now trigger notif to free riders
-	        		notifUtil.sendNotificationToFreeRiders(delivery);
+	        		notifUtil.sendNotificationToFreeRiders(delivery,locationcode);
 	        		
 	        		return new InitiateDeliveryResponseObject(delivery.getDeliveryid(),Constants.delivery_status_Delivery_Scheduling);
 	        		

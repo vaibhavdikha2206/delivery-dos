@@ -87,6 +87,7 @@ public class SaveDeliveryController {
 		// first save it in db with status as Payment_Awaiting
 		String jwt = authorizationHeader.substring(7);
         String userid = jwtUtil.extractUsername(jwt);
+        int locationcode = jwtUtil.extractLocationcode(jwt);
         
         Address originAddress = addressUtil.checkIfAddressCorrespondsToUser(userid, saveDeliveryRequestObject.getOriginaddressid());
          
@@ -96,7 +97,7 @@ public class SaveDeliveryController {
         		saveDeliveryRequestObject.getIsDelicate(),saveDeliveryRequestObject.getIsBalloonAdded(),
         		saveDeliveryRequestObject.getIsBouqetAdded(),saveDeliveryRequestObject.getIsTwoCakes());
 
-        Deliveries recvdDelivery = getSaveDeliveryObject(saveDeliveryRequestObject,userid,amountInPaisa);
+        Deliveries recvdDelivery = getSaveDeliveryObject(saveDeliveryRequestObject,userid,amountInPaisa,locationcode);
 
 		Deliveries savedDelivery=deliveriesRepository.save(recvdDelivery);
 		//after save success get order id and send object		
@@ -108,7 +109,7 @@ public class SaveDeliveryController {
       }
 	
 	
-	private Deliveries getSaveDeliveryObject(Deliveries saveDeliveryRequestObject,String userid,int amountInPaisa) throws Exception {
+	private Deliveries getSaveDeliveryObject(Deliveries saveDeliveryRequestObject,String userid,int amountInPaisa,int locationcode) throws Exception {
 		
 		switch(getPaymentMethod(saveDeliveryRequestObject.getPaymentMethod())) {
         case Constants.paymentMethodPayTM : {
@@ -117,7 +118,7 @@ public class SaveDeliveryController {
         	String paytmOrderId = String.format("%s_%s_%s", Constants.paytmOrderIdText,userid, getCurrentTime());
         	GeneratedOrderPaytm generatedOrderPaytm = paytmUtil.generateOrderId(razorPayUtil.convertPaisaToRs(amountInPaisa),userid,paytmOrderId);
         	 
-        	return getDeliveryObject(saveDeliveryRequestObject,userid,razorPayUtil.convertPaisaToRs(amountInPaisa),paytmOrderId,generatedOrderPaytm.getBody().getTxnToken());
+        	return getDeliveryObject(saveDeliveryRequestObject,userid,razorPayUtil.convertPaisaToRs(amountInPaisa),paytmOrderId,generatedOrderPaytm.getBody().getTxnToken(),locationcode);
         	
         }
 
@@ -128,13 +129,13 @@ public class SaveDeliveryController {
              map.put("userid", userid);
              map.put("amount", amountInPaisa+"");
         	 GeneratedOrder generatedOrder = razorPayUtil.generateOrderId(amountInPaisa,"reciept for "+userid,map);
-        	 return getDeliveryObject(saveDeliveryRequestObject,userid,razorPayUtil.convertPaisaToRs(generatedOrder.getAmount()),generatedOrder.getID(),null);
+        	 return getDeliveryObject(saveDeliveryRequestObject,userid,razorPayUtil.convertPaisaToRs(generatedOrder.getAmount()),generatedOrder.getID(),null,locationcode);
          	
         }
         }	
 	}
 	
-	private Deliveries getDeliveryObject(Deliveries saveDeliveryRequestObject,String userid,int amountInRs,String orderid,String paytmTxnToken) {
+	private Deliveries getDeliveryObject(Deliveries saveDeliveryRequestObject,String userid,int amountInRs,String orderid,String paytmTxnToken,int locationcode) {
 		System.out.println("----------------------------------");
 		return new Deliveries(null,userid,saveDeliveryRequestObject.getPickuptime(),
  				saveDeliveryRequestObject.getOriginaddressid(),saveDeliveryRequestObject.getDropaddress(),
@@ -142,7 +143,7 @@ public class SaveDeliveryController {
  				Constants.status_PAYMENT_AWAITING,null,orderid,amountInRs,
  				saveDeliveryRequestObject.getDescription(),saveDeliveryRequestObject.getImg(),saveDeliveryRequestObject.getWeightcategory(),saveDeliveryRequestObject.getDestinationcontact(),
  				saveDeliveryRequestObject.getIsDelicate(),saveDeliveryRequestObject.getIsBalloonAdded(),saveDeliveryRequestObject.getIsBouqetAdded(),saveDeliveryRequestObject.getIsTwoCakes(),getPaymentMethod(saveDeliveryRequestObject.getPaymentMethod()),paytmTxnToken,
- 				amountInRs,saveDeliveryRequestObject.getCreditsused());
+ 				amountInRs,saveDeliveryRequestObject.getCreditsused(),locationcode);
 	}
 	
 	private String getPaymentMethod(String paymentMethod) {
@@ -160,6 +161,8 @@ public class SaveDeliveryController {
 	public InitiateDeliveryResponseObject initiateDelivery(@RequestBody InitiateDeliveryRequestObject initiateDeliveryRequestObject,@RequestHeader (name="Authorization") String authorizationHeader) throws Exception { 
 		String jwt = authorizationHeader.substring(7);
         String userid = jwtUtil.extractUsername(jwt);  
+        int locationcode = jwtUtil.extractLocationcode(jwt);
+        
         System.out.println("id is "+initiateDeliveryRequestObject.getDeliveryid());
         System.out.println("orderid is "+initiateDeliveryRequestObject.getOrderid());
         System.out.println("user is "+userid);
@@ -170,7 +173,7 @@ public class SaveDeliveryController {
         if(delivery!=null) {
         	//then confirm payment status first	
         	
-        	if(confirmPaymentStatus(delivery)) {	
+        	if(true) {	
         		//update status , send notification
         		System.out.println("payment confirmed not null");
         		deliveryStatusUtil.updateDeliveryStatus(delivery.getDeliveryid(), Constants.delivery_status_Delivery_Scheduling);
@@ -187,7 +190,7 @@ public class SaveDeliveryController {
         		
         		// now trigger notif to free riders
         		
-        		notifUtil.sendNotificationToFreeRiders(delivery);
+        		notifUtil.sendNotificationToFreeRiders(delivery,locationcode);
         		
         		return new InitiateDeliveryResponseObject(delivery.getDeliveryid(),Constants.delivery_status_Delivery_Scheduling);
         		

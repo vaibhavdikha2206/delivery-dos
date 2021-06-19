@@ -66,7 +66,7 @@ public class AdminDeliveryUpdateController {
         Deliveries delivery = riderDeliveryRepository.findByDeliveryid(assignRiderRequestObject.getDeliveryId());
         
         // assign rider and send notification to rider 
-        riderDeliveryRepository.updateDeliveryRiderIdAndDeliveryStatus(assignRiderRequestObject.getDeliveryId(), Constants.delivery_status_Delivery_Scheduled, assignRiderRequestObject.getRiderid());
+        riderDeliveryRepository.updateDeliveryRiderIdAndDeliveryStatus(assignRiderRequestObject.getDeliveryId(), Constants.delivery_status_Delivery_Scheduled, assignRiderRequestObject.getRiderid(),delivery.getLocationcode());
         sendNotificationToUserForAcceptanceUpdate(assignRiderRequestObject.getRiderid(),delivery);
                 
         // notify vendor 
@@ -93,16 +93,16 @@ public class AdminDeliveryUpdateController {
 
 	@RequestMapping(method=RequestMethod.POST,value="/getSchedule")
 	public GetDeliveriesScheduleResponse getUsersDeliveryList(@RequestHeader (name="Authorization") String authorizationHeader,@RequestBody GetDeliveriesScheduleRequest getDeliveriesScheduleRequestObject) throws Exception { 
-		// get drivers engaged during requested time
+		// get drivers engaged in particular location during requested time
 		String jwt = authorizationHeader.substring(7);
         String userid = jwtUtil.extractUsername(jwt);
         checkAdmin(jwt);
         
         // free riders pickuptime
-        List<ProfileResponse> freeriders=notifUtil.getFreeDrivers(getDeliveriesScheduleRequestObject.getPickuptime());
+        List<ProfileResponse> freeriders=notifUtil.getFreeDrivers(getDeliveriesScheduleRequestObject.getPickuptime(),getDeliveriesScheduleRequestObject.getLocationcode());
         
         //get schedule at pickuptime
-        List<Deliveries> deliveries = adminDeliveriesRepository.findByPickuptimeWhereRideridIsNotnull(getDeliveriesScheduleRequestObject.getPickuptime());
+        List<Deliveries> deliveries = adminDeliveriesRepository.findByPickuptimeWhereRideridIsNotnull(getDeliveriesScheduleRequestObject.getPickuptime(),getDeliveriesScheduleRequestObject.getLocationcode());
         
         
         return new GetDeliveriesScheduleResponse(deliveries,freeriders);

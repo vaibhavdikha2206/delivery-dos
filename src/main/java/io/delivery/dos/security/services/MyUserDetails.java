@@ -19,6 +19,7 @@ public class MyUserDetails implements UserDetails{
 	private String password;
 	private String role;
 	private String email;
+	private int locationcode;
 	
 	public MyUserDetails(ProfileUser user) {
 		super();
@@ -28,6 +29,7 @@ public class MyUserDetails implements UserDetails{
 		this.password = user.getPassword();
 		this.role = user.getRole();
 		this.email = user.getEmail();
+		this.locationcode = user.getLocationcode();
 	}
 
 
@@ -97,6 +99,15 @@ public class MyUserDetails implements UserDetails{
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public int getLocationcode() {
+		return locationcode;
+	}
+
+
+	public void setLocationcode(int locationcode) {
+		this.locationcode = locationcode;
 	}
 
 

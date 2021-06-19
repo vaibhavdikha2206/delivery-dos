@@ -29,12 +29,15 @@ public class Profile {
 	@Column(name = "referralcode")
 	private String referralcode;
 	
+	@Column(name = "locationcode")
+	private int locationcode;
+	
 	public Profile() {
 
 	}
 
 	public Profile(String userid, String username, String password, String role, String email, Float credits,
-			String referralcode) {
+			String referralcode,int locationcode) {
 		super();
 		this.userid = userid;
 		this.username = username;
@@ -43,6 +46,16 @@ public class Profile {
 		this.email = email;
 		this.credits = credits;
 		this.referralcode = referralcode;
+		this.locationcode = locationcode;
+	}
+
+	
+	public int getLocationcode() {
+		return locationcode;
+	}
+
+	public void setLocationcode(int locationcode) {
+		this.locationcode = locationcode;
 	}
 
 	public Float getCredits() {
