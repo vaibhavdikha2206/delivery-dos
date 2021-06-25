@@ -40,4 +40,5 @@ public class Constants {
 	public final static String capturedStatusPaytm = "TXN_SUCCESS";
 	
 	public final static int  basePriceInPaisa = 5000;
+	public final static String PAYMENT_KEY_FREE_STRING = "FREE";
 }

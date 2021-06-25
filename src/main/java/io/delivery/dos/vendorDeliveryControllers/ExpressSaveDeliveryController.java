@@ -124,7 +124,7 @@ public class ExpressSaveDeliveryController {
 				
 				
 				int payableDeliveryAmountInRs = getPayableDeliveryCharge(razorPayUtil.convertPaisaToRs(totalAmountInPaisa),creditsUsed);
-				
+				if(payableDeliveryAmountInRs!=0) {
 				int payableDeliveryAmountInPaisa = razorPayUtil.convertRsToPaisa(payableDeliveryAmountInRs);
 				// check if user has valid credits to be used 
 				if(checkCreditsValidity(userid,saveDeliveryRequestObject.getCreditsused())) {
@@ -138,6 +138,12 @@ public class ExpressSaveDeliveryController {
 				}
 				
 				 else throw new Exception("Request Unsuccessful , Please try again with Correct Selections"); 
+				}
+				else {
+					return getExpressDeliveryObject(saveDeliveryRequestObject, userid,
+							0,totalAmountInPaisa, paytmOrderId,
+							Constants.PAYMENT_KEY_FREE_STRING,locationcode);
+				}
 
 			}
 
@@ -146,6 +152,7 @@ public class ExpressSaveDeliveryController {
 				System.out.println("RazorPayTime");
 				
 				int payableDeliveryAmountInRs = getPayableDeliveryCharge(razorPayUtil.convertPaisaToRs(totalAmountInPaisa),creditsUsed);
+				if(payableDeliveryAmountInRs!=0) {
 				int payableDeliveryAmountInPaisa = razorPayUtil.convertRsToPaisa(payableDeliveryAmountInRs);
 				
 				//convert totalAmountInPaisa to rs get deliveryAmountInRs and then convert it back to Paisa
@@ -159,6 +166,12 @@ public class ExpressSaveDeliveryController {
 						razorPayUtil.convertPaisaToRs(generatedOrder.getAmount()),totalAmountInPaisa, generatedOrder.getID(), null,locationcode);
 				}
 				 else throw new Exception("Request Unsuccessful , Please try again with Correct Selections"); 
+				}
+				else {
+					return getExpressDeliveryObject(saveDeliveryRequestObject, userid,
+							0,totalAmountInPaisa, Constants.PAYMENT_KEY_FREE_STRING, null,locationcode);
+					
+				}
 
 			}
 			
@@ -220,8 +233,10 @@ public class ExpressSaveDeliveryController {
 	        System.out.println("delivery is "+delivery.getOrderid());
 	        if(delivery!=null) {
 	        	//then confirm payment status first	
-	        	
-	        	if(confirmExpressPaymentStatus(delivery)) {	
+	        	System.out.println("insider ");
+	        	System.out.println("Check ");
+	        	System.out.println(delivery.getOrderid().equals(Constants.PAYMENT_KEY_FREE_STRING));
+	        	if(delivery.getOrderid().equals(Constants.PAYMENT_KEY_FREE_STRING)||confirmExpressPaymentStatus(delivery)) {	
 	        		//update status , send notification
 	        		System.out.println("payment confirmed not null");
 	        		deliveryStatusUtil.updateDeliveryStatus(delivery.getDeliveryid(), Constants.delivery_status_Delivery_Scheduling);
