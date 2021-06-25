@@ -140,9 +140,12 @@ public class ExpressSaveDeliveryController {
 				 else throw new Exception("Request Unsuccessful , Please try again with Correct Selections"); 
 				}
 				else {
+					if(checkCreditsValidity(userid,saveDeliveryRequestObject.getCreditsused())) {
 					return getExpressDeliveryObject(saveDeliveryRequestObject, userid,
 							0,totalAmountInPaisa, paytmOrderId,
 							Constants.PAYMENT_KEY_FREE_STRING,locationcode);
+					}
+					else  throw new Exception("Request Unsuccessful , Please try again with Correct Selections") ; 
 				}
 
 			}
@@ -168,8 +171,11 @@ public class ExpressSaveDeliveryController {
 				 else throw new Exception("Request Unsuccessful , Please try again with Correct Selections"); 
 				}
 				else {
+					if(checkCreditsValidity(userid,saveDeliveryRequestObject.getCreditsused())) {
 					return getExpressDeliveryObject(saveDeliveryRequestObject, userid,
 							0,totalAmountInPaisa, Constants.PAYMENT_KEY_FREE_STRING, null,locationcode);
+					}
+					else  throw new Exception("Request Unsuccessful , Please try again with Correct Selections") ; 
 					
 				}
 
