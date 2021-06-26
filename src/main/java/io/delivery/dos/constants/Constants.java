@@ -14,7 +14,7 @@ public class Constants {
 	public final static String  delivery_status_Delivery_Success = "SUCCESS_DELIVERY";
 	
 	public final static String  user_notification_Credits_updated = "CREDITS_UPDATED";
-	
+	public final static String  user_notification_Credits_added = "CREDITS_ADDED";
 	
 	public final static String  payment_key_notes_status = "status";
 	public final static String  payment_key_notes_payload = "payload";

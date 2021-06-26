@@ -72,6 +72,32 @@ public class NotifUtil {
 		sendNotificationToAdminWithDeliveryObject(delivery,Constants.delivery_status_Delivery_Scheduling);
 	}
 	
+	@Async
+	public void sendNotificationToUsersForCreditsUpdate(List<String> listOfUsers) throws FirebaseMessagingException {
+		
+		List<ProfileResponse> usersList = new ArrayList<ProfileResponse>();
+		
+		usersList = riderRepository.findByUserids(listOfUsers);
+		
+		List<String> userNotificationList = new ArrayList<String>();
+		
+		for (ProfileResponse user : usersList) {
+			System.out.println("sending notif to "+user.getUserid());
+			if(user.getToken()!=null)
+			{
+				System.out.println("sendmulti "+user.getUserid()+","+user.getToken());
+				userNotificationList.add(user.getToken());
+			
+			}
+		}
+		
+		System.out.println("sending notification to multicast "+userNotificationList);
+		
+		if(userNotificationList.size()>0) {
+		firebaseService.sendNotificationToMultipleUsersForCreditsUpdate(userNotificationList);
+		}
+		sendNotificationToAdminWithJustNotificationType(Constants.user_notification_Credits_added);
+	}
 
 	public List<ProfileResponse> getFreeDrivers(String pickuptime,int locationcode){
 		
@@ -203,6 +229,27 @@ public class NotifUtil {
 		System.out.println("sending notification to multicast");		
 		if(adminNotificationList.size()>0) {
 		firebaseService.sendNotificationToMultipleAdminsNoDeliveryObject(adminNotificationList,deliveryid,pickuptime,notificationType);
+		}
+	}
+	
+	@Async
+	public void sendNotificationToAdminWithJustNotificationType(String notificationType) {
+		
+		List<ProfileResponse> admins = getAdmin();
+		List<String> adminNotificationList = new ArrayList<String>();
+		
+		for (ProfileResponse admindata : admins) {
+			System.out.println("freedriver "+admindata.getUserid());
+			if(admindata.getToken()!=null)
+			{
+				System.out.println("sendmulti "+admindata.getUserid()+","+admindata.getToken());
+				adminNotificationList.add(admindata.getToken());
+			
+			}
+		}
+		System.out.println("sending notification to multicast");		
+		if(adminNotificationList.size()>0) {
+		firebaseService.sendNotificationToMultipleAdminsNoDeliveryObject(adminNotificationList,null,null,notificationType);
 		}
 	}
 

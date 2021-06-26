@@ -54,6 +54,26 @@ public class NotificationService {
         return firebaseMessaging.send(message);
     }
 
+    public String sendNotificationToMultipleUsersForCreditsUpdate(List<String> registrationTokens) {
+    	//only for sending notification to riders yet
+    	MulticastMessage message = MulticastMessage.builder()
+    		    .putData("type", Constants.user_notification_Credits_added)
+    		    .putData("click_action", Constants.FLUTTER_NOTIF_VALUE_STRING)
+    		    .addAllTokens(registrationTokens)
+    		    .build();
+    		BatchResponse response = null;
+			try {
+				response = firebaseMessaging.sendMulticast(message);
+			} catch (FirebaseMessagingException e) {
+				// TODO Auto-generated catch block
+				System.out.println("error is "+e);
+			}
+    		// See the BatchResponse reference documentation
+    		
+    		System.out.println(response.getSuccessCount() + " messages were sent successfully");	
+    		return response.getSuccessCount() + " messages were sent successfully";
+    }
+    
     public String sendNotificationToMultipleRiders(List<String> registrationTokens,Deliveries delivery) {
     	//only for sending notification to riders yet
     	MulticastMessage message = MulticastMessage.builder()

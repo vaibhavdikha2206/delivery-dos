@@ -25,5 +25,8 @@ public interface RiderRepository extends JpaRepository<ProfileResponse, Integer>
 
 	@Query(value="SELECT userid,username,token FROM profile WHERE role = :role",nativeQuery = true)
 	List<ProfileResponse> findByJustRole(@Param("role")String role);
+	
+	@Query(value="SELECT userid,username,token FROM profile WHERE userid IN (:userids)",nativeQuery = true)
+	List<ProfileResponse> findByUserids(@Param("userids")List<String> userids);
 
 }
