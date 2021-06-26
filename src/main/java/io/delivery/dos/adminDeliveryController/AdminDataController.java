@@ -19,6 +19,7 @@ import io.delivery.dos.models.delivery.userdeliveries.GetDeliveriesListWithAddre
 import io.delivery.dos.models.user.Profile;
 import io.delivery.dos.models.user.request.AdminUpdateUserCreditsRequest;
 import io.delivery.dos.models.user.response.AdminProfileResponse;
+import io.delivery.dos.models.user.response.AdminUpdateUserCreditsResponse;
 import io.delivery.dos.repositories.delivery.AdminDeliveriesRepository;
 import io.delivery.dos.repositories.delivery.AdminDeliveryRepositoryWithAddress;
 import io.delivery.dos.repositories.delivery.DeliveriesRepository;
@@ -67,16 +68,16 @@ public class AdminDataController {
 	
 	@Transactional
 	@RequestMapping(method=RequestMethod.POST,value="/updateUserCredits")
-	public AdminProfileResponse addCreditsToUsers(@RequestHeader (name="Authorization") String authorizationHeader,@RequestBody AdminUpdateUserCreditsRequest adminUpdateUserCreditsRequest) throws Exception { 
+	public AdminUpdateUserCreditsResponse addCreditsToUsers(@RequestHeader (name="Authorization") String authorizationHeader,@RequestBody AdminUpdateUserCreditsRequest adminUpdateUserCreditsRequest) throws Exception { 
 		// get drivers engaged during requested time
 		String jwt = authorizationHeader.substring(7);
         checkAdmin(jwt);
         
-        profileRepositoryForAdmin.updateCredits(adminUpdateUserCreditsRequest.getListOfUsers());
+        Integer result=profileRepositoryForAdmin.updateCredits(adminUpdateUserCreditsRequest.getListOfUsers());
         
         notifUtil.sendNotificationToUsersForCreditsUpdate(adminUpdateUserCreditsRequest.getListOfUsers());
         
-        return new AdminProfileResponse(null);
+        return new AdminUpdateUserCreditsResponse(result);
 	}
 	
 	
