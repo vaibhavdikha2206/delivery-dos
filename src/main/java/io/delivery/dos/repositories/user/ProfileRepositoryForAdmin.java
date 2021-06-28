@@ -12,7 +12,7 @@ import io.delivery.dos.models.user.response.ProfileResponse;
 
 public interface ProfileRepositoryForAdmin extends JpaRepository<Profile,String> {
 	
-	@Query(value="Select userid,username,password,role,email,credits from profile",nativeQuery = true)
+	@Query(value="Select * from profile",nativeQuery = true)
 	List<Profile> findProfileData();
 	
 	@Modifying
