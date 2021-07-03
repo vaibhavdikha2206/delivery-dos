@@ -84,6 +84,9 @@ public class DeliverResponseWithOriginAddress {
 	@Column(name = "paymentMethod")
 	private String paymentMethod;
 	
+	@Column(name = "locationcode")
+	private int locationcode;
+	
 	@ManyToOne
     @JoinColumn(name="addressid", nullable=false)
     private AddressJoin address;
@@ -100,7 +103,7 @@ public class DeliverResponseWithOriginAddress {
 			String dropaddress, Double droplatitude, Double droplongitude, String status, String riderid,
 			String orderid, int deliverycharge, String description, String img, Integer weightcategory,
 			String destinationcontact, boolean isDelicate, boolean isBalloonAdded, boolean isBouqetAdded,
-			boolean isTwoCakes,String paymentMethod,AddressJoin address,ProfileJoin profile) {
+			boolean isTwoCakes,String paymentMethod,AddressJoin address,ProfileJoin profile,int locationcode) {
 		super();
 		this.deliveryid = deliveryid;
 		this.userid = userid;
@@ -124,9 +127,23 @@ public class DeliverResponseWithOriginAddress {
 		this.paymentMethod = paymentMethod;
 		this.address = address;
 		this.profile= profile;
+		this.locationcode = locationcode;
 	}
 
 	
+	
+	public int getLocationcode() {
+		return locationcode;
+	}
+
+
+
+	public void setLocationcode(int locationcode) {
+		this.locationcode = locationcode;
+	}
+
+
+
 	public String getPaymentMethod() {
 		return paymentMethod;
 	}
