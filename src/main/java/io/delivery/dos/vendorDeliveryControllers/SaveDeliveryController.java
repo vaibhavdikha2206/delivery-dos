@@ -81,32 +81,32 @@ public class SaveDeliveryController {
 		   return dtf.format(now);
 	}
 	
-	@RequestMapping(method=RequestMethod.POST,value="/deliveryRequest")
-	public SaveDeliveryResponse deliveryRequest(@RequestBody Deliveries saveDeliveryRequestObject,@RequestHeader (name="Authorization") String authorizationHeader) throws Exception { 
-	
-		// first save it in db with status as Payment_Awaiting
-		String jwt = authorizationHeader.substring(7);
-        String userid = jwtUtil.extractUsername(jwt);
-        int locationcode = jwtUtil.extractLocationcode(jwt);
-        
-        Address originAddress = addressUtil.checkIfAddressCorrespondsToUser(userid, saveDeliveryRequestObject.getOriginaddressid());
-         
-        if(originAddress !=null) {
-      
-        int amountInPaisa = mapsUtil.getAmountFromParamsInPaisa(originAddress,saveDeliveryRequestObject.getDroplatitude(),saveDeliveryRequestObject.getDroplongitude(),saveDeliveryRequestObject.getWeightcategory(),
-        		saveDeliveryRequestObject.getIsDelicate(),saveDeliveryRequestObject.getIsBalloonAdded(),
-        		saveDeliveryRequestObject.getIsBouqetAdded(),saveDeliveryRequestObject.getIsTwoCakes());
-
-        Deliveries recvdDelivery = getSaveDeliveryObject(saveDeliveryRequestObject,userid,amountInPaisa,locationcode);
-
-		Deliveries savedDelivery=deliveriesRepository.save(recvdDelivery);
-		//after save success get order id and send object		
-		
-		return new SaveDeliveryResponse(savedDelivery.getDeliverycharge(),savedDelivery.getOrderid(),savedDelivery.getDeliveryid(),savedDelivery.getPaytmTxnToken(),getPaymentMethod(savedDelivery.getPaymentMethod())) ; 
-        }
-        
-        else throw new Exception("Incorrect addressid"); 
-      }
+//	@RequestMapping(method=RequestMethod.POST,value="/deliveryRequest")
+//	public SaveDeliveryResponse deliveryRequest(@RequestBody Deliveries saveDeliveryRequestObject,@RequestHeader (name="Authorization") String authorizationHeader) throws Exception { 
+//	
+//		// first save it in db with status as Payment_Awaiting
+//		String jwt = authorizationHeader.substring(7);
+//        String userid = jwtUtil.extractUsername(jwt);
+//        int locationcode = jwtUtil.extractLocationcode(jwt);
+//        
+//        Address originAddress = addressUtil.checkIfAddressCorrespondsToUser(userid, saveDeliveryRequestObject.getOriginaddressid());
+//         
+//        if(originAddress !=null) {
+//      
+//        int amountInPaisa = mapsUtil.getAmountFromParamsInPaisa(originAddress,saveDeliveryRequestObject.getDroplatitude(),saveDeliveryRequestObject.getDroplongitude(),saveDeliveryRequestObject.getWeightcategory(),
+//        		saveDeliveryRequestObject.getIsDelicate(),saveDeliveryRequestObject.getIsBalloonAdded(),
+//        		saveDeliveryRequestObject.getIsBouqetAdded(),saveDeliveryRequestObject.getIsTwoCakes());
+//
+//        Deliveries recvdDelivery = getSaveDeliveryObject(saveDeliveryRequestObject,userid,amountInPaisa,locationcode);
+//
+//		Deliveries savedDelivery=deliveriesRepository.save(recvdDelivery);
+//		//after save success get order id and send object		
+//		
+//		return new SaveDeliveryResponse(savedDelivery.getDeliverycharge(),savedDelivery.getOrderid(),savedDelivery.getDeliveryid(),savedDelivery.getPaytmTxnToken(),getPaymentMethod(savedDelivery.getPaymentMethod())) ; 
+//        }
+//        
+//        else throw new Exception("Incorrect addressid"); 
+//      }
 	
 	
 	private Deliveries getSaveDeliveryObject(Deliveries saveDeliveryRequestObject,String userid,int amountInPaisa,int locationcode) throws Exception {
@@ -156,50 +156,50 @@ public class SaveDeliveryController {
 		return Constants.paymentMethodPayTM;
 	}
 	
-	@Transactional
-	@RequestMapping(method=RequestMethod.POST,value="/initiateDelivery")
-	public InitiateDeliveryResponseObject initiateDelivery(@RequestBody InitiateDeliveryRequestObject initiateDeliveryRequestObject,@RequestHeader (name="Authorization") String authorizationHeader) throws Exception { 
-		String jwt = authorizationHeader.substring(7);
-        String userid = jwtUtil.extractUsername(jwt);  
-        int locationcode = jwtUtil.extractLocationcode(jwt);
-        
-        System.out.println("id is "+initiateDeliveryRequestObject.getDeliveryid());
-        System.out.println("orderid is "+initiateDeliveryRequestObject.getOrderid());
-        System.out.println("user is "+userid);
-        Deliveries delivery = deliveriesRepository.findOneByDeliveryidAndUseridAndOrderid(initiateDeliveryRequestObject.getDeliveryid(),userid,initiateDeliveryRequestObject.getOrderid());
-        // first check if delivery id is for the user with correct jwt
-        System.out.println("delivery is "+delivery);
-        System.out.println("delivery is "+delivery.getOrderid());
-        if(delivery!=null) {
-        	//then confirm payment status first	
-        	
-        	if(true) {	
-        		//update status , send notification
-        		System.out.println("payment confirmed not null");
-        		deliveryStatusUtil.updateDeliveryStatus(delivery.getDeliveryid(), Constants.delivery_status_Delivery_Scheduling);
-        		
-        		// for express : ALSO UPDATE CREDITS HERE
-        		
-        		if(initiateDeliveryRequestObject.getRazorhash()!=null)
-        		deliveryStatusUtil.updateDeliveryPaymentHash(delivery.getDeliveryid(), initiateDeliveryRequestObject.getRazorhash(),initiateDeliveryRequestObject.getRazorsignature(),initiateDeliveryRequestObject.getRazorpayid());
-        	
-        		String usertoken = profileRepository.findByUseridCustom(userid).getToken();
-        		if(usertoken!=null) {
-        			sendNotificationToUserForScheduling(userid,delivery,usertoken,Constants.delivery_status_Delivery_Scheduling);
-        		}
-        		
-        		// now trigger notif to free riders
-        		
-        		notifUtil.sendNotificationToFreeRiders(delivery,locationcode);
-        		
-        		return new InitiateDeliveryResponseObject(delivery.getDeliveryid(),Constants.delivery_status_Delivery_Scheduling);
-        		
-        	}
-        }
-     
-        throw new Exception("Unable To Initiate Delivery");
-		
-	}
+//	@Transactional
+//	@RequestMapping(method=RequestMethod.POST,value="/initiateDelivery")
+//	public InitiateDeliveryResponseObject initiateDelivery(@RequestBody InitiateDeliveryRequestObject initiateDeliveryRequestObject,@RequestHeader (name="Authorization") String authorizationHeader) throws Exception { 
+//		String jwt = authorizationHeader.substring(7);
+//        String userid = jwtUtil.extractUsername(jwt);  
+//        int locationcode = jwtUtil.extractLocationcode(jwt);
+//        
+//        System.out.println("id is "+initiateDeliveryRequestObject.getDeliveryid());
+//        System.out.println("orderid is "+initiateDeliveryRequestObject.getOrderid());
+//        System.out.println("user is "+userid);
+//        Deliveries delivery = deliveriesRepository.findOneByDeliveryidAndUseridAndOrderid(initiateDeliveryRequestObject.getDeliveryid(),userid,initiateDeliveryRequestObject.getOrderid());
+//        // first check if delivery id is for the user with correct jwt
+//        System.out.println("delivery is "+delivery);
+//        System.out.println("delivery is "+delivery.getOrderid());
+//        if(delivery!=null) {
+//        	//then confirm payment status first	
+//        	
+//        	if(true) {	
+//        		//update status , send notification
+//        		System.out.println("payment confirmed not null");
+//        		deliveryStatusUtil.updateDeliveryStatus(delivery.getDeliveryid(), Constants.delivery_status_Delivery_Scheduling);
+//        		
+//        		// for express : ALSO UPDATE CREDITS HERE
+//        		
+//        		if(initiateDeliveryRequestObject.getRazorhash()!=null)
+//        		deliveryStatusUtil.updateDeliveryPaymentHash(delivery.getDeliveryid(), initiateDeliveryRequestObject.getRazorhash(),initiateDeliveryRequestObject.getRazorsignature(),initiateDeliveryRequestObject.getRazorpayid());
+//        	
+//        		String usertoken = profileRepository.findByUseridCustom(userid).getToken();
+//        		if(usertoken!=null) {
+//        			sendNotificationToUserForScheduling(userid,delivery,usertoken,Constants.delivery_status_Delivery_Scheduling);
+//        		}
+//        		
+//        		// now trigger notif to free riders
+//        		
+//        		notifUtil.sendNotificationToFreeRiders(delivery,locationcode);
+//        		
+//        		return new InitiateDeliveryResponseObject(delivery.getDeliveryid(),Constants.delivery_status_Delivery_Scheduling);
+//        		
+//        	}
+//        }
+//     
+//        throw new Exception("Unable To Initiate Delivery");
+//		
+//	}
 	
 	private boolean confirmPaymentStatus(Deliveries delivery) throws Exception {
 	switch(delivery.getPaymentMethod()) {

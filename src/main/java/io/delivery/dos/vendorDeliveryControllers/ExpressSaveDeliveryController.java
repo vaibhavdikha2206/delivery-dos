@@ -87,7 +87,7 @@ public class ExpressSaveDeliveryController {
 		   return dtf.format(now);
 	}
 	
-	@RequestMapping(method=RequestMethod.POST,value="/expressDeliveryRequest")
+	@RequestMapping(method=RequestMethod.POST,value="/deliveryRequest")
 	public SaveDeliveryResponse expressDeliveryRequest(@RequestBody Deliveries saveDeliveryRequestObject,@RequestHeader (name="Authorization") String authorizationHeader) throws Exception { 
 	
 		// first save it in db with status as Payment_Awaiting
@@ -224,7 +224,7 @@ public class ExpressSaveDeliveryController {
 		
 		
 		@Transactional
-		@RequestMapping(method=RequestMethod.POST,value="/initiateExpressDelivery")
+		@RequestMapping(method=RequestMethod.POST,value="/initiateDelivery")
 		public InitiateDeliveryResponseObject initiateExpressDelivery(@RequestBody InitiateDeliveryRequestObject initiateDeliveryRequestObject,@RequestHeader (name="Authorization") String authorizationHeader) throws Exception { 
 			String jwt = authorizationHeader.substring(7);
 	        String userid = jwtUtil.extractUsername(jwt); 
