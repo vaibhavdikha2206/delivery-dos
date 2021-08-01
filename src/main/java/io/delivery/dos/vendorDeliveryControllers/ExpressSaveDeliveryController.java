@@ -122,7 +122,6 @@ public class ExpressSaveDeliveryController {
 				System.out.println("PaytmTime");
 				String paytmOrderId = String.format("%s_%s_%s", Constants.paytmOrderIdText, userid, getCurrentTime());
 				
-				
 				int payableDeliveryAmountInRs = getPayableDeliveryCharge(razorPayUtil.convertPaisaToRs(totalAmountInPaisa),creditsUsed);
 				if(payableDeliveryAmountInRs!=0) {
 				int payableDeliveryAmountInPaisa = razorPayUtil.convertRsToPaisa(payableDeliveryAmountInRs);
